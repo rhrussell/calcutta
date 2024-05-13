@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,  ChangeEvent, FormEvent } from 'react';
 
 function LeagueForm() {
   const [formData, setFormData] = useState({
@@ -9,12 +9,12 @@ function LeagueForm() {
     numPlayersPerTeam: '',
   });
 
-  const handleChange = () => {
-    // setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    // e.preventDefault();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // Do something with the form data, like sending it to a server
     console.log(formData);
   };
@@ -25,7 +25,7 @@ function LeagueForm() {
         League Name:
         <input
           type="text"
-          name="name"
+          name="leagueName"
           value={formData.leagueName}
           onChange={handleChange}
         />
@@ -43,8 +43,9 @@ function LeagueForm() {
       <br></br>
       <label>
         Team Salary Cap:
-        <textarea
-          name="currency"
+        <input
+          type="text"
+          name="teamSalaryCap"
           value={formData.teamSalaryCap}
           onChange={handleChange}
         />
@@ -52,8 +53,9 @@ function LeagueForm() {
       <br></br>
       <label>
         Number of Players:
-        <textarea
-          name="number"
+        <input
+          type="number"
+          name="numPlayers"
           value={formData.numPlayers}
           onChange={handleChange}
         />
@@ -61,8 +63,9 @@ function LeagueForm() {
       <br></br>
       <label>
         Number of Players Per Team:
-        <textarea
-          name="number"
+        <input
+          type="number"
+          name="numPlayersPerTeam"
           value={formData.numPlayersPerTeam}
           onChange={handleChange}
         />

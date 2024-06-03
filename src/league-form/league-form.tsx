@@ -1,6 +1,6 @@
 import React, { useState,  ChangeEvent, FormEvent } from 'react';
 
-function LeagueForm() {
+function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
   const [formData, setFormData] = useState({
     leagueName: '',
     minutesPerItem: '',
@@ -17,6 +17,7 @@ function LeagueForm() {
     e.preventDefault();
     // Do something with the form data, like sending it to a server
     console.log(formData);
+    onSubmit();
   };
 
   return (

@@ -1,22 +1,38 @@
 import React, { useState,  ChangeEvent, FormEvent } from 'react';
+import { useNumberOfPlayers } from '../NumberOfPlayersContext';
+
+interface FormData {
+  leagueName: string;
+  minutesPerItem: string;
+  teamSalaryCap: string;
+  numPlayers: string;
+  numPlayersPerTeam: string;
+}
 
 function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     leagueName: '',
     minutesPerItem: '',
     teamSalaryCap: '',
     numPlayers: '',
     numPlayersPerTeam: '',
   });
+  
+  const { setNumberOfPlayers } = useNumberOfPlayers();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Do something with the form data, like sending it to a server
-    console.log(formData);
+    setNumberOfPlayers(parseInt(formData.numPlayers));
+    console.log("League Data: ", formData);
     onSubmit();
   };
 
@@ -75,6 +91,6 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
       <button type="submit">Submit</button>
     </form>
   );
-}
+};
 
 export default LeagueForm;

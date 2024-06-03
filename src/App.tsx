@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { NumberOfPlayersProvider } from './NumberOfPlayersContext';
 import LeagueForm from './league-form/league-form';
 import TeamsForm from './teams-form/teams-form';
 
@@ -28,19 +29,23 @@ function App() {
     //     </a>
     //   </header>
     // </div>
-    <div className="App">
-      {!showTeamsForm && (
-        <><h1>Add League</h1>
-        <LeagueForm onSubmit={handleLeagueFormSubmit} /></>
-      )}
+    <NumberOfPlayersProvider>
+      <div className="App">
+        {!showTeamsForm && (
+          <div>
+            <h1>Add League</h1>
+            <LeagueForm onSubmit={handleLeagueFormSubmit} />
+          </div>
+        )}
 
-      {showTeamsForm && (
-        <div>
-          <h1>Randomize Teams</h1>
-          <TeamsForm />
-        </div>
-      )}
-    </div>
+        {showTeamsForm && (
+          <div>
+            <h1>Randomize Teams</h1>
+            <TeamsForm />
+          </div>
+        )}
+      </div>
+    </NumberOfPlayersProvider>
   );
 }
 

@@ -1,35 +1,50 @@
-import React, { useState,  ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
+import { useNumberOfPlayers } from '../NumberOfPlayersContext';
+
+const NumberOfPlayersContext = React.createContext({});
 
 function TeamsForm() {
-  const [formData, setFormData] = useState({
-    playerNames: '',
-  });
+  const { numberOfPlayers } = useNumberOfPlayers();
+  const [players, setPlayers] = useState<{ name: string }[]>([]);
+  const [playerName, setPlayerName] = useState('');
+  const isMaxPlayersReached = players.length >= numberOfPlayers;
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleAddPlayer = () => {
+    const newPlayer = {
+      name: playerName,
+    };
+    setPlayers([...players, newPlayer]);
+    setPlayerName('');
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Do something with the form data, like sending it to a server
-    console.log(formData);
+  const handleSubmit = () => {
+    console.log(players);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Player Names:
-        <input
-          type="text"
-          name="playerNames"
-          value={formData.playerNames}
-          onChange={handleChange}
-        />
-      </label>
+    <div>
+      <input
+        type="text"
+        placeholder="Name"
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+      />
       <br></br>
-      <button type="submit">Submit</button>
-    </form>
+      <button onClick={handleAddPlayer} disabled={isMaxPlayersReached}>Add Player</button> <button onClick={handleSubmit}>Submit</button>
+      {players.length > 0 && (
+        <>
+          <h2>Player List</h2>
+          <ul>
+            {players.map((player: { name: string }, index: number) => (
+              <li key={index}>
+                {player.name}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
   );
-}
+};
 
 export default TeamsForm;

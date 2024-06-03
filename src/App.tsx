@@ -40,7 +40,6 @@ function App() {
 
         {showTeamsForm && (
           <div>
-            <h1>Randomize Teams</h1>
             <TeamsForm />
           </div>
         )}

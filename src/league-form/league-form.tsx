@@ -18,7 +18,7 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
     numPlayersPerTeam: '',
   });
   
-  const { setNumberOfPlayers } = useNumberOfPlayers();
+  const { setNumPlayers, setNumPlayersPerTeam } = useNumberOfPlayers();
 
   const isAnyInputEmpty = Object.values(formData).some(value => value.trim() === '');
 
@@ -33,7 +33,8 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Do something with the form data, like sending it to a server
-    setNumberOfPlayers(parseInt(formData.numPlayers));
+    setNumPlayers(parseInt(formData.numPlayers));
+    setNumPlayersPerTeam(parseInt(formData.numPlayersPerTeam));
     console.log("League Data: ", formData);
     onSubmit();
   };

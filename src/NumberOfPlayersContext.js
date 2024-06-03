@@ -3,10 +3,11 @@ import React, { createContext, useState, useContext } from 'react';
 const NumberOfPlayersContext = createContext();
 
 export const NumberOfPlayersProvider = ({ children }) => {
-  const [numberOfPlayers, setNumberOfPlayers] = useState(0);
+  const [numPlayers, setNumPlayers] = useState(0);
+  const [numPlayersPerTeam, setNumPlayersPerTeam] = useState(0);
 
   return (
-    <NumberOfPlayersContext.Provider value={{ numberOfPlayers, setNumberOfPlayers }}>
+    <NumberOfPlayersContext.Provider value={{ numPlayers, numPlayersPerTeam, setNumPlayers, setNumPlayersPerTeam }}>
       {children}
     </NumberOfPlayersContext.Provider>
   );

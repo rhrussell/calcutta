@@ -20,6 +20,8 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
   
   const { setNumberOfPlayers } = useNumberOfPlayers();
 
+  const isAnyInputEmpty = Object.values(formData).some(value => value.trim() === '');
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -88,7 +90,7 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
         />
       </label>
       <br></br>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={isAnyInputEmpty}>Submit</button>
     </form>
   );
 };

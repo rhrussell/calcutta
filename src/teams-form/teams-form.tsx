@@ -17,6 +17,8 @@ function TeamsForm() {
     setPlayerName('');
   };
 
+  const isPlayerNameEmpty = playerName.trim() === '';
+
   const handleSubmit = () => {
     console.log(players);
   };
@@ -30,7 +32,7 @@ function TeamsForm() {
         onChange={(e) => setPlayerName(e.target.value)}
       />
       <br></br>
-      <button onClick={handleAddPlayer} disabled={isMaxPlayersReached}>Add Player</button> <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleAddPlayer} disabled={isMaxPlayersReached || isPlayerNameEmpty}>Add Player</button> <button onClick={handleSubmit} disabled={!isMaxPlayersReached}>Submit</button>
       {players.length > 0 && (
         <>
           <h2>Player List</h2>

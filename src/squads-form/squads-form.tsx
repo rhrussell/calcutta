@@ -3,14 +3,14 @@ import { useNumberOfPlayers } from '../NumberOfPlayersContext';
 
 const NumberOfPlayersContext = React.createContext({});
 
-// Replace Teams with Squads
+// Replace Squads with Squads
 
-function TeamsForm() {
+function SquadsForm({ onSubmit }: { onSubmit: () => void }) {
   const { numPlayers, numPlayersPerTeam } = useNumberOfPlayers();
   const [players, setPlayers] = useState<{ name: string }[]>([]);
   const [playerName, setPlayerName] = useState('');
-  const [teams, setTeams] = useState<{ [teamName: string]: string[] } | null>(null);
-  const [showTeams, setShowTeams] = useState(false);
+  const [squads, setSquads] = useState<{ [teamName: string]: string[] } | null>(null);
+  const [showSquads, setShowSquads] = useState(false);
   const isMaxPlayersReached = players.length >= numPlayers;
 
   const handleAddPlayer = () => {
@@ -23,45 +23,45 @@ function TeamsForm() {
 
   const isPlayerNameEmpty = playerName.trim() === '';
 
-  const randomizeTeams = () => {
-    const newTeams: { [teamName: string]: string[] } = {};
+  const randomizeSquads = () => {
+    const newSquads: { [teamName: string]: string[] } = {};
     const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
-    const numberOfTeams = Math.ceil(numPlayers / numPlayersPerTeam);
+    const numberOfSquads = Math.ceil(numPlayers / numPlayersPerTeam);
 
-    for (let i = 0; i < numberOfTeams; i++) {
-      newTeams[`Team ${i + 1}`] = [];
+    for (let i = 0; i < numberOfSquads; i++) {
+      newSquads[`Team ${i + 1}`] = [];
     }
 
     shuffledPlayers.forEach((player, index) => {
-      const teamIndex = index % numberOfTeams;
-      newTeams[`Team ${teamIndex + 1}`].push(player.name);
+      const teamIndex = index % numberOfSquads;
+      newSquads[`Team ${teamIndex + 1}`].push(player.name);
     });
 
-    setTeams(newTeams);
+    setSquads(newSquads);
   }
 
   const handleSubmit = () => {
     console.log(players);
-    randomizeTeams();
-    setShowTeams(true);
+    randomizeSquads();
+    setShowSquads(true);
   };
 
-  if (showTeams && teams) {
+  if (showSquads && squads) {
     return (
       <div>
-        <h1>Teams</h1>
-        {Object.keys(teams).map((teamName) => (
+        <h1>Squads</h1>
+        {Object.keys(squads).map((teamName) => (
           <div key={teamName}>
             <h2>{teamName}</h2>
             <ul>
-              {teams[teamName].map((playerName, index) => (
+              {squads[teamName].map((playerName, index) => (
                 <li key={index}>{playerName}</li>
               ))}
             </ul>
           </div>
         ))}
         <br></br>
-        <button onClick={randomizeTeams}>Randomize Teams</button> <button onClick={handleSubmit}>Submit</button>
+        <button onClick={randomizeSquads}>Randomize Squads</button> <button onClick={onSubmit}>Submit</button>
       </div>
     );
   }
@@ -94,4 +94,4 @@ function TeamsForm() {
   );
 };
 
-export default TeamsForm;
+export default SquadsForm;

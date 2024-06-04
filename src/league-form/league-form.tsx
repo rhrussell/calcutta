@@ -4,7 +4,7 @@ import { useNumberOfPlayers } from '../NumberOfPlayersContext';
 interface FormData {
   leagueName: string;
   minutesPerItem: string;
-  teamSalaryCap: string;
+  squadSalaryCap: string;
   numPlayers: string;
   numPlayersPerTeam: string;
 }
@@ -13,7 +13,7 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
   const [formData, setFormData] = useState<FormData>({
     leagueName: '',
     minutesPerItem: '',
-    teamSalaryCap: '',
+    squadSalaryCap: '',
     numPlayers: '',
     numPlayersPerTeam: '',
   });
@@ -62,11 +62,11 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
       </label>
       <br></br>
       <label>
-        Team Salary Cap:
+        Squad Salary Cap:
         <input
           type="text"
-          name="teamSalaryCap"
-          value={formData.teamSalaryCap}
+          name="squadSalaryCap"
+          value={formData.squadSalaryCap}
           onChange={handleChange}
         />
       </label>

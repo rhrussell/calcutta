@@ -3,13 +3,20 @@ import logo from './logo.svg';
 import './App.css';
 import { NumberOfPlayersProvider } from './NumberOfPlayersContext';
 import LeagueForm from './league-form/league-form';
-import TeamsForm from './teams-form/teams-form';
+import SquadsForm from './squads-form/squads-form';
+import TournamentBracket from './tournament-bracket/tournament-bracket';
 
 function App() {
-  const [showTeamsForm, setShowTeamsForm] = useState(false);
+  const [showSquadsForm, setShowSquadsForm] = useState(false);
+  const [showTournamentBracket, setShowTournamentBracket] = useState(false);
 
   const handleLeagueFormSubmit = () => {
-    setShowTeamsForm(true);
+    setShowSquadsForm(true);
+  };
+
+  const handleSquadsFormSubmit = () => {
+    setShowSquadsForm(false);
+    setShowTournamentBracket(true);
   };
 
   return (
@@ -31,16 +38,22 @@ function App() {
     // </div>
     <NumberOfPlayersProvider>
       <div className="App">
-        {!showTeamsForm && (
+        {!showSquadsForm && (
           <div>
             <h1>Add League</h1>
             <LeagueForm onSubmit={handleLeagueFormSubmit} />
           </div>
         )}
 
-        {showTeamsForm && (
+        {showSquadsForm && (
           <div>
-            <TeamsForm />
+            <SquadsForm onSubmit={handleSquadsFormSubmit}/>
+          </div>
+        )}
+
+        {showTournamentBracket && !showSquadsForm && (
+          <div>
+            <TournamentBracket />
           </div>
         )}
       </div>

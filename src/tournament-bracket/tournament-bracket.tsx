@@ -1,6 +1,27 @@
 import React, { useState,  ChangeEvent, FormEvent } from 'react';
 import './tournament-bracket.css';
 
+// const TeamSlot = (teamsTuple) => {
+//   const { top, bottom } = teams;
+//   return (
+//     <ul className="matchup matchup-2">
+//     <li className="team team-top">{top.seed} {top.name} {top.record}</li>
+//     <li className="team team-bottom winner">{bottom.seed} {bottom.name} {bottom.record}</li>
+//   </ul>
+//   )
+// }
+
+// const allTeams = [
+//   {
+//     top: { seed: '', },
+//     bottom: { seed: ''}
+//   }, 
+//   {
+//     top: { seed: '', },
+//     bottom: { seed: ''}
+//   }, 
+// ]
+
 function TournamentBracket() {
     return (
         <>
@@ -19,166 +40,172 @@ function TournamentBracket() {
 </header>
 <div className="bracket">
 	<div className="region region-1">
+    {/* {allTeams.map(teamTuple => (
+      <TeamSlot teamsTuple={teamTuple} />
+    ))
+
+    } */}
+
 	{/* <!-- Region 1 Round 1--> */}
 		<ul className="matchup matchup-1">
-			<li className="team team-top">1 Virginia</li>
-			<li className="team team-bottom winner">16 UMBC</li>
+			<li className="team team-top">1 UConn (31-3)</li>
+			<li className="team team-bottom winner">16 Stetson (22-12)</li>
 		</ul>
 
 		<ul className="matchup matchup-2">
-			<li className="team team-top">8 Creighton</li>
-			<li className="team team-bottom winner">9 Kansas State</li>
+			<li className="team team-top">8 Florida Atlantic (25-8)</li>
+			<li className="team team-bottom winner">9 Northwestern (21-11)</li>
 		</ul>
 
 		<ul className="matchup matchup-3">
-			<li className="team team-top winner">5 Kentucky</li>
-			<li className="team team-bottom">12 Davidson</li>
+			<li className="team team-top winner">5 San Diego (24-10)</li>
+			<li className="team team-bottom">12 UAB (23-11)</li>
 		</ul>
 
 		<ul className="matchup matchup-4">
-			<li className="team team-top">4 Arizona</li>
-			<li className="team team-bottom winner">13 Buffalo</li>
+			<li className="team team-top">4 Auburn (27-7)</li>
+			<li className="team team-bottom winner">13 Yale (22-9)</li>
 		</ul>
 
 		<ul className="matchup matchup-5">
-			<li className="team team-top">6 Miami</li>
-			<li className="team team-bottom winner">11 Loyala-Chicago</li>
+			<li className="team team-top">6 BYU (23-10)</li>
+			<li className="team team-bottom winner">11 Duquesne (24-11)</li>
 		</ul>
 
 		<ul className="matchup matchup-6">
-			<li className="team team-top winner">3 Tennessee</li>
-			<li className="team team-bottom">14 Wright State</li>
+			<li className="team team-top winner">3 Illinois (26-8)</li>
+			<li className="team team-bottom">14 Morehead St. (26-8)</li>
 		</ul>
 
 		<ul className="matchup matchup-7">
-			<li className="team team-top winner">7 Nevada</li>
-			<li className="team team-bottom">10 Texas</li>
+			<li className="team team-top winner">7 Washington St. (24-9)</li>
+			<li className="team team-bottom">10 Drake (28-6)</li>
 		</ul>
 
 		<ul className="matchup matchup-8">
-			<li className="team team-top winner">2 Cinncinati</li>
-			<li className="team team-bottom">15 Georgia State</li>
+			<li className="team team-top winner">2 Iowa St. (27-7)</li>
+			<li className="team team-bottom">15 S. Dakota St. (22-12)</li>
 		</ul>
 	
 	{/* <!-- Region 1 Round 2 --> */}
 		<ul className="matchup matchup-33">
-			<li className="team team-top">16 UMBC</li>
-			<li className="team team-bottom winner">9 Kansas State</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 	
 		<ul className="matchup matchup-34">
-			<li className="team team-top winner">5 Kentucky</li>
-			<li className="team team-bottom">13 Buffalo</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 	
 		<ul className="matchup matchup-35">
-			<li className="team team-top winner">11 Loyala-Chicago</li>
-			<li className="team team-bottom">3 Tennessee</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 	
 		<ul className="matchup matchup-36">
-			<li className="team team-top winner">7 Nevada</li>
-			<li className="team team-bottom">2 Cincinnati</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 	
 	{/* <!-- Region 1 Sweet 16 --> */}
 		<ul className="matchup matchup-49">
-			<li className="team team-top winner">9 Kansas State</li>
-			<li className="team team-bottom">5 Kentucky</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 		<ul className="matchup matchup-50">
-			<li className="team team-top winner">11 Loyola-Chicago</li>
-			<li className="team team-bottom">7 Nevada</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 	{/* <!-- End Region 1 Sweet 16 --> */}
 	
 	{/* <!-- Region 1 Final --> */}
 		<ul className="matchup matchup-57">
-			<li className="team team-top">9 Kansas State</li>
-			<li className="team team-bottom winner">11 Loyola-Chicago</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 		
 	</div>
 	<div className="region-2 region">
 		{/* <!-- Region 2 Round 1 --> */}
 		<ul className="matchup matchup-9">
-			<li className="team team-top winner">1 Xavier</li>
-			<li className="team team-bottom">16 Texas Southern</li>
+			<li className="team team-top winner">1 North Carolina (27-7)</li>
+			<li className="team team-bottom"></li>
 		</ul>
 	
 		<ul className="matchup matchup-10">
-			<li className="team team-top">8 Missouri</li>
-			<li className="team team-bottom winner">9 Florida State</li>
+			<li className="team team-top">8 Mississippi St. (21-13)</li>
+			<li className="team team-bottom winner">9 Michigan St. (19-14)</li>
 		</ul>
 
 		<ul className="matchup matchup-11">
-			<li className="team team-top winner">5 Ohio State</li>
-			<li className="team team-bottom">12 South Dakota St</li>
+			<li className="team team-top winner">5 Saint Mary's (26-7)</li>
+			<li className="team team-bottom">12 Grand Canyon (29-4)</li>
 		</ul>
 
 		<ul className="matchup matchup-12">
-			<li className="team team-top winner">4 Gonzaga</li>
-			<li className="team team-bottom">13 UNC-Greensboro</li>
+			<li className="team team-top winner">4 Alabama (21-11)</li>
+			<li className="team team-bottom">13 Charleston (27-7)</li>
 		</ul>
 
 		<ul className="matchup matchup-13">
-			<li className="team team-top winner">6 Houston</li>
-			<li className="team team-bottom">11 San Diego State</li>
+			<li className="team team-top winner">6 Clemson (21-11)</li>
+			<li className="team team-bottom">11 New Mexico (26-9)</li>
 		</ul>
 
 		<ul className="matchup matchup-14">
-			<li className="team team-top winner">3 Michigan</li>
-			<li className="team team-bottom">14 Montana</li>
+			<li className="team team-top winner">3 Baylor (23-10)</li>
+			<li className="team team-bottom">14 Colgate (25-9)</li>
 		</ul>
 
 		<ul className="matchup matchup-15">
-			<li className="team team-top winner">7 Texas A&M</li>
-			<li className="team team-bottom">10 Providence</li>
+			<li className="team team-top winner">7 Dayton (24-7)</li>
+			<li className="team team-bottom">10 Nevada (26-7)</li>
 		</ul>
 
 		<ul className="matchup matchup-16">
-			<li className="team team-top winner">2 North Carolina</li>
-			<li className="team team-bottom">15 Lipscomb</li>
+			<li className="team team-top winner">2 Arizona (25-8)</li>
+			<li className="team team-bottom">15 Long Beach St. (21-14)</li>
 		</ul>
 		{/* <!-- End Region 2 Round 1 --> */}
 		
 		{/* <!-- Region 2 Round 2 --> */}
 		<ul className="matchup matchup-37">
-			<li className="team team-top">1 Xavier</li>
-			<li className="team team-bottom winner">9 Florida State</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 
 		<ul className="matchup matchup-38">
-			<li className="team team-top">5 Ohio State</li>
-			<li className="team team-bottom winner">4 Gonzaga</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 
 		<ul className="matchup matchup-39">
-			<li className="team team-top">6 Houston</li>
-			<li className="team team-bottom winner">3 Michigan</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 
 		<ul className="matchup matchup-40">
-			<li className="team team-top winner">7 Texas A&M</li>
-			<li className="team team-bottom">2 North Carolina</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 		{/* <!-- End Region 2 Round 2 --> */}
 		
 		{/* <!-- Region 2 Sweet 16 --> */}
 		<ul className="matchup matchup-51">
-			<li className="team team-top winner">9 Florida State</li>
-			<li className="team team-bottom">4 Gonzaga</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 		<ul className="matchup matchup-52">
-			<li className="team team-top winner">3 Michigan</li>
-			<li className="team team-bottom">7 Texas A&M</li>
+			<li className="team team-top winner"></li>
+			<li className="team team-bottom"></li>
 		</ul>
 		{/* <!-- End Region 2 Sweet 16 --> */}
 		
 		{/* <!-- Region 2 Final --> */}
 		<ul className="matchup matchup-58">
-			<li className="team team-top">9 Florida State</li>
-			<li className="team team-bottom winner">3 Michigan</li>
+			<li className="team team-top"></li>
+			<li className="team team-bottom winner"></li>
 		</ul>
 		
 	</div>

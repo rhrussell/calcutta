@@ -38,7 +38,7 @@ function App() {
     // </div>
     <NumberOfPlayersProvider>
       <div className="App">
-        {!showSquadsForm && (
+        {(!showSquadsForm && !showTournamentBracket) && (
           <div>
             <h1>Add League</h1>
             <LeagueForm onSubmit={handleLeagueFormSubmit} />
@@ -51,7 +51,7 @@ function App() {
           </div>
         )}
 
-        {showTournamentBracket && !showSquadsForm && (
+        {(showTournamentBracket && !showSquadsForm) && (
           <div>
             <TournamentBracket />
           </div>

@@ -5,12 +5,15 @@ import { NumberOfPlayersProvider } from './NumberOfPlayersContext';
 import LeagueForm from './league-form/league-form';
 import SquadsForm from './squads-form/squads-form';
 import TournamentBracket from './tournament-bracket/tournament-bracket';
+import Timer from './timer/timer';
 
 function App() {
   const [showSquadsForm, setShowSquadsForm] = useState(false);
   const [showTournamentBracket, setShowTournamentBracket] = useState(false);
+  const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
 
-  const handleLeagueFormSubmit = () => {
+  const handleLeagueFormSubmit = (minutes: number) => {
+    setMinutesPerItem(minutes);
     setShowSquadsForm(true);
   };
 
@@ -20,22 +23,6 @@ function App() {
   };
 
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.tsx</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
     <NumberOfPlayersProvider>
       <div className="App">
         {(!showSquadsForm && !showTournamentBracket) && (
@@ -54,6 +41,8 @@ function App() {
         {(showTournamentBracket && !showSquadsForm) && (
           <div>
             <TournamentBracket />
+            <br></br>
+            <Timer minutesPerItem={minutesPerItem} />
           </div>
         )}
       </div>

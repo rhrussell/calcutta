@@ -6,19 +6,23 @@ interface FormData {
   minutesPerItem: string;
   squadSalaryCap: string;
   numPlayers: string;
-  numPlayersPerTeam: string;
+  numPlayersPerSquad: string;
 }
 
-function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
+interface LeagueFormProps {
+  onSubmit: (minutes: number) => void;
+}
+
+const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<FormData>({
     leagueName: '',
     minutesPerItem: '',
     squadSalaryCap: '',
     numPlayers: '',
-    numPlayersPerTeam: '',
+    numPlayersPerSquad: '',
   });
   
-  const { setNumPlayers, setNumPlayersPerTeam } = useNumberOfPlayers();
+  const { setNumPlayers, setNumPlayersPerSquad } = useNumberOfPlayers();
 
   const isAnyInputEmpty = Object.values(formData).some(value => value.trim() === '');
 
@@ -34,9 +38,9 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
     e.preventDefault();
     // Do something with the form data, like sending it to a server
     setNumPlayers(parseInt(formData.numPlayers));
-    setNumPlayersPerTeam(parseInt(formData.numPlayersPerTeam));
+    setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
     console.log("League Data: ", formData);
-    onSubmit();
+    onSubmit(parseInt(formData.minutesPerItem));
   };
 
   return (
@@ -82,11 +86,11 @@ function LeagueForm({ onSubmit }: { onSubmit: () => void }) {
       </label>
       <br></br>
       <label>
-        Number of Players Per Team:
+        Number of Players Per Squad:
         <input
           type="number"
-          name="numPlayersPerTeam"
-          value={formData.numPlayersPerTeam}
+          name="numPlayersPerSquad"
+          value={formData.numPlayersPerSquad}
           onChange={handleChange}
         />
       </label>

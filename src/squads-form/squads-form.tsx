@@ -6,7 +6,7 @@ const NumberOfPlayersContext = React.createContext({});
 // Replace Squads with Squads
 
 function SquadsForm({ onSubmit }: { onSubmit: () => void }) {
-  const { numPlayers, numPlayersPerTeam } = useNumberOfPlayers();
+  const { numPlayers, numPlayersPerSquad } = useNumberOfPlayers();
   const [players, setPlayers] = useState<{ name: string }[]>([]);
   const [playerName, setPlayerName] = useState('');
   const [squads, setSquads] = useState<{ [teamName: string]: string[] } | null>(null);
@@ -26,7 +26,7 @@ function SquadsForm({ onSubmit }: { onSubmit: () => void }) {
   const randomizeSquads = () => {
     const newSquads: { [teamName: string]: string[] } = {};
     const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
-    const numberOfSquads = Math.ceil(numPlayers / numPlayersPerTeam);
+    const numberOfSquads = Math.ceil(numPlayers / numPlayersPerSquad);
 
     for (let i = 0; i < numberOfSquads; i++) {
       newSquads[`Team ${i + 1}`] = [];

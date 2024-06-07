@@ -4,10 +4,10 @@ const NumberOfPlayersContext = createContext();
 
 export const NumberOfPlayersProvider = ({ children }) => {
   const [numPlayers, setNumPlayers] = useState(0);
-  const [numPlayersPerTeam, setNumPlayersPerTeam] = useState(0);
+  const [numPlayersPerSquad, setNumPlayersPerSquad] = useState(0);
 
   return (
-    <NumberOfPlayersContext.Provider value={{ numPlayers, numPlayersPerTeam, setNumPlayers, setNumPlayersPerTeam }}>
+    <NumberOfPlayersContext.Provider value={{ numPlayers, numPlayersPerSquad, setNumPlayers, setNumPlayersPerSquad }}>
       {children}
     </NumberOfPlayersContext.Provider>
   );

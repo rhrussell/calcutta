@@ -3,8 +3,6 @@ import { useNumberOfPlayers } from '../NumberOfPlayersContext';
 
 const NumberOfPlayersContext = React.createContext({});
 
-// Replace Squads with Squads
-
 function SquadsForm({ onSubmit }: { onSubmit: () => void }) {
   const { numPlayers, numPlayersPerSquad } = useNumberOfPlayers();
   const [players, setPlayers] = useState<{ name: string }[]>([]);

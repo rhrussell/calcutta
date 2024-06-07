@@ -1,29 +1,6 @@
 import React, { useState,  ChangeEvent, FormEvent } from 'react';
 import './tournament-bracket.css';
 
-// const TeamSlot = (teamsTuple) => {
-//   const { top, bottom, position } = teamsTuple;
-//   return (
-//     <ul className=`matchup matchup-${position}`>
-//     <li className="team team-top">{top.seed} {top.name} {top.record}</li>
-//     <li className="team team-bottom winner">{bottom.seed} {bottom.name} {bottom.record}</li>
-//   </ul>
-//   )
-// }
-
-// const allTeams = [
-//   {
-//     top: { seed: '', },
-//     bottom: { seed: ''},
-//     position: 1,
-//   }, 
-//   {
-//     top: { seed: '', },
-//     bottom: { seed: ''},
-//     position: 2,
-//   }, 
-// ]
-
 function TournamentBracket() {
     return (
         <>

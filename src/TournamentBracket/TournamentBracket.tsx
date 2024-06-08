@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import "./tournament-bracket.css";
+import "./TournamentBracket.css";
 
 function TournamentBracket() {
   return (

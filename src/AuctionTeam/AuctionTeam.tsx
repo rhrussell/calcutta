@@ -6,6 +6,8 @@ interface Team {
   name: string;
   record: string;
   region: string;
+  opponent?: string;
+  price?: number;
 }
 
 interface Matchup {
@@ -19,6 +21,8 @@ interface AuctionTeamProps {
   changeTeamFlag: boolean;
   squadSalaryCap: number;
   timerActive: boolean;
+  onTeamsSold: (soldTeam: Team) => void;
+  onNextTeam: () => void; // Add onNextTeam prop
 }
 
 const AuctionTeam: React.FC<AuctionTeamProps> = ({
@@ -26,9 +30,13 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   changeTeamFlag,
   squadSalaryCap,
   timerActive,
+  onTeamsSold,
+  onNextTeam, // Receive onNextTeam function
 }) => {
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
   const [opponent, setOpponent] = useState<Team | null>(null);
+  const [highestBid, setHighestBid] = useState<number>(0);
+  const [teamAdded, setTeamAdded] = useState<boolean>(false); // Add state to track if team is added
 
   const getRandomTeam = useCallback(() => {
     const randomMatchupIndex = Math.floor(Math.random() * matchups.length);
@@ -37,11 +45,26 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
 
     setCurrentTeam(isTopTeam ? selectedMatchup.top : selectedMatchup.bottom);
     setOpponent(isTopTeam ? selectedMatchup.bottom : selectedMatchup.top);
+    setTeamAdded(false); // Reset teamAdded state
   }, [matchups]);
 
   useEffect(() => {
     getRandomTeam();
   }, [getRandomTeam, changeTeamFlag]);
+
+  const handleBidPlaced = (price: number) => {
+    if (price > highestBid) {
+      setHighestBid(price);
+    }
+  };
+
+  const handleTimerUp = useCallback(() => {
+    if (currentTeam && opponent && highestBid > 0 && !teamAdded) { // Check if team is not added yet
+      const soldTeam = { ...currentTeam, price: highestBid, opponent: `${opponent.seed} ${opponent.name}` };
+      onTeamsSold(soldTeam);
+      setTeamAdded(true); // Set teamAdded to true
+    }
+  }, [currentTeam, opponent, highestBid, onTeamsSold, teamAdded]);
 
   if (!currentTeam || !opponent) return <div>Loading...</div>;
 
@@ -56,6 +79,16 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
         <div>
           First Opponent: {opponent.seed} {opponent.name} {opponent.record}
         </div>
+      </div>
+      <div>
+        <BidPanel
+          squadSalaryCap={squadSalaryCap}
+          changeTeamFlag={changeTeamFlag}
+          timerActive={timerActive}
+          onNextTeam={onNextTeam} // Pass onNextTeam function to BidPanel
+          onBidPlaced={handleBidPlaced}
+          onTimerUp={handleTimerUp} // Pass handleTimerUp function to BidPanel
+        />
       </div>
     </div>
   );

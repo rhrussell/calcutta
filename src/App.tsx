@@ -8,15 +8,24 @@ import TournamentBracket from "./TournamentBracket/TournamentBracket";
 import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
 import BidPanel from "./BidPanel/BidPanel";
+import YourSquad from "./YourSquad/YourSquad";
 
 interface Team {
   seed: string;
   name: string;
   record: string;
   region: string;
+  opponent?: string;
+  price?: number;
 }
 
-const allMatchups = [
+interface Matchup {
+  top: Team;
+  bottom: Team;
+  position: number;
+}
+
+const allMatchups: Matchup[] = [
   {
     top: {
       seed: "1",
@@ -540,14 +549,15 @@ const allMatchups = [
 ];
 
 function App() {
-  const [showSquadsForm, setShowSquadsForm] = useState(false);
-  const [showTournamentBracket, setShowTournamentBracket] = useState(false);
+  const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);
+  const [showTournamentBracket, setShowTournamentBracket] = useState<boolean>(false);
   const [changeTeamFlag, setChangeTeamFlag] = useState<boolean>(false);
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
+  const [squadTeams, setSquadTeams] = useState<Team[]>([]);
 
   const handleLeagueFormSubmit = (
     minutes: number,
@@ -580,6 +590,16 @@ function App() {
   const handleNextTeamClick = () => {
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
+  };
+
+  const handleTeamsSold = (soldTeam: Team) => {
+    setSquadTeams([...squadTeams, soldTeam]); // Add the sold team to squadTeams
+    setSquadSalaryCap((prevSalaryCap) => prevSalaryCap - (soldTeam.price || 0)); // Update squad's salary capacity
+  };
+
+  const handleNextTeam = () => {
+    setChangeTeamFlag(!changeTeamFlag);
+    setShowNextTeamButton(false);
   };
 
   return (
@@ -615,7 +635,7 @@ function App() {
                 onTimerPause={handleTimerPause}
                 resetFlag={changeTeamFlag}
               />
-              {showNextTeamButton && (
+              {showNextTeamButton && !timerActive && allMatchups.length > 0 && (
                 <button onClick={handleNextTeamClick}>Next Team</button>
               )}
               <AuctionTeam
@@ -623,12 +643,8 @@ function App() {
                 changeTeamFlag={changeTeamFlag}
                 squadSalaryCap={squadSalaryCap}
                 timerActive={timerActive}
-              />
-              <BidPanel
-                squadSalaryCap={squadSalaryCap}
-                changeTeamFlag={changeTeamFlag}
-                timerActive={timerActive}
-                onNextTeam={handleNextTeamClick}
+                onTeamsSold={handleTeamsSold}
+                onNextTeam={handleNextTeam}
               />
             </div>
             <br></br>
@@ -638,7 +654,9 @@ function App() {
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
-            ></div>
+            >
+              <YourSquad squadTeams={squadTeams} squadSalaryCap={squadSalaryCap}/>
+            </div>
           </div>
         )}
       </div>

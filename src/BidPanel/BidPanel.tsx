@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-}
-
 interface BidPanelProps {
   squadSalaryCap: number;
   timerActive: boolean;
-  onNextTeam: () => void;
   changeTeamFlag: boolean;
+  onBidPlaced: (highestBid: number) => void;
+  onNextTeam: () => void;
+  onTimerUp: () => void;
 }
 
 const BidPanel: React.FC<BidPanelProps> = ({
   squadSalaryCap,
   changeTeamFlag,
   timerActive,
-  onNextTeam,
+  onBidPlaced,
 }) => {
   const [currentBid, setCurrentBid] = useState<number>(0);
   const [highestBid, setHighestBid] = useState<number>(0);
@@ -31,6 +26,7 @@ const BidPanel: React.FC<BidPanelProps> = ({
   const handlePlaceBid = () => {
     if (currentBid > highestBid) {
       setHighestBid(currentBid);
+      onBidPlaced(currentBid);
     }
   };
 

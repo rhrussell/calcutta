@@ -7,6 +7,7 @@ interface FormData {
   squadSalaryCap: string;
   numPlayers: string;
   numPlayersPerSquad: string;
+  orderOfAuction: boolean;
 }
 
 interface LeagueFormProps {
@@ -20,6 +21,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     squadSalaryCap: '',
     numPlayers: '',
     numPlayersPerSquad: '',
+    orderOfAuction: false,
   });
   
   const { setNumPlayers, setNumPlayersPerSquad } = useNumberOfPlayers();
@@ -91,6 +93,16 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
           type="number"
           name="numPlayersPerSquad"
           value={formData.numPlayersPerSquad}
+          onChange={handleChange}
+        />
+      </label>
+      <br></br>
+      <label>
+        Order of Auction:
+        <input
+          type="checkbox"
+          name="orderOfAuction"
+          checked={formData.orderOfAuction}
           onChange={handleChange}
         />
       </label>

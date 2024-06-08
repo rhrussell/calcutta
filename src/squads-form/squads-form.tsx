@@ -27,12 +27,12 @@ function SquadsForm({ onSubmit }: { onSubmit: () => void }) {
     const numberOfSquads = Math.ceil(numPlayers / numPlayersPerSquad);
 
     for (let i = 0; i < numberOfSquads; i++) {
-      newSquads[`Team ${i + 1}`] = [];
+      newSquads[`Squad ${i + 1}`] = [];
     }
 
     shuffledPlayers.forEach((player, index) => {
       const teamIndex = index % numberOfSquads;
-      newSquads[`Team ${teamIndex + 1}`].push(player.name);
+      newSquads[`Squad ${teamIndex + 1}`].push(player.name);
     });
 
     setSquads(newSquads);

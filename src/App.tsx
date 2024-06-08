@@ -7,6 +7,14 @@ import SquadsForm from './squads-form/squads-form';
 import TournamentBracket from './tournament-bracket/tournament-bracket';
 import Timer from './timer/timer';
 import AuctionTeam from './auction-team/auction-team';
+import BidPanel from './bid-panel/bid-panel';
+
+interface Team {
+  seed: string;
+  name: string;
+  record: string;
+  region: string;
+}
 
 const allMatchups = [
   {
@@ -174,11 +182,17 @@ const allMatchups = [
 function App() {
   const [showSquadsForm, setShowSquadsForm] = useState(false);
   const [showTournamentBracket, setShowTournamentBracket] = useState(false);
-  const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [changeTeamFlag, setChangeTeamFlag] = useState<boolean>(false);
+  const [timerActive, setTimerActive] = useState<boolean>(false);
+  const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
+  const [resetBids, setResetBids] = useState<boolean>(false);
+  const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
+  const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
+  const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
 
-  const handleLeagueFormSubmit = (minutes: number) => {
+  const handleLeagueFormSubmit = (minutes: number, salary: number) => {
     setMinutesPerItem(minutes);
+    setSquadSalaryCap(salary);
     setShowSquadsForm(true);
   };
 
@@ -188,7 +202,20 @@ function App() {
   };
 
   const handleTimerEnd = () => {
-    setChangeTeamFlag((prevFlag) => !prevFlag);
+    setTimerActive(false);
+    setShowNextTeamButton(true); // Show the Next Team button when the timer ends
+    setChangeTeamFlag(false); // Set change team flag to true to display the next team
+  };
+
+  const handleTimerPause = (isPaused: boolean) => {
+    setTimerActive(!isPaused);
+    setShowNextTeamButton(false); // Hide the Next Team button when the timer is paused
+    setChangeTeamFlag(false); // Reset change team flag when the timer is paused
+  };
+
+  const handleNextTeamClick = () => {
+    setShowNextTeamButton(false); // Hide the Next Team button when clicked
+    setChangeTeamFlag(true); // Set change team flag to true to display the next team
   };
 
   return (
@@ -211,9 +238,28 @@ function App() {
           <div>
             <TournamentBracket />
             <br></br>
-            <div style={{ display: 'flex', flexDirection: 'row', 'justifyContent': 'space-between' }}>
-              <Timer minutesPerItem={minutesPerItem} onTimerEnd={handleTimerEnd} resetFlag={changeTeamFlag} />
-              <AuctionTeam matchups={allMatchups} changeTeamFlag={changeTeamFlag} />
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Timer 
+                minutesPerItem={minutesPerItem} 
+                onTimerEnd={handleTimerEnd}
+                onTimerPause={handleTimerPause} 
+                resetFlag={changeTeamFlag} 
+              />
+              {showNextTeamButton && (
+                <button onClick={handleNextTeamClick}>Next Team</button>
+              )}
+              <AuctionTeam 
+                matchups={allMatchups} 
+                changeTeamFlag={changeTeamFlag} 
+                squadSalaryCap={squadSalaryCap} 
+                timerActive={timerActive}
+              />
+              <BidPanel 
+                squadSalaryCap={squadSalaryCap} 
+                changeTeamFlag={changeTeamFlag}
+                timerActive={timerActive}
+                onNextTeam={handleNextTeamClick}
+              />
             </div>
           </div>
         )}

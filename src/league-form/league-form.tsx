@@ -10,7 +10,7 @@ interface FormData {
 }
 
 interface LeagueFormProps {
-  onSubmit: (minutes: number) => void;
+  onSubmit: (minutes: number, salary: number) => void;
 }
 
 const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
@@ -40,7 +40,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     setNumPlayers(parseInt(formData.numPlayers));
     setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
     console.log("League Data: ", formData);
-    onSubmit(parseInt(formData.minutesPerItem));
+    onSubmit(parseInt(formData.minutesPerItem), parseInt(formData.squadSalaryCap));
   };
 
   return (

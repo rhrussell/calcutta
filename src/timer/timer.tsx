@@ -1,66 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface TimerProps {
   minutesPerItem: number;
   onTimerEnd: () => void;
+  onTimerPause: (isPaused: boolean) => void;
   resetFlag: boolean;
 }
 
-const Timer: React.FC<TimerProps> = ({ minutesPerItem, onTimerEnd, resetFlag }) => {
-  const [time, setTime] = useState(minutesPerItem * 60);
-  const [isActive, setIsActive] = useState(true);
-  const [isNextTeamVisible, setIsNextTeamVisible] = useState(false);
+const Timer: React.FC<TimerProps> = ({ minutesPerItem, onTimerEnd, onTimerPause, resetFlag }) => {
+  const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
+  const [isActive, setIsActive] = useState<boolean>(false); // Set to false to not start immediately
+  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setTime(minutesPerItem * 60);
-    setIsActive(true);
-    setIsNextTeamVisible(false);
+    if (isActive && timeLeft > 0) {
+      intervalRef.current = window.setTimeout(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      onTimerEnd();
+    }
+    return () => {
+      if (intervalRef.current !== null) {
+        clearTimeout(intervalRef.current);
+      }
+    };
+  }, [timeLeft, isActive]);
+
+  useEffect(() => {
+    setTimeLeft(minutesPerItem * 60);
+    setIsActive(false); // Reset timer and set inactive
   }, [resetFlag, minutesPerItem]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    onTimerPause(!isActive);
+  }, [isActive]);
 
-    if (isActive) {
-      interval = setInterval(() => {
-        setTime((prevTime) => {
-          if (prevTime === 0) {
-            setIsActive(false);
-            setIsNextTeamVisible(true);
-            return 0;
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
-    } else if (!isActive && time !== 0) {
-      clearInterval(interval!);
-    }
-
-    return () => clearInterval(interval!);
-  }, [isActive, time, minutesPerItem]);
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  const handlePause = () => {
+    setIsActive(false);
   };
 
-  const toggleTimer = () => {
-    setIsActive(!isActive);
-  };
-
-  const handleNextTeamClick = () => {
-    setIsNextTeamVisible(false);
+  const handlePlay = () => {
     setIsActive(true);
-    setTime(minutesPerItem * 60);
-    onTimerEnd();  // Call onTimerEnd to update the team
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   return (
     <div>
-      <div>{formatTime(time)}</div>
-      {isActive && <button onClick={toggleTimer}>Pause</button>}
-      {!isActive && !isNextTeamVisible && <button onClick={toggleTimer}>Play</button>}
-      {isNextTeamVisible && <button onClick={handleNextTeamClick}>Next Team</button>}
+      <h3>Timer</h3>
+      <h4>{formatTime(timeLeft)}</h4>
+      {isActive ? (
+        <button onClick={handlePause}>Pause</button>
+      ) : (
+        <button onClick={handlePlay}>Play</button>
+      )}
     </div>
   );
 };

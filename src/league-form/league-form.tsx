@@ -11,7 +11,7 @@ interface FormData {
 }
 
 interface LeagueFormProps {
-  onSubmit: (minutes: number, salary: number) => void;
+  onSubmit: (minutes: number, salary: number, order: boolean) => void;
 }
 
 const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
@@ -26,7 +26,8 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   
   const { setNumPlayers, setNumPlayersPerSquad } = useNumberOfPlayers();
 
-  const isAnyInputEmpty = Object.values(formData).some(value => value.trim() === '');
+  const { orderOfAuction, ...restFormData } = formData;
+  const isAnyInputEmpty = Object.values(restFormData).some(value => value.trim() === '');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,7 +43,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     setNumPlayers(parseInt(formData.numPlayers));
     setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
     console.log("League Data: ", formData);
-    onSubmit(parseInt(formData.minutesPerItem), parseInt(formData.squadSalaryCap));
+    onSubmit(parseInt(formData.minutesPerItem), parseInt(formData.squadSalaryCap), formData.orderOfAuction);
   };
 
   return (

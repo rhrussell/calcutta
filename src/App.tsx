@@ -185,12 +185,14 @@ function App() {
   const [changeTeamFlag, setChangeTeamFlag] = useState<boolean>(false);
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
+  const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
 
-  const handleLeagueFormSubmit = (minutes: number, salary: number) => {
+  const handleLeagueFormSubmit = (minutes: number, salary: number, order: boolean) => {
     setMinutesPerItem(minutes);
     setSquadSalaryCap(salary);
+    setOrderOfAuction(order);
     setShowSquadsForm(true);
   };
 
@@ -258,6 +260,10 @@ function App() {
                 timerActive={timerActive}
                 onNextTeam={handleNextTeamClick}
               />
+            </div>
+            <br></br>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+
             </div>
           </div>
         )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 interface TimerProps {
   minutesPerItem: number;
@@ -7,7 +7,12 @@ interface TimerProps {
   resetFlag: boolean;
 }
 
-const Timer: React.FC<TimerProps> = ({ minutesPerItem, onTimerEnd, onTimerPause, resetFlag }) => {
+const Timer: React.FC<TimerProps> = ({
+  minutesPerItem,
+  onTimerEnd,
+  onTimerPause,
+  resetFlag,
+}) => {
   const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
   const [isActive, setIsActive] = useState<boolean>(false); // Set to false to not start immediately
   const intervalRef = useRef<number | null>(null);
@@ -47,7 +52,7 @@ const Timer: React.FC<TimerProps> = ({ minutesPerItem, onTimerEnd, onTimerPause,
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (

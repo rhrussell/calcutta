@@ -1,5 +1,5 @@
-import React, { useState,  ChangeEvent, FormEvent } from 'react';
-import { useNumberOfPlayers } from '../NumberOfPlayersContext';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useNumberOfPlayers } from "../NumberOfPlayersContext";
 
 interface FormData {
   leagueName: string;
@@ -16,18 +16,20 @@ interface LeagueFormProps {
 
 const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<FormData>({
-    leagueName: '',
-    minutesPerItem: '',
-    squadSalaryCap: '',
-    numPlayers: '',
-    numPlayersPerSquad: '',
+    leagueName: "",
+    minutesPerItem: "",
+    squadSalaryCap: "",
+    numPlayers: "",
+    numPlayersPerSquad: "",
     orderOfAuction: false,
   });
-  
+
   const { setNumPlayers, setNumPlayersPerSquad } = useNumberOfPlayers();
 
   const { orderOfAuction, ...restFormData } = formData;
-  const isAnyInputEmpty = Object.values(restFormData).some(value => value.trim() === '');
+  const isAnyInputEmpty = Object.values(restFormData).some(
+    (value) => value.trim() === "",
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,7 +45,11 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     setNumPlayers(parseInt(formData.numPlayers));
     setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
     console.log("League Data: ", formData);
-    onSubmit(parseInt(formData.minutesPerItem), parseInt(formData.squadSalaryCap), formData.orderOfAuction);
+    onSubmit(
+      parseInt(formData.minutesPerItem),
+      parseInt(formData.squadSalaryCap),
+      formData.orderOfAuction,
+    );
   };
 
   return (
@@ -108,7 +114,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         />
       </label>
       <br></br>
-      <button type="submit" disabled={isAnyInputEmpty}>Submit</button>
+      <button type="submit" disabled={isAnyInputEmpty}>
+        Submit
+      </button>
     </form>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import BidPanel from '../bid-panel/bid-panel';
+import React, { useState, useEffect, useCallback } from "react";
+import BidPanel from "../BidPanel/BidPanel";
 
 interface Team {
   seed: string;
@@ -21,7 +21,12 @@ interface AuctionTeamProps {
   timerActive: boolean;
 }
 
-const AuctionTeam: React.FC<AuctionTeamProps> = ({ matchups, changeTeamFlag, squadSalaryCap, timerActive }) => {
+const AuctionTeam: React.FC<AuctionTeamProps> = ({
+  matchups,
+  changeTeamFlag,
+  squadSalaryCap,
+  timerActive,
+}) => {
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
   const [opponent, setOpponent] = useState<Team | null>(null);
 
@@ -41,14 +46,16 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({ matchups, changeTeamFlag, squ
   if (!currentTeam || !opponent) return <div>Loading...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
         <h3>Current Team</h3>
         <div>Name: {currentTeam.name}</div>
         <div>Record: {currentTeam.record}</div>
         <div>Seed: {currentTeam.seed}</div>
         <div>Region: {currentTeam.region}</div>
-        <div>First Opponent: {opponent.seed} {opponent.name} {opponent.record}</div>
+        <div>
+          First Opponent: {opponent.seed} {opponent.name} {opponent.record}
+        </div>
       </div>
     </div>
   );

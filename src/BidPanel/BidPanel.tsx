@@ -6,7 +6,7 @@ interface BidPanelProps {
   changeTeamFlag: boolean;
   onBidPlaced: (highestBid: number) => void;
   onNextTeam: () => void;
-  onTimerUp: () => void;
+  // onTimerEnd: () => void;
 }
 
 const BidPanel: React.FC<BidPanelProps> = ({

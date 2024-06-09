@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface Team {
   seed: string;
@@ -14,13 +14,16 @@ interface YourSquadProps {
   squadSalaryCap: number;
 }
 
-const YourSquad: React.FC<YourSquadProps> = ({ squadTeams, squadSalaryCap }) => {
-  const remainingSalaryCap = squadSalaryCap - squadTeams.reduce((total, team) => total + (team.price || 0), 0);
+const YourSquad: React.FC<YourSquadProps> = ({
+  squadTeams,
+  squadSalaryCap,
+}) => {
+  // const remainingSalaryCap = squadSalaryCap - squadTeams.reduce((total, team) => total + (team.price || 0), 0);
 
   return (
     <div>
       <h3>Your Squad</h3>
-      <div>Remaining Salary Cap: ${remainingSalaryCap}</div>
+      <div>Remaining Salary Cap: ${squadSalaryCap}</div>
       <ul>
         {squadTeams.map((team, index) => (
           <li key={index}>

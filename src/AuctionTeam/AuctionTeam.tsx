@@ -21,7 +21,8 @@ interface AuctionTeamProps {
   changeTeamFlag: boolean;
   squadSalaryCap: number;
   timerActive: boolean;
-  onTeamsSold: (soldTeam: Team) => void;
+  onTimerEnd: () => void;
+  onTeamSold: (soldTeam: Team) => void;
   onNextTeam: () => void; // Add onNextTeam prop
 }
 
@@ -30,7 +31,8 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   changeTeamFlag,
   squadSalaryCap,
   timerActive,
-  onTeamsSold,
+  onTimerEnd,
+  onTeamSold,
   onNextTeam, // Receive onNextTeam function
 }) => {
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
@@ -48,23 +50,33 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
     setTeamAdded(false); // Reset teamAdded state
   }, [matchups]);
 
-  useEffect(() => {
-    getRandomTeam();
-  }, [getRandomTeam, changeTeamFlag]);
-
   const handleBidPlaced = (price: number) => {
     if (price > highestBid) {
       setHighestBid(price);
     }
   };
 
-  const handleTimerUp = useCallback(() => {
-    if (currentTeam && opponent && highestBid > 0 && !teamAdded) { // Check if team is not added yet
-      const soldTeam = { ...currentTeam, price: highestBid, opponent: `${opponent.seed} ${opponent.name}` };
-      onTeamsSold(soldTeam);
+  const handleTimerEnd = useCallback(() => {
+    if (currentTeam && opponent && highestBid > 0 && !teamAdded) {
+      // Check if team is not added yet
+      console.log("Handle Timer Up");
+      currentTeam.price = highestBid;
+      // const soldTeam = { ...currentTeam, price: highestBid, opponent: `${opponent.seed} ${opponent.name}` };
+      const soldTeam = currentTeam;
+      onTeamSold(soldTeam);
       setTeamAdded(true); // Set teamAdded to true
     }
-  }, [currentTeam, opponent, highestBid, onTeamsSold, teamAdded]);
+  }, [currentTeam, opponent, highestBid, onTeamSold, teamAdded]);
+
+  useEffect(() => {
+    getRandomTeam();
+  }, [getRandomTeam, changeTeamFlag]);
+
+  useEffect(() => {
+    if (!timerActive) {
+      handleTimerEnd(); // Call onTimerEnd when timerActive becomes false
+    }
+  }, [timerActive, handleTimerEnd]);
 
   if (!currentTeam || !opponent) return <div>Loading...</div>;
 
@@ -87,7 +99,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
           timerActive={timerActive}
           onNextTeam={onNextTeam} // Pass onNextTeam function to BidPanel
           onBidPlaced={handleBidPlaced}
-          onTimerUp={handleTimerUp} // Pass handleTimerUp function to BidPanel
+          // onTimerEnd={handleTimerEnd} // Pass handleTimerUp function to BidPanel
         />
       </div>
     </div>

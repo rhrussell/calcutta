@@ -32,11 +32,13 @@ function App() {
     useState<boolean>(false);
   const [changeTeamFlag, setChangeTeamFlag] = useState<boolean>(false);
   const [timerActive, setTimerActive] = useState<boolean>(false);
+  const [timerEnded, setTimerEnded] = useState<boolean>(false); // Add state to track timer end
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
   const [squadTeams, setSquadTeams] = useState<Team[]>([]);
+  const [soldTeam, setSoldTeam] = useState<Team>();
 
   const handleLeagueFormSubmit = (
     minutes: number,
@@ -58,6 +60,7 @@ function App() {
     setTimerActive(false);
     setShowNextTeamButton(true); // Show the Next Team button when the timer ends
     setChangeTeamFlag(false); // Set change team flag to true to display the next team
+    setTimerEnded(true); // Set timerEnded to true
   };
 
   const handleTimerPause = (isPaused: boolean) => {
@@ -67,8 +70,15 @@ function App() {
   };
 
   const handleNextTeamClick = () => {
+    if (soldTeam) {
+      setSquadTeams([...squadTeams, soldTeam]); // Add the sold team to squadTeams
+      setSquadSalaryCap(
+        (prevSalaryCap) => prevSalaryCap - (soldTeam.price || 0),
+      ); // Update squad's salary capacity
+    }
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
+    setTimerEnded(false); // Reset timerEnded when Next Team button is clicked
   };
 
   const handleNextTeam = () => {
@@ -78,8 +88,7 @@ function App() {
 
   const handleTeamSold = (soldTeam: Team) => {
     console.log("Handle Team Sold");
-    setSquadTeams([...squadTeams, soldTeam]); // Add the sold team to squadTeams
-    setSquadSalaryCap((prevSalaryCap) => prevSalaryCap - (soldTeam.price || 0)); // Update squad's salary capacity
+    setSoldTeam(soldTeam);
   };
 
   return (
@@ -123,9 +132,9 @@ function App() {
                 changeTeamFlag={changeTeamFlag}
                 squadSalaryCap={squadSalaryCap}
                 timerActive={timerActive}
-                onTimerEnd={handleTimerEnd}
                 onTeamSold={handleTeamSold}
                 onNextTeam={handleNextTeam}
+                timerEnded={timerEnded}
               />
             </div>
             <br></br>

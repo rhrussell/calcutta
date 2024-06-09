@@ -18,8 +18,6 @@ const YourSquad: React.FC<YourSquadProps> = ({
   squadTeams,
   squadSalaryCap,
 }) => {
-  // const remainingSalaryCap = squadSalaryCap - squadTeams.reduce((total, team) => total + (team.price || 0), 0);
-
   return (
     <div>
       <h3>Your Squad</h3>
@@ -27,7 +25,7 @@ const YourSquad: React.FC<YourSquadProps> = ({
       <ul>
         {squadTeams.map((team, index) => (
           <li key={index}>
-            {`${team.seed} ${team.name} (${team.record}) ${team.region} vs ${team.opponent} - $${team.price}`}
+            {`${team.seed} ${team.name} ${team.record} ${team.region} vs ${team.opponent} - $${team.price}`}
           </li>
         ))}
       </ul>

@@ -1,0 +1,4 @@
+.bid-panel {
+  position: absolute;
+  margin-left: 520px; /* Position BidPanel 80px away from the right */
+}

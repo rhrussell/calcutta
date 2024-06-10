@@ -119,25 +119,33 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              <Timer
-                minutesPerItem={minutesPerItem}
-                onTimerEnd={handleTimerEnd}
-                onTimerPause={handleTimerPause}
-                resetFlag={changeTeamFlag}
-              />
+              <div className="timer-container">
+                <Timer
+                  minutesPerItem={minutesPerItem}
+                  onTimerEnd={handleTimerEnd}
+                  onTimerPause={handleTimerPause}
+                  resetFlag={changeTeamFlag}
+                />
+              </div>
               {showNextTeamButton && !timerActive && allMatchups.length > 0 && (
                 <button onClick={handleNextTeamClick}>Next Team</button>
               )}
-              <AuctionTeam
-                matchups={allMatchups}
-                changeTeamFlag={changeTeamFlag}
-                squadSalaryCap={squadSalaryCap}
-                timerActive={timerActive}
-                onTeamSold={handleTeamSold}
-                onNextTeam={handleNextTeam}
-                timerEnded={timerEnded}
-              />
+              <div className="auction-container">
+                <AuctionTeam
+                  matchups={allMatchups}
+                  changeTeamFlag={changeTeamFlag}
+                  squadSalaryCap={squadSalaryCap}
+                  timerActive={timerActive}
+                  onTeamSold={handleTeamSold}
+                  onNextTeam={handleNextTeam}
+                  timerEnded={timerEnded}
+                />
+              </div>
             </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             <br></br>
             <div
               style={{
@@ -146,15 +154,16 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              {squads.length > 0 && 
-                <YourSquad squad={squads[0]} 
-                />
-              }
-              {squads.length > 0 &&
-                <OtherSquads squads={squads} yourSquad={squads[0]}
-                />
-              }
+              {squads.length > 0 && <YourSquad squad={squads[0]} />}
+              {squads.length > 1 ? (
+                <OtherSquads squads={squads} yourSquad={squads[0]} />
+              ) : (
+                <div>
+                  <h2>No Other Squads</h2>
+                </div>
+              )}
             </div>
+            <br></br>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
 import { Team, Squad, Matchup } from "../types";
+import "./AuctionTeam.css";
 
 interface AuctionTeamProps {
   matchups: Matchup[];
@@ -72,7 +73,13 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   if (!currentTeam || !opponent) return <div>Loading...</div>;
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
       <div>
         <h2>Current Team</h2>
         <div>Name: {currentTeam.name}</div>
@@ -83,7 +90,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
           First Opponent: {opponent.seed} {opponent.name} {opponent.record}
         </div>
       </div>
-      <div>
+      <div className="bid-panel">
         <BidPanel
           squadSalaryCap={squadSalaryCapRef.current}
           changeTeamFlag={changeTeamFlag}

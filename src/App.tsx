@@ -20,6 +20,13 @@ interface Team {
   price?: number;
 }
 
+interface Squad {
+  name: string;
+  players: string[];
+  teams: Team[];
+  salaryCap: number;
+}
+
 export interface Matchup {
   top: Team;
   bottom: Team;
@@ -37,7 +44,8 @@ function App() {
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
-  const [squadTeams, setSquadTeams] = useState<Team[]>([]);
+  const [squads, setSquads] = useState<Squad[]>([]);
+  // const [squadTeams, setSquadTeams] = useState<Team[]>([]);
   const [soldTeam, setSoldTeam] = useState<Team>();
 
   const handleLeagueFormSubmit = (
@@ -51,7 +59,8 @@ function App() {
     setShowSquadsForm(true);
   };
 
-  const handleSquadsFormSubmit = () => {
+  const handleSquadsFormSubmit = (squads: Squad[]) => {
+    setSquads(squads);
     setShowSquadsForm(false);
     setShowTournamentBracket(true);
   };
@@ -71,10 +80,18 @@ function App() {
 
   const handleNextTeamClick = () => {
     if (soldTeam) {
-      setSquadTeams([...squadTeams, soldTeam]); // Add the sold team to squadTeams
-      setSquadSalaryCap(
-        (prevSalaryCap) => prevSalaryCap - (soldTeam.price || 0),
-      ); // Update squad's salary capacity
+      const updatedSquads = squads.map((squad, index) => {
+        if (index === 0) { // Assuming you want to add the team to the first squad
+          return {
+            ...squad,
+            teams: [...squad.teams, soldTeam],
+            salaryCap: squad.salaryCap - (soldTeam.price || 0)
+          };
+        }
+        return squad;
+      });
+      setSquads(updatedSquads);
+      setSquadSalaryCap(squads[0].salaryCap);
     }
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
@@ -103,7 +120,7 @@ function App() {
 
         {showSquadsForm && (
           <div>
-            <SquadsForm onSubmit={handleSquadsFormSubmit} />
+            <SquadsForm onSubmit={handleSquadsFormSubmit} salaryCap={squadSalaryCap}/>
           </div>
         )}
 
@@ -145,10 +162,11 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              <YourSquad
-                squadTeams={squadTeams}
-                squadSalaryCap={squadSalaryCap}
-              />
+              {squads.length > 0 && (
+                <YourSquad
+                  squad={squads[0]}
+                />
+              )}
             </div>
           </div>
         )}

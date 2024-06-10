@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
 
 interface Team {
@@ -40,6 +40,8 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   const [highestBid, setHighestBid] = useState<number>(0);
   const [teamAdded, setTeamAdded] = useState<boolean>(false); // Add state to track if team is added
 
+  const squadSalaryCapRef = useRef<number>(squadSalaryCap); // Ref to store mutable value
+
   const getRandomTeam = useCallback(() => {
     const randomMatchupIndex = Math.floor(Math.random() * matchups.length);
     const selectedMatchup = matchups[randomMatchupIndex];
@@ -67,6 +69,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       };
       onTeamSold(soldTeam);
       setTeamAdded(true); // Set teamAdded to true
+      squadSalaryCapRef.current -= highestBid; // Access the mutable value via ref
     }
   }, [currentTeam, opponent, highestBid, onTeamSold, teamAdded]);
 
@@ -96,7 +99,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       </div>
       <div>
         <BidPanel
-          squadSalaryCap={squadSalaryCap}
+          squadSalaryCap={squadSalaryCapRef.current}
           changeTeamFlag={changeTeamFlag}
           timerActive={timerActive}
           onNextTeam={onNextTeam} // Pass onNextTeam function to BidPanel

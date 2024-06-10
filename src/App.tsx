@@ -151,7 +151,7 @@ function App() {
                 />
               }
               {squads.length > 0 &&
-                <OtherSquads squads={squads} 
+                <OtherSquads squads={squads} yourSquad={squads[0]}
                 />
               }
             </div>

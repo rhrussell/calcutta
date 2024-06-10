@@ -10,28 +10,7 @@ import AuctionTeam from "./AuctionTeam/AuctionTeam";
 import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
 import { allMatchups } from "./allMatchups";
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
-
-interface Squad {
-  name: string;
-  players: string[];
-  teams: Team[];
-  salaryCap: number;
-}
-
-export interface Matchup {
-  top: Team;
-  bottom: Team;
-  position: number;
-}
+import { Team, Squad, Matchup } from "./types";
 
 function App() {
   const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);

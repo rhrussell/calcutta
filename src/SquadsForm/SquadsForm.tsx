@@ -1,21 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
-
-interface Squad {
-  name: string;
-  players: string[];
-  teams: Team[];
-  salaryCap: number;
-}
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
+import { Team, Squad, Matchup } from "../types";
 
 interface SquadsFormProps {
   onSubmit: (squads: Squad[]) => void;

@@ -1,20 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
-
-interface Matchup {
-  top: Team;
-  bottom: Team;
-  position: number;
-}
+import { Team, Squad, Matchup } from "../types";
 
 interface AuctionTeamProps {
   matchups: Matchup[];

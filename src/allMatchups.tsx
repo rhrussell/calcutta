@@ -1,4 +1,4 @@
-import { Matchup } from "./App";
+import { Matchup } from "./types";
 
 export const allMatchups: Matchup[] = [
   {

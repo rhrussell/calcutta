@@ -1,20 +1,5 @@
 import React from "react";
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
-
-interface Squad {
-  name: string;
-  players: string[];
-  teams: Team[];
-  salaryCap: number;
-}
+import { Team, Squad, Matchup } from "../types";
 
 interface YourSquadProps {
   squad: Squad;

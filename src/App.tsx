@@ -9,29 +9,9 @@ import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
 import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
+import OtherSquads from "./OtherSquads/OtherSquads";
 import { allMatchups } from "./allMatchups";
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
-
-interface Squad {
-  name: string;
-  players: string[];
-  teams: Team[];
-  salaryCap: number;
-}
-
-export interface Matchup {
-  top: Team;
-  bottom: Team;
-  position: number;
-}
+import { Team, Squad, Matchup } from "./types";
 
 function App() {
   const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);
@@ -139,25 +119,33 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              <Timer
-                minutesPerItem={minutesPerItem}
-                onTimerEnd={handleTimerEnd}
-                onTimerPause={handleTimerPause}
-                resetFlag={changeTeamFlag}
-              />
+              <div className="timer-container">
+                <Timer
+                  minutesPerItem={minutesPerItem}
+                  onTimerEnd={handleTimerEnd}
+                  onTimerPause={handleTimerPause}
+                  resetFlag={changeTeamFlag}
+                />
+              </div>
               {showNextTeamButton && !timerActive && allMatchups.length > 0 && (
                 <button onClick={handleNextTeamClick}>Next Team</button>
               )}
-              <AuctionTeam
-                matchups={allMatchups}
-                changeTeamFlag={changeTeamFlag}
-                squadSalaryCap={squadSalaryCap}
-                timerActive={timerActive}
-                onTeamSold={handleTeamSold}
-                onNextTeam={handleNextTeam}
-                timerEnded={timerEnded}
-              />
+              <div className="auction-container">
+                <AuctionTeam
+                  matchups={allMatchups}
+                  changeTeamFlag={changeTeamFlag}
+                  squadSalaryCap={squadSalaryCap}
+                  timerActive={timerActive}
+                  onTeamSold={handleTeamSold}
+                  onNextTeam={handleNextTeam}
+                  timerEnded={timerEnded}
+                />
+              </div>
             </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             <br></br>
             <div
               style={{
@@ -167,7 +155,15 @@ function App() {
               }}
             >
               {squads.length > 0 && <YourSquad squad={squads[0]} />}
+              {squads.length > 1 ? (
+                <OtherSquads squads={squads} yourSquad={squads[0]} />
+              ) : (
+                <div>
+                  <h2>No Other Squads</h2>
+                </div>
+              )}
             </div>
+            <br></br>
           </div>
         )}
       </div>

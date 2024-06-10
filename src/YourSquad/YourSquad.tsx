@@ -1,20 +1,5 @@
 import React from "react";
-
-interface Team {
-  seed: string;
-  name: string;
-  record: string;
-  region: string;
-  opponent?: string;
-  price?: number;
-}
-
-interface Squad {
-  name: string;
-  players: string[];
-  teams: Team[];
-  salaryCap: number;
-}
+import { Team, Squad, Matchup } from "../types";
 
 interface YourSquadProps {
   squad: Squad;
@@ -23,15 +8,15 @@ interface YourSquadProps {
 const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
   return (
     <div>
-      <h3>Your Squad: {squad.name}</h3>
+      <h2>Your Squad: {squad.name}</h2>
       <div>Remaining Salary Cap: ${squad.salaryCap}</div>
-      <h4>Players</h4>
+      <h3>Players</h3>
       <ul>
         {squad.players.map((playerName, index) => (
           <li key={index}>{playerName}</li>
         ))}
       </ul>
-      <h4>Teams</h4>
+      <h3>Teams</h3>
       <ul>
         {squad.teams.map((team, index) => (
           <li key={index}>

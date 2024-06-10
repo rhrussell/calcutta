@@ -47,11 +47,11 @@ const BidPanel: React.FC<BidPanelProps> = ({
   return (
     <div>
       <div>
-        <h3>Highest Bid: ${highestBid}</h3>
+        <h2>Highest Bid: ${highestBid}</h2>
       </div>
       <br />
       <div>
-        <h3>Your Bid: ${currentBid}</h3>
+        <h2>Your Bid: ${currentBid}</h2>
         <button onClick={handleDecreaseBid} disabled={isMinusDisabled}>
           -
         </button>

@@ -9,6 +9,7 @@ import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
 import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
+import OtherSquads from "./OtherSquads/OtherSquads";
 import { allMatchups } from "./allMatchups";
 import { Team, Squad, Matchup } from "./types";
 
@@ -145,7 +146,14 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              {squads.length > 0 && <YourSquad squad={squads[0]} />}
+              {squads.length > 0 && 
+                <YourSquad squad={squads[0]} 
+                />
+              }
+              {squads.length > 0 &&
+                <OtherSquads squads={squads} 
+                />
+              }
             </div>
           </div>
         )}

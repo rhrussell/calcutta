@@ -74,7 +74,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
-        <h3>Current Team</h3>
+        <h2>Current Team</h2>
         <div>Name: {currentTeam.name}</div>
         <div>Record: {currentTeam.record}</div>
         <div>Seed: {currentTeam.seed}</div>

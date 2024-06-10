@@ -57,8 +57,8 @@ const Timer: React.FC<TimerProps> = ({
 
   return (
     <div>
-      <h3>Timer</h3>
-      <h4>{formatTime(timeLeft)}</h4>
+      <h2>Timer</h2>
+      <h3>{formatTime(timeLeft)}</h3>
       {isActive ? (
         <button onClick={handlePause}>Pause</button>
       ) : (

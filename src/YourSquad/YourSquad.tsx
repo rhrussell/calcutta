@@ -9,21 +9,31 @@ interface Team {
   price?: number;
 }
 
-interface YourSquadProps {
-  squadTeams: Team[];
-  squadSalaryCap: number;
+interface Squad {
+  name: string;
+  players: string[];
+  teams: Team[];
+  salaryCap: number;
 }
 
-const YourSquad: React.FC<YourSquadProps> = ({
-  squadTeams,
-  squadSalaryCap,
-}) => {
+interface YourSquadProps {
+  squad: Squad;
+}
+
+const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
   return (
     <div>
-      <h3>Your Squad</h3>
-      <div>Remaining Salary Cap: ${squadSalaryCap}</div>
+      <h3>Your Squad: {squad.name}</h3>
+      <div>Remaining Salary Cap: ${squad.salaryCap}</div>
+      <h4>Players</h4>
       <ul>
-        {squadTeams.map((team, index) => (
+        {squad.players.map((playerName, index) => (
+          <li key={index}>{playerName}</li>
+        ))}
+      </ul>
+      <h4>Teams</h4>
+      <ul>
+        {squad.teams.map((team, index) => (
           <li key={index}>
             {`${team.seed} ${team.name} ${team.record} ${team.region} vs ${team.opponent} - $${team.price}`}
           </li>

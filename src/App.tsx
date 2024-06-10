@@ -81,11 +81,12 @@ function App() {
   const handleNextTeamClick = () => {
     if (soldTeam) {
       const updatedSquads = squads.map((squad, index) => {
-        if (index === 0) { // Assuming you want to add the team to the first squad
+        if (index === 0) {
+          // Assuming you want to add the team to the first squad
           return {
             ...squad,
             teams: [...squad.teams, soldTeam],
-            salaryCap: squad.salaryCap - (soldTeam.price || 0)
+            salaryCap: squad.salaryCap - (soldTeam.price || 0),
           };
         }
         return squad;
@@ -120,7 +121,10 @@ function App() {
 
         {showSquadsForm && (
           <div>
-            <SquadsForm onSubmit={handleSquadsFormSubmit} salaryCap={squadSalaryCap}/>
+            <SquadsForm
+              onSubmit={handleSquadsFormSubmit}
+              salaryCap={squadSalaryCap}
+            />
           </div>
         )}
 
@@ -162,11 +166,7 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              {squads.length > 0 && (
-                <YourSquad
-                  squad={squads[0]}
-                />
-              )}
+              {squads.length > 0 && <YourSquad squad={squads[0]} />}
             </div>
           </div>
         )}

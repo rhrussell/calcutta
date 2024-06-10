@@ -20,9 +20,7 @@ interface YourSquadProps {
   squad: Squad;
 }
 
-const YourSquad: React.FC<YourSquadProps> = ({
-  squad,
-}) => {
+const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
   return (
     <div>
       <h3>Your Squad: {squad.name}</h3>

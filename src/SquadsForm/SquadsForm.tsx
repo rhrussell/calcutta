@@ -143,6 +143,6 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
       )}
     </div>
   );
-}
+};
 
 export default SquadsForm;

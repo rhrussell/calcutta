@@ -9,9 +9,9 @@ interface AuctionTeamProps {
   squadSalaryCap: number;
   timerActive: boolean;
   onTeamSold: (soldTeam: Team) => void;
-  onNextTeam: () => void; // Add onNextTeam prop
-  timerEnded: boolean; // Add timerEnded prop
-  updateUpcomingTeams: (teams: Team[]) => void; // Add prop to update upcoming teams
+  onNextTeam: () => void;
+  timerEnded: boolean;
+  updateUpcomingTeams: (teams: Team[]) => void;
 }
 
 const AuctionTeam: React.FC<AuctionTeamProps> = ({
@@ -35,12 +35,6 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   const getRandomTeam = useCallback(() => {
     const randomMatchupIndex = Math.floor(Math.random() * matchups.length);
     const selectedMatchup = matchups[randomMatchupIndex];
-    // const isTopTeam = Math.random() > 0.5;
-
-    // setCurrentTeam(isTopTeam ? selectedMatchup.top : selectedMatchup.bottom);
-    // setOpponent(isTopTeam ? selectedMatchup.bottom : selectedMatchup.top);
-    // setTeamAdded(false); // Reset teamAdded state
-    // return isTopTeam ? selectedMatchup.top : selectedMatchup.bottom;
     return Math.random() > 0.5 ? selectedMatchup.top : selectedMatchup.bottom;
   }, [matchups]);
 
@@ -51,7 +45,9 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
     }
     setOrderOfAuction(teams);
     setCurrentTeam(teams[currentTeamIndex]);
-    updateUpcomingTeams(teams.slice(currentTeamIndex + 1, currentTeamIndex + 10));
+    updateUpcomingTeams(
+      teams.slice(currentTeamIndex + 1, currentTeamIndex + 10),
+    );
   }, []);
 
   useEffect(() => {
@@ -77,19 +73,14 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       setHighestBid(0);
       setTeamAdded(false);
     }
-  }, [
-    currentTeam,
-    highestBid,
-    onTeamSold,
-    teamAdded,
-    squadSalaryCapRef,
-  ]);
+  }, [currentTeam, highestBid, onTeamSold, teamAdded, squadSalaryCapRef]);
 
   const handleNextTeam = () => {
     if (currentTeam) {
-      // onTeamSold(currentTeam);
-      setCurrentTeamIndex(prevIndex => prevIndex + 1); // Move to the next team index
-      updateUpcomingTeams(orderOfAuction.slice(currentTeamIndex + 2, currentTeamIndex + 11)); // Update upcoming teams
+      setCurrentTeamIndex((prevIndex) => prevIndex + 1);
+      updateUpcomingTeams(
+        orderOfAuction.slice(currentTeamIndex + 2, currentTeamIndex + 11),
+      );
     }
   };
 
@@ -121,16 +112,14 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
         <div>Record: {currentTeam.record}</div>
         <div>Seed: {currentTeam.seed}</div>
         <div>Region: {currentTeam.region}</div>
-        <div>
-          First Opponent: {currentTeam.opponent}
-        </div>
+        <div>First Opponent: {currentTeam.opponent}</div>
       </div>
       <div className="bid-panel">
         <BidPanel
           squadSalaryCap={squadSalaryCapRef.current}
           changeTeamFlag={changeTeamFlag}
           timerActive={timerActive}
-          onNextTeam={onNextTeam} // Pass onNextTeam function to BidPanel
+          onNextTeam={onNextTeam}
           onBidPlaced={handleBidPlaced}
         />
       </div>

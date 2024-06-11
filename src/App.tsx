@@ -20,7 +20,7 @@ function App() {
     useState<boolean>(false);
   const [changeTeamFlag, setChangeTeamFlag] = useState<boolean>(false);
   const [timerActive, setTimerActive] = useState<boolean>(false);
-  const [timerEnded, setTimerEnded] = useState<boolean>(false); // Add state to track timer end
+  const [timerEnded, setTimerEnded] = useState<boolean>(false);
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
@@ -28,7 +28,6 @@ function App() {
   const [squads, setSquads] = useState<Squad[]>([]);
   const [soldTeam, setSoldTeam] = useState<Team | null>(null);
   const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
-  const [nextTeamClicked, setNextTeamClicked] = useState<boolean>(false); // New state to track next team click
 
   const handleLeagueFormSubmit = (
     minutes: number,
@@ -78,7 +77,6 @@ function App() {
     }
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
-    // setChangeTeamFlag((prev) => !prev); // Toggle change team flag to display the next team
     setTimerEnded(false); // Reset timerEnded when Next Team button is clicked
   };
 
@@ -147,8 +145,6 @@ function App() {
                   onNextTeam={handleNextTeam}
                   timerEnded={timerEnded}
                   updateUpcomingTeams={updateUpcomingTeams}
-                  // nextTeamClicked={nextTeamClicked} // Pass next team clicked to AuctionTeam
-                  // setNextTeamClicked={setNextTeamClicked} // Pass setter function to AuctionTeam
                 />
               </div>
             </div>
@@ -165,7 +161,9 @@ function App() {
               }}
             >
               {squads.length > 0 && <YourSquad squad={squads[0]} />}
-              {orderOfAuction && <OrderOfAuction upcomingTeams={upcomingTeams} />}
+              {orderOfAuction && (
+                <OrderOfAuction upcomingTeams={upcomingTeams} />
+              )}
               {squads.length > 1 ? (
                 <OtherSquads squads={squads} yourSquad={squads[0]} />
               ) : (

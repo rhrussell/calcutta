@@ -14,7 +14,7 @@ const Timer: React.FC<TimerProps> = ({
   resetFlag,
 }) => {
   const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
-  const [isActive, setIsActive] = useState<boolean>(false); // Set to false to not start immediately
+  const [isActive, setIsActive] = useState<boolean>(false);
   const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Timer: React.FC<TimerProps> = ({
 
   useEffect(() => {
     setTimeLeft(minutesPerItem * 60);
-    setIsActive(false); // Reset timer and set inactive
+    setIsActive(false);
   }, [resetFlag, minutesPerItem]);
 
   useEffect(() => {

@@ -162,7 +162,14 @@ export const allMatchups: Matchup[] = [
       opponent: "Play In",
       price: 0,
     },
-    bottom: { seed: "", name: "Play In", record: "", region: "", opponent: "1 North Carolina (27-7)", price: 0 },
+    bottom: {
+      seed: "",
+      name: "Play In",
+      record: "",
+      region: "",
+      opponent: "1 North Carolina (27-7)",
+      price: 0,
+    },
     position: 9,
   },
   {
@@ -421,7 +428,14 @@ export const allMatchups: Matchup[] = [
       opponent: "Play In",
       price: 0,
     },
-    bottom: { seed: "", name: "Play In", record: "", region: "", opponent: "7 Florida (24-11)", price: 0 },
+    bottom: {
+      seed: "",
+      name: "Play In",
+      record: "",
+      region: "",
+      opponent: "7 Florida (24-11)",
+      price: 0,
+    },
     position: 23,
   },
   {
@@ -451,7 +465,14 @@ export const allMatchups: Matchup[] = [
       region: "Midwest",
       price: 0,
     },
-    bottom: { seed: "", name: "Play In", record: "", region: "", opponent: "1 Purdue (29-4)", price: 0 },
+    bottom: {
+      seed: "",
+      name: "Play In",
+      record: "",
+      region: "",
+      opponent: "1 Purdue (29-4)",
+      price: 0,
+    },
     position: 25,
   },
   {
@@ -558,7 +579,14 @@ export const allMatchups: Matchup[] = [
       opponent: "Play In",
       price: 0,
     },
-    bottom: { seed: "", name: "Play In", record: "", region: "", opponent: "7 Texas (20-12)", price: 0 },
+    bottom: {
+      seed: "",
+      name: "Play In",
+      record: "",
+      region: "",
+      opponent: "7 Texas (20-12)",
+      price: 0,
+    },
     position: 31,
   },
   {

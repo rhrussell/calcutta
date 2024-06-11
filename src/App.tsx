@@ -10,6 +10,7 @@ import AuctionTeam from "./AuctionTeam/AuctionTeam";
 import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
 import OtherSquads from "./OtherSquads/OtherSquads";
+import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";
 import { allMatchups } from "./allMatchups";
 import { Team, Squad, Matchup } from "./types";
 
@@ -25,8 +26,9 @@ function App() {
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
   const [squads, setSquads] = useState<Squad[]>([]);
-  // const [squadTeams, setSquadTeams] = useState<Team[]>([]);
-  const [soldTeam, setSoldTeam] = useState<Team>();
+  const [soldTeam, setSoldTeam] = useState<Team | null>(null);
+  const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
+  const [nextTeamClicked, setNextTeamClicked] = useState<boolean>(false); // New state to track next team click
 
   const handleLeagueFormSubmit = (
     minutes: number,
@@ -76,6 +78,7 @@ function App() {
     }
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
+    // setChangeTeamFlag((prev) => !prev); // Toggle change team flag to display the next team
     setTimerEnded(false); // Reset timerEnded when Next Team button is clicked
   };
 
@@ -87,6 +90,10 @@ function App() {
   const handleTeamSold = (soldTeam: Team) => {
     console.log("Handle Team Sold");
     setSoldTeam(soldTeam);
+  };
+
+  const updateUpcomingTeams = (teams: Team[]) => {
+    setUpcomingTeams(teams);
   };
 
   return (
@@ -139,6 +146,9 @@ function App() {
                   onTeamSold={handleTeamSold}
                   onNextTeam={handleNextTeam}
                   timerEnded={timerEnded}
+                  updateUpcomingTeams={updateUpcomingTeams}
+                  // nextTeamClicked={nextTeamClicked} // Pass next team clicked to AuctionTeam
+                  // setNextTeamClicked={setNextTeamClicked} // Pass setter function to AuctionTeam
                 />
               </div>
             </div>
@@ -155,6 +165,7 @@ function App() {
               }}
             >
               {squads.length > 0 && <YourSquad squad={squads[0]} />}
+              {orderOfAuction && <OrderOfAuction upcomingTeams={upcomingTeams} />}
               {squads.length > 1 ? (
                 <OtherSquads squads={squads} yourSquad={squads[0]} />
               ) : (

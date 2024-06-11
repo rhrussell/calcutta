@@ -11,6 +11,7 @@ interface AuctionTeamProps {
   onTeamSold: (soldTeam: Team) => void;
   onNextTeam: () => void; // Add onNextTeam prop
   timerEnded: boolean; // Add timerEnded prop
+  updateUpcomingTeams: (teams: Team[]) => void; // Add prop to update upcoming teams
 }
 
 const AuctionTeam: React.FC<AuctionTeamProps> = ({
@@ -21,10 +22,12 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   onTeamSold,
   onNextTeam,
   timerEnded,
+  updateUpcomingTeams, // Add this prop
 }) => {
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
-  const [opponent, setOpponent] = useState<Team | null>(null);
+  const [orderOfAuction, setOrderOfAuction] = useState<Team[]>([]);
   const [highestBid, setHighestBid] = useState<number>(0);
+  const [currentTeamIndex, setCurrentTeamIndex] = useState<number>(0);
   const [teamAdded, setTeamAdded] = useState<boolean>(false); // Add state to track if team is added
 
   const squadSalaryCapRef = useRef<number>(squadSalaryCap); // Ref to store mutable value
@@ -32,12 +35,30 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   const getRandomTeam = useCallback(() => {
     const randomMatchupIndex = Math.floor(Math.random() * matchups.length);
     const selectedMatchup = matchups[randomMatchupIndex];
-    const isTopTeam = Math.random() > 0.5;
+    // const isTopTeam = Math.random() > 0.5;
 
-    setCurrentTeam(isTopTeam ? selectedMatchup.top : selectedMatchup.bottom);
-    setOpponent(isTopTeam ? selectedMatchup.bottom : selectedMatchup.top);
-    setTeamAdded(false); // Reset teamAdded state
+    // setCurrentTeam(isTopTeam ? selectedMatchup.top : selectedMatchup.bottom);
+    // setOpponent(isTopTeam ? selectedMatchup.bottom : selectedMatchup.top);
+    // setTeamAdded(false); // Reset teamAdded state
+    // return isTopTeam ? selectedMatchup.top : selectedMatchup.bottom;
+    return Math.random() > 0.5 ? selectedMatchup.top : selectedMatchup.bottom;
   }, [matchups]);
+
+  useEffect(() => {
+    const teams: Team[] = [];
+    for (let i = 0; i < 64; i++) {
+      teams.push(getRandomTeam());
+    }
+    setOrderOfAuction(teams);
+    setCurrentTeam(teams[currentTeamIndex]);
+    updateUpcomingTeams(teams.slice(currentTeamIndex + 1, currentTeamIndex + 10));
+  }, []);
+
+  useEffect(() => {
+    if (currentTeamIndex < orderOfAuction.length) {
+      setCurrentTeam(orderOfAuction[currentTeamIndex]);
+    }
+  }, [currentTeamIndex, orderOfAuction]);
 
   const handleBidPlaced = (price: number) => {
     if (price > highestBid) {
@@ -46,23 +67,31 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   };
 
   const handleTimerUp = useCallback(() => {
-    if (currentTeam && opponent && highestBid > 0 && !teamAdded) {
+    if (currentTeam && highestBid > 0 && !teamAdded) {
       // Check if team is not added yet
       console.log("Handle Timer Up");
       currentTeam.price = highestBid;
-      const soldTeam = {
-        ...currentTeam,
-        opponent: `${opponent.seed} ${opponent.name}`,
-      };
-      onTeamSold(soldTeam);
-      setTeamAdded(true); // Set teamAdded to true
-      squadSalaryCapRef.current -= highestBid; // Access the mutable value via ref
+      onTeamSold(currentTeam);
+      setTeamAdded(true);
+      squadSalaryCapRef.current -= highestBid;
+      setHighestBid(0);
+      setTeamAdded(false);
     }
-  }, [currentTeam, opponent, highestBid, onTeamSold, teamAdded]);
+  }, [
+    currentTeam,
+    highestBid,
+    onTeamSold,
+    teamAdded,
+    squadSalaryCapRef,
+  ]);
 
-  useEffect(() => {
-    getRandomTeam();
-  }, [getRandomTeam, changeTeamFlag]);
+  const handleNextTeam = () => {
+    if (currentTeam) {
+      // onTeamSold(currentTeam);
+      setCurrentTeamIndex(prevIndex => prevIndex + 1); // Move to the next team index
+      updateUpcomingTeams(orderOfAuction.slice(currentTeamIndex + 2, currentTeamIndex + 11)); // Update upcoming teams
+    }
+  };
 
   useEffect(() => {
     if (!timerActive && timerEnded) {
@@ -70,7 +99,13 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
     }
   }, [timerActive, timerEnded, handleTimerUp]);
 
-  if (!currentTeam || !opponent) return <div>Loading...</div>;
+  useEffect(() => {
+    if (changeTeamFlag) {
+      handleNextTeam();
+    }
+  }, [changeTeamFlag]);
+
+  if (!currentTeam) return <div>Loading...</div>;
 
   return (
     <div
@@ -87,7 +122,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
         <div>Seed: {currentTeam.seed}</div>
         <div>Region: {currentTeam.region}</div>
         <div>
-          First Opponent: {opponent.seed} {opponent.name} {opponent.record}
+          First Opponent: {currentTeam.opponent}
         </div>
       </div>
       <div className="bid-panel">

@@ -135,7 +135,7 @@ function App() {
               {showNextTeamButton && !timerActive && allTeams.length > 0 && (
                 <button onClick={handleNextTeamClick}>Next Team</button>
               )}
-              <div className="auction-container">
+              <div>
                 <AuctionTeam
                   teams={allTeams}
                   changeTeamFlag={changeTeamFlag}
@@ -147,6 +147,7 @@ function App() {
                   updateUpcomingTeams={updateUpcomingTeams}
                 />
               </div>
+              <div></div>
             </div>
             <br></br>
             <br></br>

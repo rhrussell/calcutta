@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
-import { Team, Squad, Matchup } from "../types";
+import { Team, Squad } from "../types";
 import "./AuctionTeam.css";
 
 interface AuctionTeamProps {
-  matchups: Matchup[];
+  teams: Team[];
   changeTeamFlag: boolean;
   squadSalaryCap: number;
   timerActive: boolean;
@@ -15,7 +15,7 @@ interface AuctionTeamProps {
 }
 
 const AuctionTeam: React.FC<AuctionTeamProps> = ({
-  matchups,
+  teams,
   changeTeamFlag,
   squadSalaryCap,
   timerActive,
@@ -33,20 +33,20 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   const squadSalaryCapRef = useRef<number>(squadSalaryCap); // Ref to store mutable value
 
   const getRandomTeam = useCallback(() => {
-    const randomMatchupIndex = Math.floor(Math.random() * matchups.length);
-    const selectedMatchup = matchups[randomMatchupIndex];
-    return Math.random() > 0.5 ? selectedMatchup.top : selectedMatchup.bottom;
-  }, [matchups]);
+    const randomTeamIndex = Math.floor(Math.random() * teams.length);
+    const selectedTeam = teams[randomTeamIndex];
+    return selectedTeam;
+  }, [teams]);
 
   useEffect(() => {
-    const teams: Team[] = [];
-    for (let i = 0; i < 64; i++) {
-      teams.push(getRandomTeam());
+    const orderOfAuction: Team[] = [];
+    for (let i = 0; i < teams.length; i++) {
+      orderOfAuction.push(getRandomTeam());
     }
-    setOrderOfAuction(teams);
+    setOrderOfAuction(orderOfAuction);
     setCurrentTeam(teams[currentTeamIndex]);
     updateUpcomingTeams(
-      teams.slice(currentTeamIndex + 1, currentTeamIndex + 10),
+      orderOfAuction.slice(currentTeamIndex + 1, currentTeamIndex + 10),
     );
   }, []);
 

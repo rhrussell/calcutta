@@ -11,8 +11,8 @@ import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
 import OtherSquads from "./OtherSquads/OtherSquads";
 import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";
-import { allMatchups } from "./allMatchups";
-import { Team, Squad, Matchup } from "./types";
+import { allTeams } from "./allTeams";
+import { Team, Squad } from "./types";
 
 function App() {
   const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);
@@ -132,12 +132,12 @@ function App() {
                   resetFlag={changeTeamFlag}
                 />
               </div>
-              {showNextTeamButton && !timerActive && allMatchups.length > 0 && (
+              {showNextTeamButton && !timerActive && allTeams.length > 0 && (
                 <button onClick={handleNextTeamClick}>Next Team</button>
               )}
               <div className="auction-container">
                 <AuctionTeam
-                  matchups={allMatchups}
+                  teams={allTeams}
                   changeTeamFlag={changeTeamFlag}
                   squadSalaryCap={squadSalaryCap}
                   timerActive={timerActive}

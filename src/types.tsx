@@ -13,9 +13,3 @@ export interface Squad {
   teams: Team[];
   salaryCap: number;
 }
-
-export interface Matchup {
-  top: Team;
-  bottom: Team;
-  position: number;
-}

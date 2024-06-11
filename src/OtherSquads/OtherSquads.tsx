@@ -41,12 +41,16 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
       <h2>Other Squads</h2>
       <div>
         <h3>
-          <button onClick={handlePreviousSquad}>&#8592;</button>
+        {updatedSquads.length > 1 && (
+            <button onClick={handlePreviousSquad}>&#8592;</button>
+          )}
           {currentSquad.name}
-          <button onClick={handleNextSquad}>&#8594;</button>
+          {updatedSquads.length > 1 && (
+            <button onClick={handleNextSquad}>&#8594;</button>
+          )}
         </h3>
       </div>
-      <div>Remaining Salary: {currentSquad.salaryCap}</div>
+      <div>Remaining Salary: ${currentSquad.salaryCap}</div>
       <div>
         <h3>Players</h3>
         <ul>

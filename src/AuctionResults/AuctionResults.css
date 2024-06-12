@@ -1,0 +1,28 @@
+.auction-results {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.squad {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.squad h2 {
+  margin-top: 0;
+}
+
+.squad h3 {
+  margin-bottom: 5px;
+}
+
+.squad ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.squad ul li {
+  margin-bottom: 5px;
+}

@@ -23,6 +23,7 @@ function App() {
   const [timerEnded, setTimerEnded] = useState<boolean>(false);
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
+  const [auctionComplete, setAuctionComplete] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
   const [squads, setSquads] = useState<Squad[]>([]);
@@ -94,6 +95,10 @@ function App() {
     setUpcomingTeams(teams);
   };
 
+  const handleAuctionComplete = () => {
+    setAuctionComplete(true);
+  };
+
   return (
     <NumberOfPlayersProvider>
       <div className="App">
@@ -124,30 +129,37 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              <div className="timer-container">
-                <Timer
-                  minutesPerItem={minutesPerItem}
-                  onTimerEnd={handleTimerEnd}
-                  onTimerPause={handleTimerPause}
-                  resetFlag={changeTeamFlag}
-                />
-              </div>
-              {showNextTeamButton && !timerActive && allTeams.length > 0 && (
-                <button onClick={handleNextTeamClick}>Next Team</button>
+              {!auctionComplete && (
+                <>
+                  <div className="timer-container">
+                    <Timer
+                      minutesPerItem={minutesPerItem}
+                      onTimerEnd={handleTimerEnd}
+                      onTimerPause={handleTimerPause}
+                      resetFlag={changeTeamFlag}
+                    />
+                  </div>
+                  {showNextTeamButton &&
+                    !timerActive &&
+                    allTeams.length > 0 && (
+                      <button onClick={handleNextTeamClick}>Next Team</button>
+                    )}
+                  <div>
+                    <AuctionTeam
+                      teams={allTeams}
+                      changeTeamFlag={changeTeamFlag}
+                      squadSalaryCap={squadSalaryCap}
+                      timerActive={timerActive}
+                      onTeamSold={handleTeamSold}
+                      onNextTeam={handleNextTeam}
+                      timerEnded={timerEnded}
+                      updateUpcomingTeams={updateUpcomingTeams}
+                      onAuctionComplete={handleAuctionComplete}
+                    />
+                  </div>
+                  <div></div>
+                </>
               )}
-              <div>
-                <AuctionTeam
-                  teams={allTeams}
-                  changeTeamFlag={changeTeamFlag}
-                  squadSalaryCap={squadSalaryCap}
-                  timerActive={timerActive}
-                  onTeamSold={handleTeamSold}
-                  onNextTeam={handleNextTeam}
-                  timerEnded={timerEnded}
-                  updateUpcomingTeams={updateUpcomingTeams}
-                />
-              </div>
-              <div></div>
             </div>
             <br></br>
             <br></br>
@@ -161,18 +173,22 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              {squads.length > 0 && <YourSquad squad={squads[0]} />}
-              {orderOfAuction && (
+              {!auctionComplete && squads.length > 0 && (
+                <YourSquad squad={squads[0]} />
+              )}
+              {!auctionComplete && orderOfAuction && (
                 <OrderOfAuction upcomingTeams={upcomingTeams} />
               )}
-              {squads.length > 1 ? (
+              {!auctionComplete && squads.length > 1 && (
                 <OtherSquads squads={squads} yourSquad={squads[0]} />
-              ) : (
+              )}
+              {!auctionComplete && squads.length === 1 && (
                 <div>
                   <h2>No Other Squads</h2>
                 </div>
               )}
             </div>
+            {auctionComplete && <div>All Teams Have Been Sold</div>}
             <br></br>
           </div>
         )}

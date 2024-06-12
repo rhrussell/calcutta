@@ -12,6 +12,7 @@ interface AuctionTeamProps {
   onNextTeam: () => void;
   timerEnded: boolean;
   updateUpcomingTeams: (teams: Team[]) => void;
+  onAuctionComplete: () => void;
 }
 
 const AuctionTeam: React.FC<AuctionTeamProps> = ({
@@ -22,7 +23,8 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   onTeamSold,
   onNextTeam,
   timerEnded,
-  updateUpcomingTeams, // Add this prop
+  updateUpcomingTeams,
+  onAuctionComplete,
 }) => {
   const [teams, setTeams] = useState<Team[]>([...initialTeams]);
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
@@ -84,6 +86,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       } else {
         setCurrentTeam(null);
         updateUpcomingTeams([]);
+        onAuctionComplete();
       }
       return newOrder;
     });
@@ -100,10 +103,6 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       handleNextTeam();
     }
   }, [changeTeamFlag]);
-
-  if (orderOfAuction.length === 0 && !currentTeam) {
-    return <div>All Teams Have Been Sold</div>;
-  }
 
   if (!currentTeam) return <div>Loading...</div>;
 

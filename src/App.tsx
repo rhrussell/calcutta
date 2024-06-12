@@ -11,6 +11,7 @@ import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
 import OtherSquads from "./OtherSquads/OtherSquads";
 import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";
+import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
 import { Team, Squad } from "./types";
 
@@ -24,6 +25,7 @@ function App() {
   const [showNextTeamButton, setShowNextTeamButton] = useState<boolean>(false);
   const [orderOfAuction, setOrderOfAuction] = useState<boolean>(false);
   const [auctionComplete, setAuctionComplete] = useState<boolean>(false);
+  const [showAuctionResults, setShowAuctionResults] = useState<boolean>(false);
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
   const [squads, setSquads] = useState<Squad[]>([]);
@@ -102,14 +104,14 @@ function App() {
   return (
     <NumberOfPlayersProvider>
       <div className="App">
-        {!showSquadsForm && !showTournamentBracket && (
+        {!showSquadsForm && !showTournamentBracket && !showAuctionResults && (
           <div>
             <h1>Add League</h1>
             <LeagueForm onSubmit={handleLeagueFormSubmit} />
           </div>
         )}
 
-        {showSquadsForm && (
+        {showSquadsForm && !showAuctionResults && (
           <div>
             <SquadsForm
               onSubmit={handleSquadsFormSubmit}
@@ -118,7 +120,7 @@ function App() {
           </div>
         )}
 
-        {showTournamentBracket && !showSquadsForm && (
+        {showTournamentBracket && !showSquadsForm && !showAuctionResults && (
           <div>
             <TournamentBracket />
             <br></br>
@@ -188,10 +190,20 @@ function App() {
                 </div>
               )}
             </div>
-            {auctionComplete && <div>All Teams Have Been Sold</div>}
+            {auctionComplete && !showAuctionResults && (
+              <button
+                onClick={() => {
+                  setShowAuctionResults(true);
+                  setShowTournamentBracket(false);
+                }}
+              >
+                Finalize Results
+              </button>
+            )}
             <br></br>
           </div>
         )}
+        {showAuctionResults && <AuctionResults squads={squads} />}
       </div>
     </NumberOfPlayersProvider>
   );

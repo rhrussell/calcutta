@@ -1,3 +1,8 @@
+// This is a CSS file for the TournamentBracket component
+// It contains the styles for the bracket layout and teams
+// The styles are written in SCSS syntax and compiled to CSS
+// You can customize the styles to fit your design needs
+// For more information on SCSS, visit: https://sass-lang.com/
 /* Set the background color for the whole page and the font styles */
 body {
   background-color: #eee; /* Light grey background color */

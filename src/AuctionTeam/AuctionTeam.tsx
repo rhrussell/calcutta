@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
-import { Team, Squad } from "../types";
+import { Team } from "../types";
 import "./AuctionTeam.css";
 
 interface AuctionTeamProps {

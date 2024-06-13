@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
 import LeagueForm from "./LeagueForm/LeagueForm";
@@ -7,7 +6,6 @@ import SquadsForm from "./SquadsForm/SquadsForm";
 import TournamentBracket from "./TournamentBracket/TournamentBracket";
 import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
-import BidPanel from "./BidPanel/BidPanel";
 import YourSquad from "./YourSquad/YourSquad";
 import OtherSquads from "./OtherSquads/OtherSquads";
 import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";

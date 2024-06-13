@@ -1,5 +1,5 @@
 import React from "react";
-import { Team, Squad } from "../types";
+import { Squad } from "../types";
 
 interface YourSquadProps {
   squad: Squad;

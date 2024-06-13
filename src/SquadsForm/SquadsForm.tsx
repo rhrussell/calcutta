@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
-import { Team, Squad } from "../types";
+import { Squad } from "../types";
 
 interface SquadsFormProps {
   onSubmit: (squads: Squad[]) => void;

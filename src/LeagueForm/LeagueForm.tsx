@@ -2,7 +2,7 @@
 // React helps us build the user interface, and useState allows us to keep track of changes.
 // ChangeEvent and FormEvent are used to handle events triggered by user interactions.
 // The useNumberOfPlayers hook is used to set the number of players globally.
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
 
 // This defines the structure of the form data that we will collect from the user.

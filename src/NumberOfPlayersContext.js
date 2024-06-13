@@ -28,7 +28,8 @@ export const NumberOfPlayersProvider = ({ children }) => {
         setNumPlayersPerSquad, // Function to update the number of players per squad.
       }}
     >
-      {children} {/* Rendering any children components that need access to this context */}
+      {children}{" "}
+      {/* Rendering any children components that need access to this context */}
     </NumberOfPlayersContext.Provider>
   );
 };

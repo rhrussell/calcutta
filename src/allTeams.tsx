@@ -390,6 +390,7 @@ export const allTeams: Team[] = [
     name: "Purdue",
     record: "(29-4)",
     region: "Midwest",
+    opponent: "Play In",
     price: 0,
   },
   {

@@ -32,4 +32,5 @@ const AuctionResults: React.FC<AuctionResultsProps> = ({ squads }) => {
   );
 };
 
+// This exports the AuctionResults component so it can be used in other parts of the application.
 export default AuctionResults;

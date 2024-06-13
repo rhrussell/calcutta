@@ -72,4 +72,5 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
   );
 };
 
+// This exports the OtherSquads component so it can be used in other parts of the application.
 export default OtherSquads;

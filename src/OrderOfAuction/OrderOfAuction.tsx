@@ -18,4 +18,5 @@ const OrderOfAuction: React.FC<OrderOfAuctionProps> = ({ upcomingTeams }) => {
   );
 };
 
+// This exports the OrderOfAuction component so it can be used in other parts of the application.
 export default OrderOfAuction;

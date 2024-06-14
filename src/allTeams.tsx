@@ -1,13 +1,19 @@
+// This imports the Team type from the types file.
+// The Team type describes the structure of a team object, ensuring all team objects follow the same format.
 import { Team } from "./types";
 
+// This creates a list of all the teams, where each team has specific properties like seed, name, record, region, opponent, and price.
+// The list contains all the teams participating in the tournament, along with their details.
+// The list is exported so it can be used in other files.
+// The list is an array of Team objects.
 export const allTeams: Team[] = [
   {
-    seed: "1",
-    name: "UConn",
-    record: "(31-3)",
-    region: "East",
-    opponent: "16 Stetson (22-12)",
-    price: 0,
+    seed: "1", // Seed is the rank or position of the team in the tournament.
+    name: "UConn", // The name of the team.
+    record: "(31-3)", // The team's win-loss record.
+    region: "East", // The region where the team is competing.
+    opponent: "16 Stetson (22-12)", // The opponent team and their record.
+    price: 0, // The price or value assigned to the team.
   },
   {
     seed: "16",
@@ -134,15 +140,23 @@ export const allTeams: Team[] = [
     name: "North Carolina",
     record: "(27-7)",
     region: "West",
-    opponent: "Play In",
+    opponent: "16 Howard (18-16)/16 Wagner (16-15)",
     price: 0,
   },
   {
-    seed: "",
-    name: "Play In",
-    record: "",
-    region: "",
-    opponent: "1 North Carolina (27-7)",
+    seed: "16",
+    name: "Howard (Play In)", // "Play In" indicates this team will face a yet-to-be-determined team.
+    record: "(18-16)",
+    region: "West",
+    opponent: "16 Wagner (16-15)",
+    price: 0,
+  },
+  {
+    seed: "16",
+    name: "Wagner (Play In)",
+    record: "(16-15)",
+    region: "West",
+    opponent: "16 Howard (18-16)",
     price: 0,
   },
   {
@@ -358,15 +372,23 @@ export const allTeams: Team[] = [
     name: "Florida",
     record: "(24-11)",
     region: "South",
-    opponent: "Play In",
+    opponent: "10 Boise St. (22-10)/10 Colorado (24-10)",
     price: 0,
   },
   {
-    seed: "",
-    name: "Play In",
-    record: "",
-    region: "",
-    opponent: "7 Florida (24-11)",
+    seed: "10",
+    name: "Boise St. (Play In)",
+    record: "(22-10)",
+    region: "South",
+    opponent: "10 Colorado (24-10)",
+    price: 0,
+  },
+  {
+    seed: "10",
+    name: "Colorado (Play In)",
+    record: "(24-10)",
+    region: "South",
+    opponent: "10 Boise St. (22-10)",
     price: 0,
   },
   {
@@ -390,14 +412,23 @@ export const allTeams: Team[] = [
     name: "Purdue",
     record: "(29-4)",
     region: "Midwest",
+    opponent: "16 Montana St. (17-17)/16 Grambling St. (20-14)",
     price: 0,
   },
   {
-    seed: "",
-    name: "Play In",
-    record: "",
-    region: "",
-    opponent: "1 Purdue (29-4)",
+    seed: "16",
+    name: "Montana St. (Play In)",
+    record: "(17-17)",
+    region: "Midwest",
+    opponent: "Grambling St. (20-14)",
+    price: 0,
+  },
+  {
+    seed: "16",
+    name: "Grambling St. (Play In)",
+    record: "(20-14)",
+    region: "Midwest",
+    opponent: "Montana St. (17-17)",
     price: 0,
   },
   {
@@ -485,15 +516,23 @@ export const allTeams: Team[] = [
     name: "Texas",
     record: "(20-12)",
     region: "Midwest",
-    opponent: "Play In",
+    opponent: "10 Virginia (23-10)/10 Colorado St. (24-10)",
     price: 0,
   },
   {
-    seed: "",
-    name: "Play In",
-    record: "",
-    region: "",
-    opponent: "7 Texas (20-12)",
+    seed: "10",
+    name: "Virginia (Play In)",
+    record: "(23-10)",
+    region: "Midwest",
+    opponent: "10 Colorado St. (24-10)",
+    price: 0,
+  },
+  {
+    seed: "10",
+    name: "Colorado St. (Play In)",
+    record: "(24-10)",
+    region: "Midwest",
+    opponent: "10 Virginia (23-10)",
     price: 0,
   },
   {

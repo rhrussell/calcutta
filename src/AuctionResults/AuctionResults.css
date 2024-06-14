@@ -1,28 +1,45 @@
+/* This class styles the main container for the auction results */
 .auction-results {
+  /* Arrange children elements in a column */
   display: flex;
+  /* Arrange children elements vertically */
   flex-direction: column;
+  /* Space between each child element */
   gap: 20px;
 }
 
+/* This class styles each individual squad's section */
 .squad {
+  /* Add a border around each squad's section */
   border: 1px solid #ccc;
+  /* Add padding inside the border */
   padding: 10px;
+  /* Round the corners of the border */
   border-radius: 5px;
 }
 
+/* This styles the squad name header (h2) within each squad's section */
 .squad h2 {
+  /* Remove the default margin at the top of the h2 element */
   margin-top: 0;
 }
 
+/* This styles the subheaders (h3) within each squad's section */
 .squad h3 {
+  /* Reduce the space below each h3 element */
   margin-bottom: 5px;
 }
 
+/* This styles the unordered lists within each squad's section */
 .squad ul {
+  /* Remove the default bullet points */
   list-style-type: none;
+  /* Remove the default padding from the list */
   padding: 0;
 }
 
+/* This styles each list item (li) within the unordered lists */
 .squad ul li {
+  /* Add space below each list item */
   margin-bottom: 5px;
 }

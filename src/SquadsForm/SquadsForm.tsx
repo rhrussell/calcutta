@@ -136,10 +136,11 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
             disabled={isMaxPlayersReached || isPlayerNameEmpty} // Disabling the button if max players are reached or input is empty.
           >
             Add Player
-          </button>{" "}
-          <button onClick={handleSubmit} disabled={!isMaxPlayersReached}>
-            {" "}
-            // Submitting the form on button click if max players are reached.
+          </button>
+          <button
+            onClick={handleSubmit} // Submitting the form on button click if max players are reached.
+            disabled={!isMaxPlayersReached}
+          >
             Submit
           </button>
           {players.length > 0 && (

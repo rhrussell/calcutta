@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import "./TournamentBracket.css";
+// This file renders a tournament bracket for a sports competition using React.
+import "./TournamentBracket.css"; // Importing CSS file for styling.
 
 function TournamentBracket() {
   return (
@@ -516,4 +516,12 @@ function TournamentBracket() {
   );
 }
 
+// This exports the TournamentBracket component so it can be used in other parts of the application.
+// This component renders a tournament bracket for a sports competition using React.
+// The bracket displays the matchups for each round of the competition.
+// The bracket is divided into four regions, each with multiple rounds of play.
+// The component uses CSS classes to style the bracket and display the teams and matchups.
+// The component renders the bracket structure and placeholders for team names and scores.
+// The component can be customized to display different numbers of teams and rounds.
+// The component can be used to create brackets for different types of sports tournaments.
 export default TournamentBracket;

@@ -114,7 +114,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
         // Set the current team to the first team in the new order
         setCurrentTeam(newOrder[0]);
         // Update the upcoming teams (next 10 teams)
-        updateUpcomingTeams(newOrder.slice(1, 10));
+        updateUpcomingTeams(newOrder.slice(1, 11));
       } else {
         // If no teams are left, set current team to null and complete the auction
         setCurrentTeam(null);

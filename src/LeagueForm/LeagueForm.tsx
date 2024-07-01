@@ -2,9 +2,10 @@
 // React helps us build the user interface, and useState allows us to keep track of changes.
 // ChangeEvent and FormEvent are used to handle events triggered by user interactions.
 // The useNumberOfPlayers hook is used to set the number of players globally.
+// Material-UI components like TextField, Button, and Checkbox are used to create the form.
 import React, { useState, FormEvent } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
-import { TextField, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Button, Checkbox, FormControlLabel } from "@mui/material";
 
 // This defines the structure of the form data that we will collect from the user.
 interface FormData {
@@ -110,7 +111,7 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label= "League Name"
+        label="League Name"
         type="text"
         name="leagueName"
         value={formData.leagueName}

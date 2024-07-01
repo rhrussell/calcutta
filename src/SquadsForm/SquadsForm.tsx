@@ -9,6 +9,15 @@
 import React, { useState } from "react"; // Importing React and useState hook.
 import { useNumberOfPlayers } from "../NumberOfPlayersContext"; // Importing a custom hook to get the number of players context.
 import { Squad } from "../types"; // Importing the Squad type to ensure consistent squad object structure.
+import {
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Box,
+} from "@mui/material"; // Importing Material-UI components for the form.
 
 // Props interface to define what props the SquadsForm component expects.
 // The onSubmit function is a callback that takes an array of squads as an argument.
@@ -95,22 +104,36 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   // The squads state is passed as an argument to the onSubmit function.
   if (showSquads) {
     return (
-      <div>
-        <h1>Squads</h1>
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Squads
+        </Typography>
         {squads.map((squad) => (
-          <div key={squad.name}>
-            <h2>{squad.name}</h2>
-            <ul>
+          <Box key={squad.name} mb={2}>
+            <Typography variant="h5">{squad.name}</Typography>
+            <List>
               {squad.players.map((playerName, index) => (
-                <li key={index}>{playerName}</li>
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={playerName}
+                    primaryTypographyProps={{ align: "center" }}
+                  />
+                </ListItem>
               ))}
-            </ul>
-          </div>
+            </List>
+          </Box>
         ))}
-        <br></br>
-        <button onClick={randomizeSquads}>Randomize Squads</button>{" "}
-        <button onClick={() => onSubmit(squads)}>Submit</button>
-      </div>
+        <Button
+          variant="contained"
+          onClick={randomizeSquads}
+          style={{ marginRight: "8px" }}
+        >
+          Randomize Squads
+        </Button>
+        <Button variant="contained" onClick={() => onSubmit(squads)}>
+          Submit
+        </Button>
+      </Box>
     );
   }
 
@@ -120,59 +143,87 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   // The form is displayed until the maximum number of players is reached.
   // Once the maximum number of players is reached, the form is replaced with the squads.
   return (
-    <div>
+    <Box>
       {!showSquads ? (
-        <div>
-          <h1>Input Players</h1>
-          <input
-            type="text"
-            placeholder="Name" // Placeholder text for the input field.
-            value={playerName} // Value of the input field bound to the playerName state.
-            onChange={(e) => setPlayerName(e.target.value)} // Updating the playerName state on input change.
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            Input Players
+          </Typography>
+          <TextField
+            label="Name"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            margin="normal"
+            variant="filled"
           />
-          <br />
-          <button
-            onClick={handleAddPlayer} // Adding a player on button click.
-            disabled={isMaxPlayersReached || isPlayerNameEmpty} // Disabling the button if max players are reached or input is empty.
-          >
-            Add Player
-          </button>
-          <button
-            onClick={handleSubmit} // Submitting the form on button click if max players are reached.
-            disabled={!isMaxPlayersReached}
-          >
-            Submit
-          </button>
+          <Box mb={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddPlayer}
+              disabled={isMaxPlayersReached || isPlayerNameEmpty}
+              style={{ marginRight: "8px" }}
+            >
+              Add Player
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleSubmit}
+              disabled={!isMaxPlayersReached}
+            >
+              Submit
+            </Button>
+          </Box>
           {players.length > 0 && (
             <>
-              <h2>Player List</h2>
-              <ul>
-                {players.map((player: { name: string }, index: number) => (
-                  <li key={index}>{player.name}</li> // Rendering each player's name.
+              <Typography variant="h5">Player List</Typography>
+              <List>
+                {players.map((player, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={player.name}
+                      primaryTypographyProps={{ align: "center" }}
+                    />
+                  </ListItem>
                 ))}
-              </ul>
+              </List>
             </>
           )}
-        </div>
+        </Box>
       ) : (
-        <div>
-          <h1>Squads</h1>
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            Squads
+          </Typography>
           {squads.map((squad) => (
-            <div key={squad.name}>
-              <h2>{squad.name}</h2>
-              <ul>
+            <Box key={squad.name} mb={2}>
+              <Typography variant="h5">{squad.name}</Typography>
+              <List>
                 {squad.players.map((playerName, index) => (
-                  <li key={index}>{playerName}</li>
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={playerName}
+                      primaryTypographyProps={{ align: "center" }}
+                    />
+                  </ListItem>
                 ))}
-              </ul>
-            </div>
+              </List>
+            </Box>
           ))}
-          <br />
-          <button onClick={randomizeSquads}>Randomize Squads</button>{" "}
-          <button onClick={() => onSubmit(squads)}>Submit</button>
-        </div>
+          <Button
+            variant="contained"
+            onClick={randomizeSquads}
+            style={{ marginRight: "8px" }}
+          >
+            Randomize Squads
+          </Button>
+          <Button variant="contained" onClick={() => onSubmit(squads)}>
+            Submit
+          </Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

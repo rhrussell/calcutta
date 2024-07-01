@@ -4,6 +4,7 @@
 // The useNumberOfPlayers hook is used to set the number of players globally.
 import React, { useState, FormEvent } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
+import { TextField, Button, Checkbox, FormControlLabel } from '@mui/material';
 
 // This defines the structure of the form data that we will collect from the user.
 interface FormData {
@@ -108,71 +109,77 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   // The form component is responsible for collecting data from the user and passing it to the parent component.
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        League Name:
-        <input
-          type="text"
-          name="leagueName"
-          value={formData.leagueName}
-          onChange={handleChange}
-        />
-      </label>
+      <TextField
+        label= "League Name"
+        type="text"
+        name="leagueName"
+        value={formData.leagueName}
+        onChange={handleChange}
+        margin="normal"
+        variant="filled"
+      />
       <br></br>
-      <label>
-        Minutes Per Item:
-        <input
-          type="number"
-          name="minutesPerItem"
-          value={formData.minutesPerItem}
-          onChange={handleChange}
-        />
-      </label>
+      <TextField
+        label="Minutes Per Item"
+        type="number"
+        name="minutesPerItem"
+        value={formData.minutesPerItem}
+        onChange={handleChange}
+        margin="normal"
+        variant="filled"
+      />
       <br></br>
-      <label>
-        Squad Salary Cap:
-        <input
-          type="text"
-          name="squadSalaryCap"
-          value={formData.squadSalaryCap}
-          onChange={handleChange}
-        />
-      </label>
+      <TextField
+        label="Squad Salary Cap"
+        type="text"
+        name="squadSalaryCap"
+        value={formData.squadSalaryCap}
+        onChange={handleChange}
+        margin="normal"
+        variant="filled"
+      />
       <br></br>
-      <label>
-        Number of Players:
-        <input
-          type="number"
-          name="numPlayers"
-          value={formData.numPlayers}
-          onChange={handleChange}
-        />
-      </label>
+      <TextField
+        label="Number of Players"
+        type="number"
+        name="numPlayers"
+        value={formData.numPlayers}
+        onChange={handleChange}
+        margin="normal"
+        variant="filled"
+      />
       <br></br>
-      <label>
-        Number of Players Per Squad:
-        <input
-          type="number"
-          name="numPlayersPerSquad"
-          value={formData.numPlayersPerSquad}
-          onChange={handleChange}
-        />
-      </label>
+      <TextField
+        label="Number of Players Per Squad"
+        type="number"
+        name="numPlayersPerSquad"
+        value={formData.numPlayersPerSquad}
+        onChange={handleChange}
+        margin="normal"
+        variant="filled"
+      />
       <br></br>
-      <label>
-        Order of Auction:
-        <input
-          type="checkbox"
-          name="orderOfAuction"
-          checked={formData.orderOfAuction}
-          onChange={(e) =>
-            setFormData({ ...formData, orderOfAuction: e.target.checked })
-          }
-        />
-      </label>
+      <FormControlLabel
+        control={
+          <Checkbox
+            name="orderOfAuction"
+            checked={formData.orderOfAuction}
+            onChange={(e) =>
+              setFormData({ ...formData, orderOfAuction: e.target.checked })
+            }
+          />
+        }
+        label="Order of Auction"
+      />
       <br></br>
-      <button type="submit" disabled={isAnyInputEmpty}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={isAnyInputEmpty}
+      >
         Submit
-      </button>
+      </Button>
     </form>
   );
 };

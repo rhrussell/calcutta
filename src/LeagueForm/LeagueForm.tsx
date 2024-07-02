@@ -57,12 +57,77 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   // This separation helps in handling the form data more effectively.
   const { orderOfAuction, ...restFormData } = formData;
 
-  // This checks if any input field (except for orderOfAuction) is empty.
-  // If any input field is empty, the submit button will be disabled.
-  // This is a simple validation to ensure that all required fields are filled before submitting the form.
-  const isAnyInputEmpty = Object.values(restFormData).some(
-    (value) => value.trim() === "",
-  );
+  // This state variable is used to store validation errors for the form fields.
+  // The setErrors function is used to update the errors when the form is submitted.
+  // Initially, all error messages are empty. They will be updated based on user input.
+  // The errors variable holds the current state of the validation errors.
+  // This state variable is used to display error messages to the user when the form is submitted.
+  // The errors state is updated based on the validation rules defined in the validateForm function.
+  const [errors, setErrors] = useState({
+    leagueName: "",
+    minutesPerItem: "",
+    squadSalaryCap: "",
+    numPlayers: "",
+    numPlayersPerSquad: "",
+  });
+
+  // This function validates the form data based on certain rules.
+  // It checks if the form fields meet the required conditions for submission.
+  // The function updates the errors state based on the validation results.
+  // The validateForm function is used to validate the form data before submission.
+  // It checks if the form fields meet the required conditions for submission.
+  const validateForm = () => {
+    const newErrors = {
+      leagueName: "",
+      minutesPerItem: "",
+      squadSalaryCap: "",
+      numPlayers: "",
+      numPlayersPerSquad: "",
+    };
+
+    // Validation rules for the form fields
+    // The leagueName field should not be empty and should contain letters
+    if (!/[a-zA-Z]/.test(formData.leagueName)) {
+      newErrors.leagueName = "A League's Name needs to have letters in it";
+    }
+    // The minutesPerItem field should be greater than or equal to 1
+    if (parseFloat(formData.minutesPerItem) < 1) {
+      newErrors.minutesPerItem =
+        "Minutes Per Item needs to be greater than or equal to 1";
+    }
+    // The squadSalaryCap field should be greater than or equal to 1
+    if (parseFloat(formData.squadSalaryCap) < 1) {
+      newErrors.squadSalaryCap =
+        "Squad Salary Capacity needs to be greater than or equal to $1";
+    }
+    // The numPlayers field should be greater than or equal to 1 and a whole number
+    if (parseInt(formData.numPlayers) < 1) {
+      newErrors.numPlayers =
+        "Number of Players needs to be greater than or equal to 1";
+    }
+    // The numPlayersPerSquad field should be greater than or equal to 1 and a whole number
+    if (!Number.isInteger(parseFloat(formData.numPlayers))) {
+      newErrors.numPlayers = "Number of Players needs to be a whole number";
+    }
+    // The numPlayersPerSquad field should be greater than or equal to 1 and a whole number
+    if (parseInt(formData.numPlayersPerSquad) < 1) {
+      newErrors.numPlayersPerSquad =
+        "Number of Players per Squad needs to be greater than or equal to 1";
+    }
+    // The numPlayersPerSquad field should be a whole number
+    if (!Number.isInteger(parseFloat(formData.numPlayersPerSquad))) {
+      newErrors.numPlayersPerSquad =
+        "Number of Players per Squad needs to be a whole number";
+    }
+
+    // Update the errors state with the new error messages
+    // The setErrors function is used to update the errors state with the new error messages.
+    setErrors(newErrors);
+
+    // Check if there are any errors in the form data
+    // The function returns true if there are no errors in the form data.
+    return Object.values(newErrors).every((error) => error === "");
+  };
 
   // This function updates the form data when the user types in the input fields.
   // It takes an event (e) as an argument and extracts the name and value of the input field.
@@ -88,17 +153,20 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   // The handleSubmit function is triggered when the user submits the form.
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setNumPlayers(parseInt(formData.numPlayers));
-    setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
-    console.log("League Data: ", formData);
-    // This calls the onSubmit function passed in as a prop with the necessary data.
-    // The minutesPerItem and squadSalaryCap values are converted to numbers before being passed.
-    // The orderOfAuction value is passed as is since it's already a boolean.
-    onSubmit(
-      parseInt(formData.minutesPerItem),
-      parseInt(formData.squadSalaryCap),
-      formData.orderOfAuction,
-    );
+    // If the form is valid, set the number of players and call the onSubmit function
+    if (validateForm()) {
+      setNumPlayers(parseInt(formData.numPlayers));
+      setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
+      console.log("League Data: ", formData);
+      // This calls the onSubmit function passed in as a prop with the necessary data.
+      // The minutesPerItem and squadSalaryCap values are converted to numbers before being passed.
+      // The orderOfAuction value is passed as is since it's already a boolean.
+      onSubmit(
+        parseInt(formData.minutesPerItem),
+        parseInt(formData.squadSalaryCap),
+        formData.orderOfAuction,
+      );
+    }
   };
 
   // This returns the actual form that will be displayed on the screen.
@@ -118,6 +186,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         margin="normal"
         variant="filled"
+        required
+        error={!!errors.leagueName}
+        helperText={errors.leagueName}
       />
       <br></br>
       <TextField
@@ -128,6 +199,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         margin="normal"
         variant="filled"
+        required
+        error={!!errors.minutesPerItem}
+        helperText={errors.minutesPerItem}
       />
       <br></br>
       <TextField
@@ -138,6 +212,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         margin="normal"
         variant="filled"
+        required
+        error={!!errors.squadSalaryCap}
+        helperText={errors.squadSalaryCap}
       />
       <br></br>
       <TextField
@@ -148,16 +225,22 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         onChange={handleChange}
         margin="normal"
         variant="filled"
+        required
+        error={!!errors.numPlayers}
+        helperText={errors.numPlayers}
       />
       <br></br>
       <TextField
-        label="Number of Players Per Squad"
+        label="Number of Players per Squad"
         type="number"
         name="numPlayersPerSquad"
         value={formData.numPlayersPerSquad}
         onChange={handleChange}
         margin="normal"
         variant="filled"
+        required
+        error={!!errors.numPlayersPerSquad}
+        helperText={errors.numPlayersPerSquad}
       />
       <br></br>
       <FormControlLabel
@@ -177,7 +260,9 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
         type="submit"
         variant="contained"
         color="primary"
-        disabled={isAnyInputEmpty}
+        disabled={Object.values(restFormData).some(
+          (value) => value.trim() === "",
+        )}
       >
         Submit
       </Button>

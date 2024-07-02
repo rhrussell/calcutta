@@ -40,16 +40,39 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   const [playerName, setPlayerName] = useState(""); // State to keep track of the current player name input.
   const [squads, setSquads] = useState<Squad[]>([]); // State to keep track of the squads.
   const [showSquads, setShowSquads] = useState(false); // State to manage whether to show squads or input form.
+  const [error, setError] = useState(""); // State to manage error messages.
   const isMaxPlayersReached = players.length >= numPlayers; // Boolean to check if the maximum number of players has been reached.
+
+  // Function to validate the player name input.
+  // This function is called when the player name input changes.
+  // It checks if the player name contains only letters and sets an error message if it doesn't.
+  // The error message is displayed to the user if the player name contains characters other than letters.
+  // The function returns true if the player name is valid and false if it is not.
+  // This is used to prevent adding player names with invalid characters to the list.
+  const validatePlayerName = (name: string) => {
+    // Checking if the player name contains only letters.
+    // The test() method tests for a match in a string and returns true if the pattern is found, and false otherwise.
+    // The regular expression /[a-zA-Z]/ matches any letter from a to z (uppercase and lowercase).
+    // If the player name contains only letters, the test() method returns true.
+    if (!/[a-zA-Z]/.test(name)) {
+      setError("A Player's Name needs to have letters in it");
+      return false;
+    }
+    setError("");
+    return true;
+  };
 
   // Function to handle adding a new player to the list.
   // This function is called when the "Add Player" button is clicked.
   const handleAddPlayer = () => {
-    const newPlayer = {
-      name: playerName, // Creating a new player object with the current player name.
-    };
-    setPlayers([...players, newPlayer]); // Adding the new player to the players state.
-    setPlayerName(""); // Resetting the player name input field.
+    // Checking if the player name is valid before adding it to the list.
+    if (validatePlayerName(playerName)) {
+      const newPlayer = {
+        name: playerName, // Creating a new player object with the current player name.
+      };
+      setPlayers([...players, newPlayer]); // Adding the new player to the players state.
+      setPlayerName(""); // Resetting the player name input field.
+    }
   };
 
   // Boolean to check if the player name input is empty.
@@ -91,9 +114,13 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   // Function to handle form submission.
   // This function is called when the "Submit" button is clicked after the maximum number of players is reached.
   const handleSubmit = () => {
-    console.log(players); // Logging the list of players (for debugging purposes).
-    randomizeSquads(); // Randomizing the squads.
-    setShowSquads(true); // Setting the state to show the squads.
+    if (players.length === numPlayers) {
+      console.log(players); // Logging the list of players (for debugging purposes).
+      randomizeSquads(); // Randomizing the squads.
+      setShowSquads(true); // Setting the state to show the squads.
+    } else {
+      setError(`You need to add exactly ${numPlayers} players.`); // Setting an error message if the number of players is incorrect.
+    }
   };
 
   // If squads are to be shown, render the squads.
@@ -155,6 +182,10 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
             onChange={(e) => setPlayerName(e.target.value)}
             margin="normal"
             variant="filled"
+            required
+            disabled={isMaxPlayersReached}
+            error={!!error}
+            helperText={error}
           />
           <Box mb={2}>
             <Button

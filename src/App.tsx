@@ -160,6 +160,7 @@ function App() {
                       onTimerEnd={handleTimerEnd}
                       onTimerPause={handleTimerPause}
                       resetFlag={changeTeamFlag}
+                      showNextTeamButton={showNextTeamButton}
                     />
                   </div>
                   {showNextTeamButton &&

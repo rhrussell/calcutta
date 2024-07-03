@@ -80,7 +80,7 @@ function App() {
 
   // Handle the click of the Next Team button
   const handleNextTeamClick = () => {
-    if (soldTeam) {
+    if (soldTeam && soldTeam.price !== 0) { // THIS IS A TEMPORARY SOLUTION FOR TEAMS NOT BEING BID ON
       const updatedSquads = squads.map((squad, index) => {
         if (index === 0) {
           // Add the team to the first squad
@@ -160,6 +160,7 @@ function App() {
                       onTimerEnd={handleTimerEnd}
                       onTimerPause={handleTimerPause}
                       resetFlag={changeTeamFlag}
+                      showNextTeamButton={showNextTeamButton}
                     />
                   </div>
                   {showNextTeamButton &&

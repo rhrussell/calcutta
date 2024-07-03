@@ -3,6 +3,7 @@ import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
 import LeagueForm from "./LeagueForm/LeagueForm";
 import SquadsForm from "./SquadsForm/SquadsForm";
+import JoinLeagueForm from "./JoinLeagueForm/JoinLeagueForm";
 import TournamentBracket from "./TournamentBracket/TournamentBracket";
 import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
@@ -59,7 +60,7 @@ function App() {
   const handleJoinLeagueClick = () => {
     setShowJoinLeagueForm(true);
     setShowHomePage(false);
-  }
+  };
 
   // Handle the submission of the league form
   const handleLeagueFormSubmit = (
@@ -79,6 +80,12 @@ function App() {
     setSquads(squads);
     setShowSquadsForm(false);
     setShowTournamentBracket(true);
+  };
+
+  const handleJoinLeagueFormSubmit = (leagueName: string, password: string) => {
+    console.log("League Name: ", leagueName);
+    console.log("Password: ", password);
+    //setShowJoinLeagueForm(false);
   };
 
   // Handle the end of the timer
@@ -181,17 +188,27 @@ function App() {
           </div>
         )}
 
-        {!showHomePage && !showLeagueForm && !showSquadsForm && !showAuctionResults && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setShowTournamentBracket(!showTournamentBracket);
-            }}
-          >
-            {showTournamentBracket ? "Hide Bracket" : "Display Bracket"}
-          </Button>
+        {showJoinLeagueForm && !showAuctionResults && (
+          <div>
+            <JoinLeagueForm onSubmit={handleJoinLeagueFormSubmit} />
+          </div>
         )}
+
+        {!showHomePage &&
+          !showLeagueForm &&
+          !showSquadsForm &&
+          !showJoinLeagueForm &&
+          !showAuctionResults && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setShowTournamentBracket(!showTournamentBracket);
+              }}
+            >
+              {showTournamentBracket ? "Hide Bracket" : "Display Bracket"}
+            </Button>
+          )}
 
         {showTournamentBracket && (
           <div>
@@ -201,88 +218,92 @@ function App() {
 
         <br></br>
 
-        {!showHomePage && !showLeagueForm && !showSquadsForm && !showAuctionResults && (
-          <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              {!auctionComplete && (
-                <>
-                  <div className="timer-container">
-                    <Timer
-                      minutesPerItem={minutesPerItem}
-                      onTimerEnd={handleTimerEnd}
-                      onTimerPause={handleTimerPause}
-                      resetFlag={changeTeamFlag}
-                      showNextTeamButton={showNextTeamButton}
-                    />
-                  </div>
-                  {showNextTeamButton &&
-                    !timerActive &&
-                    allTeams.length > 0 && (
-                      <button onClick={handleNextTeamClick}>Next Team</button>
-                    )}
-                  <div>
-                    <AuctionTeam
-                      teams={allTeams}
-                      changeTeamFlag={changeTeamFlag}
-                      squadSalaryCap={squadSalaryCap}
-                      timerActive={timerActive}
-                      onTeamSold={handleTeamSold}
-                      onNextTeam={handleNextTeam}
-                      timerEnded={timerEnded}
-                      updateUpcomingTeams={updateUpcomingTeams}
-                      onAuctionComplete={handleAuctionComplete}
-                    />
-                  </div>
-                  <div></div>
-                </>
-              )}
-            </div>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              {!auctionComplete && squads.length > 0 && (
-                <YourSquad squad={squads[0]} />
-              )}
-              {!auctionComplete && orderOfAuction && (
-                <OrderOfAuction upcomingTeams={upcomingTeams} />
-              )}
-              {!auctionComplete && squads.length > 1 && (
-                <OtherSquads squads={squads} yourSquad={squads[0]} />
-              )}
-              {!auctionComplete && squads.length === 1 && (
-                <div>
-                  <h2>No Other Squads</h2>
-                </div>
-              )}
-            </div>
-            {auctionComplete && !showAuctionResults && (
-              <button
-                onClick={() => {
-                  setShowAuctionResults(true);
-                  setShowTournamentBracket(false);
+        {!showHomePage &&
+          !showLeagueForm &&
+          !showSquadsForm &&
+          !showJoinLeagueForm &&
+          !showAuctionResults && (
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                Finalize Results
-              </button>
-            )}
-            <br></br>
-          </div>
-        )}
+                {!auctionComplete && (
+                  <>
+                    <div className="timer-container">
+                      <Timer
+                        minutesPerItem={minutesPerItem}
+                        onTimerEnd={handleTimerEnd}
+                        onTimerPause={handleTimerPause}
+                        resetFlag={changeTeamFlag}
+                        showNextTeamButton={showNextTeamButton}
+                      />
+                    </div>
+                    {showNextTeamButton &&
+                      !timerActive &&
+                      allTeams.length > 0 && (
+                        <button onClick={handleNextTeamClick}>Next Team</button>
+                      )}
+                    <div>
+                      <AuctionTeam
+                        teams={allTeams}
+                        changeTeamFlag={changeTeamFlag}
+                        squadSalaryCap={squadSalaryCap}
+                        timerActive={timerActive}
+                        onTeamSold={handleTeamSold}
+                        onNextTeam={handleNextTeam}
+                        timerEnded={timerEnded}
+                        updateUpcomingTeams={updateUpcomingTeams}
+                        onAuctionComplete={handleAuctionComplete}
+                      />
+                    </div>
+                    <div></div>
+                  </>
+                )}
+              </div>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                {!auctionComplete && squads.length > 0 && (
+                  <YourSquad squad={squads[0]} />
+                )}
+                {!auctionComplete && orderOfAuction && (
+                  <OrderOfAuction upcomingTeams={upcomingTeams} />
+                )}
+                {!auctionComplete && squads.length > 1 && (
+                  <OtherSquads squads={squads} yourSquad={squads[0]} />
+                )}
+                {!auctionComplete && squads.length === 1 && (
+                  <div>
+                    <h2>No Other Squads</h2>
+                  </div>
+                )}
+              </div>
+              {auctionComplete && !showAuctionResults && (
+                <button
+                  onClick={() => {
+                    setShowAuctionResults(true);
+                    setShowTournamentBracket(false);
+                  }}
+                >
+                  Finalize Results
+                </button>
+              )}
+              <br></br>
+            </div>
+          )}
         {showAuctionResults && <AuctionResults squads={squads} />}
       </div>
     </NumberOfPlayersProvider>

@@ -15,10 +15,14 @@ import { Team, Squad } from "./types";
 import { Button } from "@mui/material";
 
 function App() {
+  // Manage whether the home page is shown
+  const [showHomePage, setShowHomePage] = useState<boolean>(true);
   // Manage whether the league form is shown
-  const [showLeagueForm, setShowLeagueForm] = useState<boolean>(true);
+  const [showLeagueForm, setShowLeagueForm] = useState<boolean>(false);
   // Manage whether the squads form is shown
   const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);
+  // Manage whether the join league form is shown
+  const [showJoinLeagueForm, setShowJoinLeagueForm] = useState<boolean>(false);
   // Manage whether the tournament bracket is shown
   const [showTournamentBracket, setShowTournamentBracket] =
     useState<boolean>(false);
@@ -46,6 +50,16 @@ function App() {
   const [soldTeam, setSoldTeam] = useState<Team | null>(null);
   // Manage the list of upcoming teams
   const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
+
+  const handleCreateLeagueClick = () => {
+    setShowLeagueForm(true);
+    setShowHomePage(false);
+  };
+
+  const handleJoinLeagueClick = () => {
+    setShowJoinLeagueForm(true);
+    setShowHomePage(false);
+  }
 
   // Handle the submission of the league form
   const handleLeagueFormSubmit = (
@@ -129,6 +143,28 @@ function App() {
   return (
     <NumberOfPlayersProvider>
       <div className="App">
+        {showHomePage && (
+          <div>
+            <h1>Welcome to Calcutta Leagues!</h1>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCreateLeagueClick}
+              >
+                Create League
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleJoinLeagueClick}
+              >
+                Join League
+              </Button>
+            </div>
+          </div>
+        )}
+
         {showLeagueForm && !showAuctionResults && (
           <div>
             <h1>Add League</h1>
@@ -145,7 +181,7 @@ function App() {
           </div>
         )}
 
-        {!showLeagueForm && !showSquadsForm && !showAuctionResults && (
+        {!showHomePage && !showLeagueForm && !showSquadsForm && !showAuctionResults && (
           <Button
             variant="contained"
             color="primary"
@@ -165,7 +201,7 @@ function App() {
 
         <br></br>
 
-        {!showLeagueForm && !showSquadsForm && !showAuctionResults && (
+        {!showHomePage && !showLeagueForm && !showSquadsForm && !showAuctionResults && (
           <div>
             <div
               style={{

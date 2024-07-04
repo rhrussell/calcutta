@@ -12,8 +12,11 @@ import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";
 import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
 import { Team, Squad } from "./types";
+import { Button } from "@mui/material";
 
 function App() {
+  // Manage whether the league form is shown
+  const [showLeagueForm, setShowLeagueForm] = useState<boolean>(true);
   // Manage whether the squads form is shown
   const [showSquadsForm, setShowSquadsForm] = useState<boolean>(false);
   // Manage whether the tournament bracket is shown
@@ -53,6 +56,7 @@ function App() {
     setMinutesPerItem(minutes);
     setSquadSalaryCap(salary);
     setOrderOfAuction(order);
+    setShowLeagueForm(false);
     setShowSquadsForm(true);
   };
 
@@ -125,7 +129,7 @@ function App() {
   return (
     <NumberOfPlayersProvider>
       <div className="App">
-        {!showSquadsForm && !showTournamentBracket && !showAuctionResults && (
+        {showLeagueForm && !showAuctionResults && (
           <div>
             <h1>Add League</h1>
             <LeagueForm onSubmit={handleLeagueFormSubmit} />
@@ -141,10 +145,28 @@ function App() {
           </div>
         )}
 
-        {showTournamentBracket && !showSquadsForm && !showAuctionResults && (
+        {!showLeagueForm && !showSquadsForm && !showAuctionResults && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setShowTournamentBracket(!showTournamentBracket);
+            }}
+          >
+            {showTournamentBracket ? "Hide Bracket" : "Display Bracket"}
+          </Button>
+        )}
+
+        {showTournamentBracket && (
           <div>
             <TournamentBracket />
-            <br></br>
+          </div>
+        )}
+
+        <br></br>
+
+        {!showLeagueForm && !showSquadsForm && !showAuctionResults && (
+          <div>
             <div
               style={{
                 display: "flex",

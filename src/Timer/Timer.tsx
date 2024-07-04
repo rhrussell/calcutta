@@ -8,6 +8,7 @@ interface TimerProps {
   onTimerEnd: () => void; // Function to call when the timer ends
   onTimerPause: (isPaused: boolean) => void; // Function to call when the timer is paused or resumed
   resetFlag: boolean; // Flag to reset the timer
+  showNextTeamButton: boolean; // Flag to indicate if the Next Team button is shown
 }
 
 // The main Timer component
@@ -21,6 +22,7 @@ const Timer: React.FC<TimerProps> = ({
   onTimerEnd,
   onTimerPause,
   resetFlag,
+  showNextTeamButton,
 }) => {
   // State to keep track of the remaining time (in seconds)
   const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
@@ -74,9 +76,9 @@ const Timer: React.FC<TimerProps> = ({
 
   // Function to format the time as minutes and seconds
   const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    const minutes = Math.floor(time / 60); // Get the minutes
+    const seconds = time % 60; // Get the seconds
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`; // Format the time
   };
 
   // Return the JSX to render the timer component
@@ -84,11 +86,12 @@ const Timer: React.FC<TimerProps> = ({
     <div>
       <h2>Timer</h2>
       <h3>{formatTime(timeLeft)}</h3>
-      {isActive ? (
-        <button onClick={handlePause}>Pause</button> // Button to pause the timer
-      ) : (
-        <button onClick={handlePlay}>Play</button> // Button to play the timer
-      )}
+      {!showNextTeamButton && // If the Next Team button is not shown
+        (isActive ? (
+          <button onClick={handlePause}>Pause</button> // Button to pause the timer
+        ) : (
+          <button onClick={handlePlay}>Play</button> // Button to play the timer
+        ))}
     </div>
   );
 };

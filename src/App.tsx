@@ -51,6 +51,7 @@ function App() {
   const [soldTeam, setSoldTeam] = useState<Team | null>(null);
   // Manage the list of upcoming teams
   const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
+  const [previousTeamInfo, setPreviousTeamInfo] = useState<string | null>(null);
 
   const handleCreateLeagueClick = () => {
     setShowLeagueForm(true);
@@ -105,7 +106,7 @@ function App() {
 
   // Handle the click of the Next Team button
   const handleNextTeamClick = () => {
-    if (soldTeam && soldTeam.price !== 0) {
+    if (soldTeam !== null) {
       // THIS IS A TEMPORARY SOLUTION FOR TEAMS NOT BEING BID ON
       const updatedSquads = squads.map((squad, index) => {
         if (index === 0) {
@@ -120,10 +121,14 @@ function App() {
       });
       setSquads(updatedSquads); // Update the squads with the sold team
       setSquadSalaryCap(squads[0].salaryCap); // Update the salary cap
+      setPreviousTeamInfo(
+        `${soldTeam.seed} ${soldTeam.name} ${soldTeam.record} was sold to Squad 1 for $${soldTeam.price}`,
+      );
     }
     setShowNextTeamButton(false); // Hide the Next Team button when clicked
     setChangeTeamFlag(true); // Set change team flag to true to display the next team
     setTimerEnded(false); // Reset timerEnded when Next Team button is clicked
+    setSoldTeam(null); // Reset the sold team
   };
 
   // Handle changing to the next team
@@ -133,9 +138,15 @@ function App() {
   };
 
   // Handle when a team is sold
-  const handleTeamSold = (soldTeam: Team) => {
-    console.log("Handle Team Sold");
-    setSoldTeam(soldTeam); // Set the sold team
+  const handleTeamSold = (soldTeam: Team | null) => {
+    if (soldTeam !== null && soldTeam.price !== 0) {
+      console.log("Handle Team Sold");
+      setSoldTeam(soldTeam); // Set the sold team
+    }
+  };
+
+  const handlePlay = () => {
+    setPreviousTeamInfo(null);
   };
 
   // Update the list of upcoming teams
@@ -241,6 +252,7 @@ function App() {
                         onTimerPause={handleTimerPause}
                         resetFlag={changeTeamFlag}
                         showNextTeamButton={showNextTeamButton}
+                        onPlay={handlePlay}
                       />
                     </div>
                     {showNextTeamButton &&
@@ -249,6 +261,7 @@ function App() {
                         <button onClick={handleNextTeamClick}>Next Team</button>
                       )}
                     <div>
+                      {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
                       <AuctionTeam
                         teams={allTeams}
                         changeTeamFlag={changeTeamFlag}

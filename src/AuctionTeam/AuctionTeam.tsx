@@ -10,7 +10,7 @@ interface AuctionTeamProps {
   changeTeamFlag: boolean; // Flag to indicate when to change the current team
   squadSalaryCap: number; // Maximum budget for the squad
   timerActive: boolean; // Flag to indicate if the timer is active
-  onTeamSold: (soldTeam: Team) => void; // Function to call when a team is sold
+  onTeamSold: (soldTeam: Team | null) => void; // Function to call when a team is sold
   onNextTeam: () => void; // Function to call to move to the next team
   timerEnded: boolean; // Flag to indicate if the timer has ended
   updateUpcomingTeams: (teams: Team[]) => void; // Function to update the list of upcoming teams
@@ -101,6 +101,8 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
       setHighestBid(0);
       // Mark the team as not added (for the next team)
       setTeamAdded(false);
+    } else {
+      onTeamSold(null);
     }
   }, [currentTeam, highestBid, onTeamSold, teamAdded, squadSalaryCapRef]);
 
@@ -142,7 +144,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   }, [changeTeamFlag]); // Dependency for the effect
 
   // If there is no current team, display a loading message
-  if (!currentTeam) return <div>Loading...</div>;
+  if (!currentTeam) return <div>Loading...</div>; // For debugging purposes
 
   // Return the JSX to render the auction team component
   // This component displays the current team being auctioned and the bid panel

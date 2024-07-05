@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
 import LeagueForm from "./LeagueForm/LeagueForm";
@@ -105,7 +105,8 @@ function App() {
 
   // Handle the click of the Next Team button
   const handleNextTeamClick = () => {
-    if (soldTeam) {
+    if (soldTeam && soldTeam.price !== 0) {
+      // THIS IS A TEMPORARY SOLUTION FOR TEAMS NOT BEING BID ON
       const updatedSquads = squads.map((squad, index) => {
         if (index === 0) {
           // Add the team to the first squad

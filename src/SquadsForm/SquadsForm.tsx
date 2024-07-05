@@ -222,7 +222,6 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
             margin="normal"
             variant="filled"
             required
-            disabled={isMaxPlayersReached}
             error={!!error}
             helperText={error}
           />

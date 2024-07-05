@@ -58,6 +58,9 @@ export interface Squad {
 
   // The salaryCap is the maximum amount of money the squad is allowed to spend.
   salaryCap: number;
+
+  // The password is a security measure to restrict access to the squad.
+  password: string;
 }
 
 // Practical Example:

@@ -40,6 +40,7 @@ const NumberOfPlayersContext = React.createContext({});
 const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   const { numPlayers, numPlayersPerSquad } = useNumberOfPlayers(); // Getting the number of players and players per squad from context.
   const [players, setPlayers] = useState<{ name: string }[]>([]); // State to keep track of the list of players.
+  const [ squadPasswords, setSquadPasswords ] = useState<string[]>([]); // State to keep track of the passwords for each squad.
   const [playerName, setPlayerName] = useState(""); // State to keep track of the current player name input.
   const [squads, setSquads] = useState<Squad[]>([]); // State to keep track of the squads.
   const [showSquads, setShowSquads] = useState(false); // State to manage whether to show squads or input form.
@@ -103,6 +104,7 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
         players: [],
         teams: [],
         salaryCap: salaryCap,
+        password: Math.random().toString(36).slice(-8),
       });
     }
 
@@ -186,6 +188,12 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
                   />
                 </ListItem>
               ))}
+              <ListItem key="password">
+                <ListItemText
+                  primary={`Password: ${squad.password}`}
+                  primaryTypographyProps={{ align: "center" }}
+                />
+              </ListItem>
             </List>
           </Box>
         ))}

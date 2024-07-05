@@ -1,38 +1,51 @@
+/* Style for the main app container */
 .App {
   text-align: center;
 }
 
+/* Style for the app logo */
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 40vmin; /* Set the height of the logo to 40% of the viewport minimum dimension */
+  pointer-events: none; /* Prevent the logo from being interactive (e.g., clickable) */
 }
 
+/* Media query to apply styles when the user does not prefer reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 20s linear; /* Spin the logo infinitely with a duration of 20 seconds */
   }
 }
 
+/* Style for the app header */
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #282c34; /* Set the background color to a dark shade */
+  min-height: 100vh; /* Set the minimum height to 100% of the viewport height */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange children in a column */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  font-size: calc(
+    10px + 2vmin
+  ); /* Set font size dynamically based on the viewport size */
+  color: white; /* Set text color to white */
 }
 
+/* Style for links in the app */
 .App-link {
-  color: #61dafb;
+  color: #61dafb; /* Set link color to a shade of blue */
 }
 
+/* Keyframes for spinning the app logo */
 @keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg); /* Start with no rotation */
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Rotate a full circle (360 degrees) */
   }
+}
+
+/* Style for the timer container */
+.timer-container {
+  margin-left: 80px; /* Set left margin to 80 pixels to create space on the left */
 }

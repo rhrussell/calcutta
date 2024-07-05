@@ -145,6 +145,10 @@ function App() {
     }
   };
 
+  const handlePlay = () => {
+    setPreviousTeamInfo(null);
+  };
+
   // Update the list of upcoming teams
   const updateUpcomingTeams = (teams: Team[]) => {
     setUpcomingTeams(teams); // Update the list of upcoming teams
@@ -248,6 +252,7 @@ function App() {
                         onTimerPause={handleTimerPause}
                         resetFlag={changeTeamFlag}
                         showNextTeamButton={showNextTeamButton}
+                        onPlay={handlePlay}
                       />
                     </div>
                     {showNextTeamButton &&
@@ -256,7 +261,7 @@ function App() {
                         <button onClick={handleNextTeamClick}>Next Team</button>
                       )}
                     <div>
-                      {previousTeamInfo && <p>{previousTeamInfo}</p>}
+                      {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
                       <AuctionTeam
                         teams={allTeams}
                         changeTeamFlag={changeTeamFlag}

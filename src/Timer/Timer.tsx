@@ -9,6 +9,7 @@ interface TimerProps {
   onTimerPause: (isPaused: boolean) => void; // Function to call when the timer is paused or resumed
   resetFlag: boolean; // Flag to reset the timer
   showNextTeamButton: boolean; // Flag to indicate if the Next Team button is shown
+  onPlay: () => void;
 }
 
 // The main Timer component
@@ -23,6 +24,7 @@ const Timer: React.FC<TimerProps> = ({
   onTimerPause,
   resetFlag,
   showNextTeamButton,
+  onPlay,
 }) => {
   // State to keep track of the remaining time (in seconds)
   const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
@@ -73,6 +75,8 @@ const Timer: React.FC<TimerProps> = ({
   // Function to handle playing the timer
   const handlePlay = () => {
     setIsActive(true);
+    setPreviousTeamInfo(null);
+    onPlay();
   };
 
   // Function to format the time as minutes and seconds

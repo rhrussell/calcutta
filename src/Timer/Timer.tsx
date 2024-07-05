@@ -30,6 +30,7 @@ const Timer: React.FC<TimerProps> = ({
   const [isActive, setIsActive] = useState<boolean>(false);
   // Reference to store the interval ID for the timer
   const intervalRef = useRef<number | null>(null);
+  const [previousTeamInfo, setPreviousTeamInfo] = useState<string | null>(null);
 
   // useEffect hook that runs when timeLeft or isActive changes
   useEffect(() => {

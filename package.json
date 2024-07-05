@@ -28,7 +28,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "format": "prettier --ignore-path .gitignore --write '**/*.+(js|ts|tsx|css|json)'",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -51,12 +52,19 @@
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "eslint": "^8.57.0",
+    "husky": "^8.0.0",
     "jest": "^29.7.0",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "ts-jest": "^29.1.5"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,css,md}": [
+      "prettier --write"
+    ]
   }
 }

@@ -17,7 +17,10 @@ import {
   ListItemText,
   Typography,
   Box,
+  IconButton,
 } from "@mui/material"; // Importing Material-UI components for the form.
+import EditIcon from "@mui/icons-material/Edit"; // Importing Material-UI icons for the form.
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // Props interface to define what props the SquadsForm component expects.
 // The onSubmit function is a callback that takes an array of squads as an argument.
@@ -37,10 +40,12 @@ const NumberOfPlayersContext = React.createContext({});
 const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   const { numPlayers, numPlayersPerSquad } = useNumberOfPlayers(); // Getting the number of players and players per squad from context.
   const [players, setPlayers] = useState<{ name: string }[]>([]); // State to keep track of the list of players.
+  const [squadPasswords, setSquadPasswords] = useState<string[]>([]); // State to keep track of the passwords for each squad.
   const [playerName, setPlayerName] = useState(""); // State to keep track of the current player name input.
   const [squads, setSquads] = useState<Squad[]>([]); // State to keep track of the squads.
   const [showSquads, setShowSquads] = useState(false); // State to manage whether to show squads or input form.
   const [error, setError] = useState(""); // State to manage error messages.
+  const [editingPlayer, setEditingPlayer] = useState<number | null>(null); // State to manage editing player index.
   const isMaxPlayersReached = players.length >= numPlayers; // Boolean to check if the maximum number of players has been reached.
 
   // Function to validate the player name input.
@@ -99,6 +104,7 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
         players: [],
         teams: [],
         salaryCap: salaryCap,
+        password: Math.random().toString(36).slice(-8),
       });
     }
 
@@ -121,6 +127,41 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
     } else {
       setError(`You need to add exactly ${numPlayers} players.`); // Setting an error message if the number of players is incorrect.
     }
+  };
+
+  // Function to handle editing a player.
+  // This function is called when the "Edit" button is clicked next to a player.
+  // It sets the player name input field to the name of the player being edited.
+  // The player name is updated when the user changes the input field.
+  // The player name is saved when the "Save" button is clicked.
+  // The editingPlayer state is used to keep track of the index of the player being edited.
+  // The editingPlayer state is set to null when the player name is saved.
+  const handleEditPlayer = (index: number) => {
+    setEditingPlayer(index); // Setting the editing player index.
+    setPlayerName(players[index].name); // Setting the player name to be edited.
+  };
+
+  // Function to handle saving the edited player name.
+  // This function is called when the "Save" button is clicked after editing a player name.
+  // It updates the player name in the players list with the new name.
+  // The player name input field is reset after saving the edited name.
+  // The editingPlayer state is reset to null after saving the edited name.
+  const handleSavePlayer = () => {
+    if (validatePlayerName(playerName) && editingPlayer !== null) {
+      const updatedPlayers = [...players]; // Creating a copy of the players array.
+      updatedPlayers[editingPlayer].name = playerName; // Updating the player name.
+      setPlayers(updatedPlayers); // Updating the players state with the edited player name.
+      setPlayerName(""); // Resetting the player name input field.
+      setEditingPlayer(null); // Resetting the editing player index.
+    }
+  };
+
+  // Function to handle deleting a player.
+  // This function is called when the "Delete" button is clicked next to a player.
+  // It removes the player from the list of players based on the index.
+  const handleDeletePlayer = (index: number) => {
+    const updatedPlayers = players.filter((_, i) => i !== index); // Filtering out the player to be deleted.
+    setPlayers(updatedPlayers); // Updating the players state with the filtered list.
   };
 
   // If squads are to be shown, render the squads.
@@ -147,6 +188,12 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
                   />
                 </ListItem>
               ))}
+              <ListItem key="password">
+                <ListItemText
+                  primary={`Password: ${squad.password}`}
+                  primaryTypographyProps={{ align: "center" }}
+                />
+              </ListItem>
             </List>
           </Box>
         ))}
@@ -183,20 +230,31 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
             margin="normal"
             variant="filled"
             required
-            disabled={isMaxPlayersReached}
             error={!!error}
             helperText={error}
           />
           <Box mb={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddPlayer}
-              disabled={isMaxPlayersReached || isPlayerNameEmpty}
-              style={{ marginRight: "8px" }}
-            >
-              Add Player
-            </Button>
+            {editingPlayer !== null ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSavePlayer}
+                style={{ marginRight: "8px" }}
+                disabled={isPlayerNameEmpty}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddPlayer}
+                disabled={isMaxPlayersReached || isPlayerNameEmpty}
+                style={{ marginRight: "8px" }}
+              >
+                Add Player
+              </Button>
+            )}
             <Button
               variant="contained"
               color="secondary"
@@ -216,6 +274,12 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
                       primary={player.name}
                       primaryTypographyProps={{ align: "center" }}
                     />
+                    <IconButton onClick={() => handleEditPlayer(index)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeletePlayer(index)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </ListItem>
                 ))}
               </List>

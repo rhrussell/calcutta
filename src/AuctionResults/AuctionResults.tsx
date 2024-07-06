@@ -37,7 +37,7 @@ const AuctionResults: React.FC<AuctionResultsProps> = ({ squads }) => {
             {squad.teams.map((team: Team, teamIndex) => (
               // Display each team's details in a list item
               <li key={teamIndex}>
-                {`${team.seed} ${team.name} ${team.record} ${team.region} vs ${team.opponent} - $${team.price}`}
+                {`${team.seed} ${team.name} ${team.record} - $${team.price}`}
               </li>
             ))}
           </ul>

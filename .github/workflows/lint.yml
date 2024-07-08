@@ -1,6 +1,12 @@
 name: Lint Check
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   lint:
@@ -15,8 +21,33 @@ jobs:
         with:
           node-version: '16'
 
+      # Install dependencies for both frontend and backend
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          (cd frontend && npm install)
+          (cd backend && npm install)
 
-      - name: Run ESLint
-        run: npx eslint 'src/**/*.{js,jsx,ts,tsx}'
+      # Run ESLint for frontend and backend
+      - name: Run ESLint on frontend
+        run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx}'
+      
+      - name: Run ESLint on backend
+        run: cd backend && npx eslint '**/*.{js,jsx,ts,tsx}'
+
+      # Run Prettier for frontend and backend
+      - name: Run Prettier on frontend
+        run: cd frontend && npx prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md}'
+
+      - name: Run Prettier on backend
+        run: cd backend && npx prettier --check '**/*.{js,jsx,ts,tsx,css,md}'
+
+      # Optionally, you may want to run TypeScript type checking for TypeScript files
+      # Uncomment the following lines if you have TypeScript files to type check
+      #- name: Run TypeScript type checking on frontend
+      #  run: cd frontend && npx tsc --noEmit
+
+      #- name: Run TypeScript type checking on backend
+      #  run: cd backend && npx tsc --noEmit
+
+

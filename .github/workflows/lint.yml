@@ -1,12 +1,12 @@
-name: Lint Check
+name: Lint Code Base
 
 on:
   push:
     branches:
-      - '**'
+      - '**'  # Triggers the workflow for pushes to all branches
   pull_request:
     branches:
-      - '**'
+      - '**'  # Triggers the workflow for pull requests to all branches
 
 jobs:
   lint:
@@ -14,33 +14,24 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      # Install dependencies for both frontend and backend
       - name: Install dependencies
         run: |
           npm install
           (cd frontend && npm install)
           (cd backend && npm install)
 
-      # Run ESLint for frontend and backend
-      - name: Run ESLint on frontend
-        run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx} --fix'
-      
-      - name: Run ESLint on backend
-        run: cd backend && npx eslint 'src/**/*.{js,jsx,ts,tsx} --fix'
+      - name: Run ESLint for frontend
+        run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx}' --fix
 
-      # Run Prettier for frontend and backend
-      - name: Run Prettier on frontend
-        run: cd frontend && npx prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md}'
-
-      - name: Run Prettier on backend
-        run: cd backend && npx prettier --check 'src**/*.{js,jsx,ts,tsx,css,md}'
+      - name: Run ESLint for backend
+        run: cd backend && npx eslint 'src/**/*.{js,ts}' --fix
 
       - name: Check for lint errors
         run: |

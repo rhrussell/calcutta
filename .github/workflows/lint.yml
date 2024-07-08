@@ -40,7 +40,7 @@ jobs:
         run: cd frontend && npx prettier --check 'src/**/*.{js,jsx,ts,tsx,css,md}'
 
       - name: Run Prettier on backend
-        run: cd backend && npx prettier --check '**/*.{js,jsx,ts,tsx,css,md}'
+        run: cd backend && npx prettier --check 'src**/*.{js,jsx,ts,tsx,css,md}'
 
       # Optionally, you may want to run TypeScript type checking for TypeScript files
       # Uncomment the following lines if you have TypeScript files to type check

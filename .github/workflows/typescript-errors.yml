@@ -1,6 +1,12 @@
 name: TypeScript Error Check
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'  # Triggers the workflow for pushes to all branches
+  pull_request:
+    branches:
+      - '**'  # Triggers the workflow for pull requests to all branches
 
 jobs:
   type-check:
@@ -8,15 +14,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          (cd frontend && npm install)
+          (cd backend && npm install)
 
-      - name: Run TypeScript compiler
-        run: npm run tsc
+      - name: Run TypeScript compiler on frontend
+        run: cd frontend && npx tsc --noEmit
+
+      - name: Run TypeScript compiler on backend
+        run: cd backend && npx tsc --noEmit

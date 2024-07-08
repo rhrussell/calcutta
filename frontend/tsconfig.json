@@ -16,5 +16,14 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["frontend/src/**/*", "test/**/*"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

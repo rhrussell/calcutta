@@ -1,5 +1,5 @@
 import pool from "../config/db";
-
+//Test the connection to the database
 const testConnection = async () => {
   try {
     const result = await pool.query("SELECT NOW()");

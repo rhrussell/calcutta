@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
 import LeagueForm from "./LeagueForm/LeagueForm";
@@ -14,6 +14,7 @@ import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
 import { Team, Squad } from "./types";
 import { Button } from "@mui/material";
+
 
 function App() {
   // Manage whether the home page is shown

@@ -6,6 +6,7 @@
 import React, { useState, FormEvent } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
 import { TextField, Button, Checkbox, FormControlLabel } from "@mui/material";
+import { createLeague } from "../api/leagueApi";
 
 // This defines the structure of the form data that we will collect from the user.
 interface FormData {
@@ -151,10 +152,17 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
   // It prevents the default form submission, sets the number of players, and calls the onSubmit function.
   // The onSubmit function is responsible for handling the form data and performing further actions.
   // The handleSubmit function is triggered when the user submits the form.
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // If the form is valid, set the number of players and call the onSubmit function
     if (validateForm()) {
+      try {
+        await createLeague(formData);
+        alert('League created successfully');
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while creating the league');
+      }
       setNumPlayers(parseInt(formData.numPlayers));
       setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
       console.log("League Data: ", formData);

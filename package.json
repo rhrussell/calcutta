@@ -1,23 +1,29 @@
 {
-    "name": "calcutta",
-    "private": true,
-    "workspaces": [
-      "frontend",
-      "backend"
-    ],
-    "scripts": {
-      "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
-      "install": "npm install",
-      "test": "",
-        "eject": "react-scripts eject",
+  "name": "calcutta",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
+    "test": "",
+    "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "format": "prettier --ignore-path .gitignore --write '**/*.+(js|ts|tsx|css|json)'",
     "tsc": "tsc",
-    "prepare": "husky install",
-      "build": "concurrently \"npm run build --prefix backend\" \"npm run build --prefix frontend\""
-    },
-    "devDependencies": {
-      "concurrently": "^7.5.0"
-    }
+    "build": "concurrently \"npm run build --prefix backend\" \"npm run build --prefix frontend\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "concurrently": "^7.5.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2"
   }
-  
+}

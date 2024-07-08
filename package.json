@@ -9,7 +9,7 @@
       "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
       "install": "npm install",
       "test": "",
-    "eject": "react-scripts eject",
+        "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "format": "prettier --ignore-path .gitignore --write '**/*.+(js|ts|tsx|css|json)'",
     "tsc": "tsc",

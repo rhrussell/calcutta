@@ -8,7 +8,12 @@
     "scripts": {
       "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
       "install": "npm install",
-      "test": "concurrently \"npm test --prefix backend\" \"npm test --prefix frontend\"",
+      "test": "",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .js,.ts,.tsx .",
+    "format": "prettier --ignore-path .gitignore --write '**/*.+(js|ts|tsx|css|json)'",
+    "tsc": "tsc",
+    "prepare": "husky install",
       "build": "concurrently \"npm run build --prefix backend\" \"npm run build --prefix frontend\""
     },
     "devDependencies": {

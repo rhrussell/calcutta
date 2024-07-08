@@ -30,10 +30,10 @@ jobs:
 
       # Run ESLint for frontend and backend
       - name: Run ESLint on frontend
-        run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx}'
+        run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx} --fix'
       
       - name: Run ESLint on backend
-        run: cd backend && npx eslint 'src/**/*.{js,jsx,ts,tsx}'
+        run: cd backend && npx eslint 'src/**/*.{js,jsx,ts,tsx} --fix'
 
       # Run Prettier for frontend and backend
       - name: Run Prettier on frontend
@@ -42,12 +42,7 @@ jobs:
       - name: Run Prettier on backend
         run: cd backend && npx prettier --check 'src**/*.{js,jsx,ts,tsx,css,md}'
 
-      # Optionally, you may want to run TypeScript type checking for TypeScript files
-      # Uncomment the following lines if you have TypeScript files to type check
-      #- name: Run TypeScript type checking on frontend
-      #  run: cd frontend && npx tsc --noEmit
-
-      #- name: Run TypeScript type checking on backend
-      #  run: cd backend && npx tsc --noEmit
-
-
+      - name: Check for lint errors
+        run: |
+          cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx}' || exit 1
+          cd ../backend && npx eslint 'src/**/*.{js,ts}' || exit 1

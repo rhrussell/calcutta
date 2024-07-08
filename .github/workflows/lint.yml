@@ -33,7 +33,7 @@ jobs:
         run: cd frontend && npx eslint 'src/**/*.{js,jsx,ts,tsx}'
       
       - name: Run ESLint on backend
-        run: cd backend && npx eslint '**/*.{js,jsx,ts,tsx}'
+        run: cd backend && npx eslint 'src/**/*.{js,jsx,ts,tsx}'
 
       # Run Prettier for frontend and backend
       - name: Run Prettier on frontend

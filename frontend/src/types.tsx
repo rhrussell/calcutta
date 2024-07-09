@@ -68,3 +68,12 @@ export interface Squad {
 // Each squad has a name (e.g., "Squad A"), a list of players (e.g., ["Alice", "Bob"]),
 //  a list of teams they are responsible for (e.g., the "Tigers" team),
 //  and a budget they can't exceed (e.g., $500).
+
+export interface League {
+  name: string;
+  minutesPerItem: number;
+  salaryCapacity: number;
+  numberOfPlayers: number;
+  numberOfPlayersPerSquad: number;
+  squads: Squad[];
+}

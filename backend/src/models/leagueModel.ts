@@ -8,7 +8,7 @@ export interface League {
   salaryCapacity: number;
   numberOfPlayers: number;
   numberOfPlayersPerSquad: number;
-  squads: Squad[]; // Define this type based on your actual data
+  squads?: Squad[]; // Define this type based on your actual data
 }
 
 // Function to create a new league
@@ -22,7 +22,7 @@ export const createLeague = async (league: League): Promise<number> => {
     squads,
   } = league;
   const result = await pool.query(
-    `INSERT INTO leagues (name, minutes_per_item, salary_capacity, number_of_players, number_of_players_per_squad, squads)
+    `INSERT INTO leagues (name, minutesPerItem, salaryCapacity, numberOfPlayers, numberOfPlayersPerSquad, squads)
         VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
     [
       name,

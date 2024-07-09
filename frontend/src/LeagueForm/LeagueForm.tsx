@@ -6,7 +6,7 @@
 import React, { useState, FormEvent } from "react";
 import { useNumberOfPlayers } from "../NumberOfPlayersContext";
 import { TextField, Button, Checkbox, FormControlLabel } from "@mui/material";
-import { createLeague } from "../api/leagueApi";
+import { League } from "../types";
 
 // This defines the structure of the form data that we will collect from the user.
 interface FormData {
@@ -25,7 +25,12 @@ interface LeagueFormProps {
   // This function is responsible for handling the form data and passing it to the parent component.
   // The parent component can then use this data to perform further actions.
   // The LeagueFormProps interface is used to define the type of props that the LeagueForm component expects.
-  onSubmit: (minutes: number, salary: number, order: boolean) => void;
+  onSubmit: (
+    league: League,
+    minutes: number,
+    salary: number,
+    order: boolean,
+  ) => void;
 }
 
 // This is the main function that creates the LeagueForm component.
@@ -43,6 +48,8 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     numPlayersPerSquad: "",
     orderOfAuction: false,
   });
+
+  const [league, setLeague] = useState<League>(); // State to keep track of the squads.
 
   // These are functions from a custom context that allow us to set the number of players globally.
   // This is useful for sharing data across different components without prop drilling.
@@ -156,20 +163,23 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     e.preventDefault();
     // If the form is valid, set the number of players and call the onSubmit function
     if (validateForm()) {
-      try {
-        await createLeague(formData);
-        alert('League created successfully');
-      } catch (error) {
-        console.error(error);
-        alert('An error occurred while creating the league');
-      }
       setNumPlayers(parseInt(formData.numPlayers));
       setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
       console.log("League Data: ", formData);
       // This calls the onSubmit function passed in as a prop with the necessary data.
       // The minutesPerItem and squadSalaryCap values are converted to numbers before being passed.
       // The orderOfAuction value is passed as is since it's already a boolean.
+      const newLeague: League = {
+        name: formData.leagueName,
+        minutesPerItem: parseInt(formData.minutesPerItem),
+        salaryCapacity: parseInt(formData.squadSalaryCap),
+        numberOfPlayers: parseInt(formData.numPlayers),
+        numberOfPlayersPerSquad: parseInt(formData.numPlayersPerSquad),
+        squads: [],
+      };
+      setLeague(newLeague);
       onSubmit(
+        newLeague,
         parseInt(formData.minutesPerItem),
         parseInt(formData.squadSalaryCap),
         formData.orderOfAuction,

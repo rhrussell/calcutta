@@ -12,9 +12,9 @@ import OtherSquads from "./OtherSquads/OtherSquads";
 import OrderOfAuction from "./OrderOfAuction/OrderOfAuction";
 import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
-import { Team, Squad } from "./types";
+import { Team, Squad, League } from "./types";
 import { Button } from "@mui/material";
-
+import { createLeague } from "./api/leagueApi";
 
 function App() {
   // Manage whether the home page is shown
@@ -46,6 +46,7 @@ function App() {
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   // Manage the squad salary cap
   const [squadSalaryCap, setSquadSalaryCap] = useState<number>(0);
+  const [league, setLeague] = useState<League>();
   // Manage the list of squads
   const [squads, setSquads] = useState<Squad[]>([]);
   // Manage the team that was sold
@@ -66,10 +67,12 @@ function App() {
 
   // Handle the submission of the league form
   const handleLeagueFormSubmit = (
+    league: League,
     minutes: number,
     salary: number,
     order: boolean,
   ) => {
+    setLeague(league);
     setMinutesPerItem(minutes);
     setSquadSalaryCap(salary);
     setOrderOfAuction(order);
@@ -78,8 +81,20 @@ function App() {
   };
 
   // Handle the submission of the squads form
-  const handleSquadsFormSubmit = (squads: Squad[]) => {
+  const handleSquadsFormSubmit = async (squads: Squad[]) => {
     setSquads(squads);
+    console.log(squads);
+    try {
+      if (league) {
+        await createLeague(league, squads); // Pass league and squads separately
+        alert("League created successfully");
+      } else {
+        alert("No league information available");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while creating the league");
+    }
     setShowSquadsForm(false);
     setShowTournamentBracket(true);
   };

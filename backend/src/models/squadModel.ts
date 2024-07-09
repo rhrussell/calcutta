@@ -5,25 +5,25 @@ export interface Squad {
   id?: number;
   leagueId: number;
   name: string;
-  players: string[];
-  teams: Team[]; // Define this type based on your actual data
   salaryCapacity: number;
   password: string;
+  players: string[];
+  teams?: Team[]; // Define this type based on your actual data
 }
 
 // Function to create a new squad
 export const createSquad = async (squad: Squad) => {
-  const { leagueId, name, players, teams, salaryCapacity, password } = squad;
+  const { leagueId, name, salaryCapacity, password, players, teams } = squad;
   await pool.query(
-    `INSERT INTO squads (league_id, name, players, teams, salary_capacity, password)
+    `INSERT INTO squads (leagueId, name, salaryCapacity, password, name, players, teams,)
         VALUES ($1, $2, $3, $4, $5, $6)`,
     [
       leagueId,
       name,
-      JSON.stringify(players),
-      JSON.stringify(teams),
       salaryCapacity,
       password,
+      JSON.stringify(players),
+      JSON.stringify(teams),
     ],
   );
 };

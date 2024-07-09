@@ -115,6 +115,7 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
     });
 
     setSquads(newSquads); // Updating the squads state with the new squads.
+    setShowSquads(true); // Setting the state to show the squads.
   };
 
   // Function to handle form submission.
@@ -164,58 +165,10 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
     setPlayers(updatedPlayers); // Updating the players state with the filtered list.
   };
 
-  // If squads are to be shown, render the squads.
-  // This block of code renders the squads once they are randomized.
-  // It displays the name of each squad and the list of players in each squad.
-  // It also provides buttons to randomize squads again or submit the squads.
-  // The onSubmit function is called when the "Submit" button is clicked.
-  // The squads state is passed as an argument to the onSubmit function.
-  if (showSquads) {
-    return (
-      <Box>
-        <Typography variant="h4" gutterBottom>
-          Squads
-        </Typography>
-        {squads.map((squad) => (
-          <Box key={squad.name} mb={2}>
-            <Typography variant="h5">{squad.name}</Typography>
-            <List>
-              {squad.players.map((playerName, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={playerName}
-                    primaryTypographyProps={{ align: "center" }}
-                  />
-                </ListItem>
-              ))}
-              <ListItem key="password">
-                <ListItemText
-                  primary={`Password: ${squad.password}`}
-                  primaryTypographyProps={{ align: "center" }}
-                />
-              </ListItem>
-            </List>
-          </Box>
-        ))}
-        <Button
-          variant="contained"
-          onClick={randomizeSquads}
-          style={{ marginRight: "8px" }}
-        >
-          Randomize Squads
-        </Button>
-        <Button variant="contained" onClick={() => onSubmit(squads)}>
-          Submit
-        </Button>
-      </Box>
-    );
-  }
+  const handleFinalizeSubmit = () => {
+    onSubmit(squads);
+  };
 
-  // Otherwise, render the form to input player names.
-  // This block of code renders the input form to add player names.
-  // It provides an input field for the player name and buttons to add players and submit the form.
-  // The form is displayed until the maximum number of players is reached.
-  // Once the maximum number of players is reached, the form is replaced with the squads.
   return (
     <Box>
       {!showSquads ? (
@@ -303,6 +256,12 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
                     />
                   </ListItem>
                 ))}
+                <ListItem key="password">
+                  <ListItemText
+                    primary={`Password: ${squad.password}`}
+                    primaryTypographyProps={{ align: "center" }}
+                  />
+                </ListItem>
               </List>
             </Box>
           ))}
@@ -313,7 +272,7 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
           >
             Randomize Squads
           </Button>
-          <Button variant="contained" onClick={() => onSubmit(squads)}>
+          <Button variant="contained" onClick={handleFinalizeSubmit}>
             Submit
           </Button>
         </Box>

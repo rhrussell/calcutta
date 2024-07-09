@@ -82,10 +82,14 @@ function App() {
 
   // Handle the submission of the squads form
   const handleSquadsFormSubmit = async (squads: Squad[]) => {
-    setSquads(squads);
-    console.log(squads);
     try {
       if (league) {
+        const updatedLeague: League = {
+          ...league,
+          squads,
+        };
+        setSquads(squads);
+        setLeague(updatedLeague);
         await createLeague(league, squads); // Pass league and squads separately
         alert("League created successfully");
       } else {

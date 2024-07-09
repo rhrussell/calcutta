@@ -19,8 +19,9 @@
 // This section defines the structure for a "Team" object.
 // Think of it as a blueprint that tells us what information a team should have.
 export interface Team {
+  id?: number;
   // The seed is like a ranking or position of the team in the tournament.
-  seed: string;
+  seed: number;
 
   // The name is simply the name of the team.
   name: string;
@@ -47,20 +48,22 @@ export interface Team {
 // This section defines the structure for a "Squad" object.
 // It's another blueprint, but this time for a group of people or players working together.
 export interface Squad {
+  id?: number;
+  leagueId?: number;
   // The name is the name of the squad.
   name: string;
-
-  // Players is a list (array) of names of the people in the squad.
-  players: string[];
-
-  // Teams is a list (array) of Team objects. Each squad has a collection of teams.
-  teams: Team[];
 
   // The salaryCap is the maximum amount of money the squad is allowed to spend.
   salaryCap: number;
 
   // The password is a security measure to restrict access to the squad.
   password: string;
+
+  // Players is a list (array) of names of the people in the squad.
+  players: string[];
+
+  // Teams is a list (array) of Team objects. Each squad has a collection of teams.
+  teams: Team[];
 }
 
 // Practical Example:
@@ -70,6 +73,7 @@ export interface Squad {
 //  and a budget they can't exceed (e.g., $500).
 
 export interface League {
+  id?: number;
   name: string;
   minutesPerItem: number;
   salaryCapacity: number;

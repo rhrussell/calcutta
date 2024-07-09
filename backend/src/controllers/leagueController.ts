@@ -1,12 +1,27 @@
 import { Request, Response } from "express";
 import pool from "../config/db";
 
+export interface Team {
+  id?: number;
+  seed: number;
+  name: string;
+  record: string;
+  region: string;
+  opponent: string;
+  price: number;
+}
+
 interface PlayerRow {
   name: string;
 }
 
 interface TeamRow {
+  seed: number;
   name: string;
+  record: string;
+  region: string;
+  opponent: string;
+  price: number;
 }
 
 // Create a new league
@@ -57,15 +72,33 @@ export const createLeague = async (req: Request, res: Response) => {
 
         // Insert teams into the database
         for (const team of squad.teams) {
-          await pool.query(
-            `INSERT INTO teams (squadId, name) VALUES ($1, $2)`,
-            [squadId, team.name],
+          const teamResult = await pool.query(
+            `INSERT INTO teams (seed, name, record, region, opponent, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+            [
+              team.seed,
+              team.name,
+              team.record,
+              team.region,
+              team.opponent,
+              team.price,
+            ],
           );
+
+          const teamId = teamResult.rows[0]?.id;
+
+          if (teamId) {
+            await pool.query(
+              `INSERT INTO squad_teams (squadId, teamId) VALUES ($1, $2)`,
+              [squadId, teamId],
+            );
+          }
         }
       }
     }
 
-    res.status(201).json({ message: "League created successfully", leagueId });
+    res
+      .status(201)
+      .json({ message: "League created successfully", id: leagueId });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to create league" });
@@ -101,11 +134,16 @@ export const getLeagueById = async (req: Request, res: Response) => {
 
       // Fetch teams for each squad
       const teamsResult = await pool.query(
-        "SELECT name FROM teams WHERE squadId = $1",
+        "SELECT t.seed, t.name, t.record, t.region, t.opponent, t.price FROM teams t JOIN squad_teams st ON t.id = st.teamId WHERE st.squadId = $1",
         [squad.id],
       );
       squad.teams = teamsResult.rows.map((row: TeamRow) => ({
+        seed: row.seed,
         name: row.name,
+        record: row.record,
+        region: row.region,
+        opponent: row.opponent,
+        price: row.price,
       }));
     }
 
@@ -119,45 +157,130 @@ export const getLeagueById = async (req: Request, res: Response) => {
 };
 
 // Finalize auction results
-export const finalizeAuction = async (req: Request, res: Response) => {
+export const finalizeResults = async (req: Request, res: Response) => {
   try {
-    // Your implementation here
-    res.status(200).json({ message: "Auction results finalized successfully" });
+    const { leagueId, squads } = req.body;
+    console.log("Request body:", req.body);
+    console.log(squads[0].teams[0]);
+
+    // Fetch the league and squads
+    const leagueResult = await pool.query(
+      "SELECT * FROM leagues WHERE id = $1",
+      [leagueId],
+    );
+
+    if (leagueResult.rows.length === 0) {
+      return res.status(404).json({ message: "League not found" });
+    }
+
+    const league = leagueResult.rows[0];
+
+    for (const squad of squads) {
+      const squadId = squad.id;
+      if (!squadId) {
+        console.error(`Squad ID is missing for squad: ${squad.name}`);
+        continue;
+      }
+
+      for (const team of squad.teams) {
+        const teamResult = await pool.query(
+          `INSERT INTO teams (seed, name, record, region, opponent, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+          [
+            team.seed,
+            team.name,
+            team.record,
+            team.region,
+            team.opponent,
+            team.price,
+          ],
+        );
+
+        const teamId = teamResult.rows[0]?.id;
+        console.log("Team ID: ", teamId);
+        console.log("Squad ID: ", squadId);
+
+        if (teamId) {
+          await pool.query(
+            `INSERT INTO squad_teams (squadId, teamId) VALUES ($1, $2)`,
+            [squadId, teamId],
+          );
+        }
+      }
+
+      const teamsResult = await pool.query(
+        "SELECT t.seed, t.name, t.record, t.region, t.opponent, t.price FROM teams t JOIN squad_teams st ON t.id = st.teamId WHERE st.squadId = $1",
+        [squad.id],
+      );
+
+      squad.teams = teamsResult.rows.map((row: TeamRow) => ({
+        seed: row.seed,
+        name: row.name,
+        record: row.record,
+        region: row.region,
+        opponent: row.opponent,
+        price: row.price,
+      }));
+
+      // Ensure squad.salaryCap is a number
+      if (typeof squad.salaryCap !== "number") {
+        console.error(
+          `Invalid salaryCap for squad ${squad.name}: ${squad.salaryCap}`,
+        );
+        continue;
+      }
+
+      const totalSpent = squad.teams.reduce((total: number, team: Team) => {
+        if (isNaN(team.price)) {
+          console.error(`Invalid price for team ${team.name}: ${team.price}`);
+        }
+        return total + (team.price || 0);
+      }, 0);
+
+      if (isNaN(totalSpent)) {
+        console.error(`Total spent is NaN for squad ${squad.name}`);
+      } else {
+        squad.salaryCap -= totalSpent;
+      }
+
+      await pool.query("UPDATE squads SET salaryCapacity = $1 WHERE id = $2", [
+        squad.salaryCap,
+        squadId,
+      ]);
+    }
+
+    const squadsResult = await pool.query(
+      "SELECT * FROM squads WHERE leagueId = $1",
+      [leagueId],
+    );
+
+    const updatedSquads = squadsResult.rows;
+
+    for (const squad of updatedSquads) {
+      const playersResult = await pool.query(
+        "SELECT p.name FROM players p JOIN squad_players sp ON p.id = sp.playerId WHERE sp.squadId = $1",
+        [squad.id],
+      );
+      squad.players = playersResult.rows.map((row: PlayerRow) => row.name);
+
+      const teamsResult = await pool.query(
+        "SELECT t.seed, t.name, t.record, t.region, t.opponent, t.price FROM teams t JOIN squad_teams st ON t.id = st.teamId WHERE st.squadId = $1",
+        [squad.id],
+      );
+      squad.teams = teamsResult.rows.map((row: TeamRow) => ({
+        seed: row.seed,
+        name: row.name,
+        record: row.record,
+        region: row.region,
+        opponent: row.opponent,
+        price: row.price,
+      }));
+    }
+
+    league.squads = updatedSquads;
+
+    res.status(200).json(league);
   } catch (error) {
-    console.error(error);
+    console.error("Error finalizing auction:", error);
     res.status(500).json({ message: "Failed to finalize auction" });
   }
 };
-
-// import { createLeague, updateLeague, getLeagueById } from '../models/leagueModel';
-// import { createSquad, updateSquad } from '../models/squadModel';
-
-// export const createLeagueController = async (req: Request, res: Response) => {
-//     const league = req.body;
-//     try {
-//         const leagueId = await createLeague(league);
-
-//         for (const squad of league.squadObjects) {
-//             await createSquad({ ...squad, leagueId });
-//         }
-
-//         res.status(201).json({ message: 'League and squads created successfully' });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'An error occurred while creating the league' });
-//     }
-// };
-
-// export const finalizeResultsController = async (req: Request, res: Response) => {
-//     const { leagueId, squads } = req.body;
-//     try {
-//         for (const squad of squads) {
-//             await updateSquad(squad.id, squad);
-//         }
-//         await updateLeague(leagueId, { squadObjects: squads });
-//         res.status(200).json({ message: 'Results finalized successfully' });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'An error occurred while finalizing the results' });
-//     }
-// };

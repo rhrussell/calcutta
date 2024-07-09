@@ -14,7 +14,7 @@ import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
 import { Team, Squad, League } from "./types";
 import { Button } from "@mui/material";
-import { createLeague } from "./api/leagueApi";
+import { createLeague, finalizeResults } from "./api/leagueApi";
 
 function App() {
   // Manage whether the home page is shown
@@ -90,7 +90,16 @@ function App() {
         };
         setSquads(squads);
         setLeague(updatedLeague);
-        await createLeague(league, squads); // Pass league and squads separately
+
+        console.log("Creating league:", league);
+
+        const createdLeague = await createLeague(updatedLeague, squads); // Pass league and squads separately
+
+        console.log("League created:", createdLeague);
+
+        setLeague(createdLeague);
+
+        // console.log("League ID:", league.id);
         alert("League created successfully");
       } else {
         alert("No league information available");
@@ -177,6 +186,25 @@ function App() {
   // Handle when the auction is complete
   const handleAuctionComplete = () => {
     setAuctionComplete(true); // Set the auction to complete
+  };
+
+  const handleFinalizeResults = async () => {
+    try {
+      if (league?.id) {
+        console.log("Finalizing auction results for league:", league.id);
+
+        const updatedLeague = await finalizeResults(league.id, squads);
+        setLeague(updatedLeague);
+
+        console.log("Auction results finalized:", updatedLeague);
+        alert("Calcutta auction results finalized successfully!");
+      } else {
+        console.error("League ID is not defined");
+        alert("League ID is not defined");
+      }
+    } catch (error) {
+      console.error("Failed to finalize auction results:", error);
+    }
   };
 
   return (
@@ -328,6 +356,7 @@ function App() {
               {auctionComplete && !showAuctionResults && (
                 <button
                   onClick={() => {
+                    handleFinalizeResults();
                     setShowAuctionResults(true);
                     setShowTournamentBracket(false);
                   }}

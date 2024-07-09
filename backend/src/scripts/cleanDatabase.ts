@@ -5,7 +5,7 @@ const cleanDatabase = async () => {
     console.log("Cleaning the database...");
 
     await pool.query(
-      "TRUNCATE TABLE teams, squads, leagues, players, squad_players RESTART IDENTITY CASCADE",
+      "TRUNCATE TABLE teams, squads, leagues, players, squad_players, squad_teams RESTART IDENTITY CASCADE",
     );
 
     console.log("Database cleaned successfully.");

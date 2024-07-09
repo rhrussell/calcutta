@@ -2,13 +2,13 @@ import { Router } from "express";
 import {
   createLeague,
   getLeagueById,
-  finalizeAuction,
+  finalizeResults,
 } from "../controllers/leagueController";
 
 const router = Router();
 
 router.post("/create", createLeague);
 router.get("/:id", getLeagueById);
-router.put("/finalize", finalizeAuction);
+router.post("/finalize", finalizeResults);
 
 export default router;

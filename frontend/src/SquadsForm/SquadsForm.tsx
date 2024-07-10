@@ -122,7 +122,6 @@ const SquadsForm: React.FC<SquadsFormProps> = ({ onSubmit, salaryCap }) => {
   // This function is called when the "Submit" button is clicked after the maximum number of players is reached.
   const handleSubmit = () => {
     if (players.length === numPlayers) {
-      console.log(players); // Logging the list of players (for debugging purposes).
       randomizeSquads(); // Randomizing the squads.
       setShowSquads(true); // Setting the state to show the squads.
     } else {

@@ -91,12 +91,11 @@ function App() {
         setSquads(squads);
         setLeague(updatedLeague);
 
-        console.log("Creating league:", league);
-
         const createdLeague = await createLeague(updatedLeague, squads); // Pass league and squads separately
 
         console.log("League created:", createdLeague);
 
+        setSquads(createdLeague.squads);
         setLeague(createdLeague);
 
         // console.log("League ID:", league.id);
@@ -169,7 +168,7 @@ function App() {
   // Handle when a team is sold
   const handleTeamSold = (soldTeam: Team | null) => {
     if (soldTeam !== null && soldTeam.price !== 0) {
-      console.log("Handle Team Sold");
+      console.log("Team Sold");
       setSoldTeam(soldTeam); // Set the sold team
     }
   };

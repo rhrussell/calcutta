@@ -88,7 +88,7 @@ const AuctionTeam: React.FC<AuctionTeamProps> = ({
   const handleTimerUp = useCallback(() => {
     // If there is a current team, a bid has been placed, and the team has not been added yet
     if (currentTeam && highestBid > 0 && !teamAdded) {
-      console.log("Handle Timer Up");
+      console.log("Timer Up");
       // Set the current team's price to the highest bid
       currentTeam.price = highestBid;
       // Call the onTeamSold function with the current team

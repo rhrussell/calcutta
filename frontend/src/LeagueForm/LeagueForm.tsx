@@ -165,7 +165,6 @@ const LeagueForm: React.FC<LeagueFormProps> = ({ onSubmit }) => {
     if (validateForm()) {
       setNumPlayers(parseInt(formData.numPlayers));
       setNumPlayersPerSquad(parseInt(formData.numPlayersPerSquad));
-      console.log("League Data: ", formData);
       // This calls the onSubmit function passed in as a prop with the necessary data.
       // The minutesPerItem and squadSalaryCap values are converted to numbers before being passed.
       // The orderOfAuction value is passed as is since it's already a boolean.

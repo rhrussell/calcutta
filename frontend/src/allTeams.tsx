@@ -8,7 +8,7 @@ import { Team } from "./types";
 // The list is an array of Team objects.
 export const allTeams: Team[] = [
   {
-    seed: "1", // Seed is the rank or position of the team in the tournament.
+    seed: 1, // Seed is the rank or position of the team in the tournament.
     name: "UConn", // The name of the team.
     record: "(31-3)", // The team's win-loss record.
     region: "East", // The region where the team is competing.
@@ -16,7 +16,7 @@ export const allTeams: Team[] = [
     price: 0, // The price or value assigned to the team.
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Stetson",
     record: "(22-12)",
     region: "East",
@@ -24,7 +24,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "8",
+    seed: 8,
     name: "Florida Atlantic",
     record: "(25-8)",
     region: "East",
@@ -32,7 +32,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "9",
+    seed: 9,
     name: "Northwestern",
     record: "(21-11)",
     region: "East",
@@ -40,7 +40,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "5",
+    seed: 5,
     name: "San Diego",
     record: "(24-10)",
     region: "East",
@@ -48,7 +48,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "12",
+    seed: 12,
     name: "UAB",
     record: "(23-11)",
     region: "East",
@@ -56,7 +56,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "4",
+    seed: 4,
     name: "Auburn",
     record: "(27-7)",
     region: "East",
@@ -64,7 +64,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "13",
+    seed: 13,
     name: "Yale",
     record: "(22-9)",
     region: "East",
@@ -72,7 +72,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "6",
+    seed: 6,
     name: "BYU",
     record: "(23-10)",
     region: "East",
@@ -80,7 +80,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "11",
+    seed: 11,
     name: "Duquesne",
     record: "(24-11)",
     region: "East",
@@ -88,7 +88,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "3",
+    seed: 3,
     name: "Illinois",
     record: "(26-8)",
     region: "East",
@@ -96,7 +96,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "14",
+    seed: 14,
     name: "Morehead St.",
     record: "(26-8)",
     region: "East",
@@ -104,7 +104,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "7",
+    seed: 7,
     name: "Washington St.",
     record: "(24-9)",
     region: "East",
@@ -112,7 +112,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Drake",
     record: "(28-6)",
     region: "East",
@@ -120,7 +120,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "2",
+    seed: 2,
     name: "Iowa St.",
     record: "(27-7)",
     region: "East",
@@ -128,7 +128,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "15",
+    seed: 15,
     name: "S. Dakota St.",
     record: "(22-12)",
     region: "East",
@@ -136,7 +136,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "1",
+    seed: 1,
     name: "North Carolina",
     record: "(27-7)",
     region: "West",
@@ -144,7 +144,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Howard (Play In)", // "Play In" indicates this team will face a yet-to-be-determined team.
     record: "(18-16)",
     region: "West",
@@ -152,7 +152,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Wagner (Play In)",
     record: "(16-15)",
     region: "West",
@@ -160,7 +160,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "8",
+    seed: 8,
     name: "Mississippi St.",
     record: "(21-13)",
     region: "West",
@@ -168,7 +168,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "9",
+    seed: 9,
     name: "Michigan St.",
     record: "(19-14)",
     region: "West",
@@ -176,7 +176,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "5",
+    seed: 5,
     name: "Saint Mary's",
     record: "(26-7)",
     region: "West",
@@ -184,7 +184,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "12",
+    seed: 12,
     name: "Grand Canyon",
     record: "(29-4)",
     region: "West",
@@ -192,7 +192,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "4",
+    seed: 4,
     name: "Alabama",
     record: "(21-11)",
     region: "West",
@@ -200,7 +200,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "13",
+    seed: 13,
     name: "Charleston",
     record: "(27-7)",
     region: "West",
@@ -208,7 +208,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "6",
+    seed: 6,
     name: "Clemson",
     record: "(21-11)",
     region: "West",
@@ -216,7 +216,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "11",
+    seed: 11,
     name: "New Mexico",
     record: "(26-9)",
     region: "West",
@@ -224,7 +224,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "3",
+    seed: 3,
     name: "Baylor",
     record: "(23-10)",
     region: "West",
@@ -232,7 +232,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "14",
+    seed: 14,
     name: "Colgate",
     record: "(25-9)",
     region: "West",
@@ -240,7 +240,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "7",
+    seed: 7,
     name: "Dayton",
     record: "(24-7)",
     region: "West",
@@ -248,7 +248,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Nevada",
     record: "(26-7)",
     region: "West",
@@ -256,7 +256,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "2",
+    seed: 2,
     name: "Arizona",
     record: "(25-8)",
     region: "West",
@@ -264,7 +264,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "15",
+    seed: 15,
     name: "Long Beach St.",
     record: "(21-14)",
     region: "West",
@@ -272,7 +272,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "1",
+    seed: 1,
     name: "Houston",
     record: "(30-4)",
     region: "South",
@@ -280,7 +280,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Longwood",
     record: "(21-13)",
     region: "South",
@@ -288,7 +288,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "8",
+    seed: 8,
     name: "Nebraska",
     record: "(23-10)",
     region: "South",
@@ -296,7 +296,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "9",
+    seed: 9,
     name: "Texas A&M",
     record: "(20-14)",
     region: "South",
@@ -304,7 +304,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "5",
+    seed: 5,
     name: "Wisconsin",
     record: "(22-13)",
     region: "South",
@@ -312,7 +312,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "12",
+    seed: 12,
     name: "James Madison",
     record: "(31-3)",
     region: "South",
@@ -320,7 +320,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "4",
+    seed: 4,
     name: "Duke",
     record: "(24-8)",
     region: "South",
@@ -328,7 +328,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "13",
+    seed: 13,
     name: "Vermont",
     record: "(28-6)",
     region: "South",
@@ -336,7 +336,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "6",
+    seed: 6,
     name: "Texas Tech",
     record: "(23-10)",
     region: "South",
@@ -344,7 +344,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "11",
+    seed: 11,
     name: "NC State",
     record: "(22-14)",
     region: "South",
@@ -352,7 +352,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "3",
+    seed: 3,
     name: "Kentucky",
     record: "(23-9)",
     region: "South",
@@ -360,7 +360,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "14",
+    seed: 14,
     name: "Oakland",
     record: "(23-11)",
     region: "South",
@@ -368,7 +368,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "7",
+    seed: 7,
     name: "Florida",
     record: "(24-11)",
     region: "South",
@@ -376,7 +376,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Boise St. (Play In)",
     record: "(22-10)",
     region: "South",
@@ -384,7 +384,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Colorado (Play In)",
     record: "(24-10)",
     region: "South",
@@ -392,7 +392,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "2",
+    seed: 2,
     name: "Marquette",
     record: "(25-9)",
     region: "South",
@@ -400,7 +400,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "15",
+    seed: 15,
     name: "Western Ky.",
     record: "(22-11)",
     region: "South",
@@ -408,7 +408,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "1",
+    seed: 1,
     name: "Purdue",
     record: "(29-4)",
     region: "Midwest",
@@ -416,7 +416,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Montana St. (Play In)",
     record: "(17-17)",
     region: "Midwest",
@@ -424,7 +424,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "16",
+    seed: 16,
     name: "Grambling St. (Play In)",
     record: "(20-14)",
     region: "Midwest",
@@ -432,7 +432,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "8",
+    seed: 8,
     name: "Utah St.",
     record: "(27-6)",
     region: "Midwest",
@@ -440,7 +440,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "9",
+    seed: 9,
     name: "TCU",
     record: "(21-12)",
     region: "Midwest",
@@ -448,7 +448,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "5",
+    seed: 5,
     name: "Gonzaga",
     record: "(25-7)",
     region: "Midwest",
@@ -456,7 +456,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "12",
+    seed: 12,
     name: "McNeese",
     record: "(30-3)",
     region: "Midwest",
@@ -464,7 +464,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "4",
+    seed: 4,
     name: "Kansas",
     record: "(22-10)",
     region: "Midwest",
@@ -472,7 +472,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "13",
+    seed: 13,
     name: "Samford",
     record: "(29-5)",
     region: "Midwest",
@@ -480,7 +480,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "6",
+    seed: 6,
     name: "South Carolina",
     record: "(26-7)",
     region: "Midwest",
@@ -488,7 +488,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "11",
+    seed: 11,
     name: "Oregon",
     record: "(23-11)",
     region: "Midwest",
@@ -496,7 +496,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "3",
+    seed: 3,
     name: "Creighton",
     record: "(23-9)",
     region: "Midwest",
@@ -504,7 +504,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "14",
+    seed: 14,
     name: "Akron",
     record: "(24-10)",
     region: "Midwest",
@@ -512,7 +512,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "7",
+    seed: 7,
     name: "Texas",
     record: "(20-12)",
     region: "Midwest",
@@ -520,7 +520,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Virginia (Play In)",
     record: "(23-10)",
     region: "Midwest",
@@ -528,7 +528,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "10",
+    seed: 10,
     name: "Colorado St. (Play In)",
     record: "(24-10)",
     region: "Midwest",
@@ -536,7 +536,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "2",
+    seed: 2,
     name: "Tennessee",
     record: "(24-8)",
     region: "Midwest",
@@ -544,7 +544,7 @@ export const allTeams: Team[] = [
     price: 0,
   },
   {
-    seed: "15",
+    seed: 15,
     name: "Saint Peter's",
     record: "(19-13)",
     region: "Midwest",

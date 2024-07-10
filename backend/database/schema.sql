@@ -33,8 +33,19 @@ CREATE TABLE IF NOT EXISTS squad_players (
 -- Define the teams table
 CREATE TABLE IF NOT EXISTS teams (
     id SERIAL PRIMARY KEY,
+    seed INT NOT NULL,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    record VARCHAR(255) NOT NULL,
+    region VARCHAR(255) NOT NULL,
+    opponent VARCHAR(255) NOT NULL,
+    price INT NOT NULL
+);
+
+-- Define the squad teams table
+CREATE TABLE IF NOT EXISTS squad_teams (
+    id SERIAL PRIMARY KEY,
     squadId INTEGER REFERENCES squads(id) ON DELETE CASCADE,
-    name VARCHAR(255) UNIQUE NOT NULL
+    teamId INTEGER REFERENCES teams(id) ON DELETE CASCADE
 );
 
 -- Add indices or additional constraints if necessary

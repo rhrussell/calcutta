@@ -12,6 +12,26 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("startAuction", data);
   });
 
+  socket.on("timerPaused", (data) => {
+    socket.broadcast.emit("timerPaused", data);
+  });
+
+  socket.on("timerEnded", (data) => {
+    socket.broadcast.emit("timerEnded", data);
+  });
+
+  socket.on("timerUpdate", (data) => {
+    socket.broadcast.emit("timerUpdate", data);
+  });
+
+  socket.on("previousTeamInfoNull", (data) => {
+    socket.broadcast.emit("previousTeamInfoNull", data);
+  });
+
+  socket.on("updateUpcomingTeams", (data) => {
+    socket.broadcast.emit("updateUpcomingTeams", data);
+  });
+
   socket.on("placeBid", (data) => {
     socket.broadcast.emit("placeBid", data);
   });

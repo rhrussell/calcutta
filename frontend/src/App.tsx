@@ -65,6 +65,7 @@ function App() {
   // Manage the list of upcoming teams
   const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
   const [previousTeamInfo, setPreviousTeamInfo] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
 
   useEffect(() => {
     // WebSocket event handlers
@@ -73,8 +74,36 @@ function App() {
       setLeague(data.league);
       setSquads(data.squads);
       setSquadSalaryCap(data.salaryCapacity || 0);
+      setMinutesPerItem(data.minutesPerItem || 0);
+      setChangeTeamFlag(false);
+      setShowNextTeamButton(false);
       setIsWaiting(false);
       setShowTournamentBracket(true);
+    });
+
+    socket.on("timerPaused", (data) => {
+      setTimerActive(data.timerActive);
+      setChangeTeamFlag(data.changeTeamFlag);
+    });
+
+    socket.on("timerEnded", (data) => {
+      setTimerActive(data.timerActive);
+      setChangeTeamFlag(data.changeTeamFlag);
+      setTimerEnded(data.timerEnded);
+    });
+
+    socket.on("previousTeamInfoNull", (data) => {
+      setPreviousTeamInfo(data.previousTeamInfo);
+      setTimerActive(data.timerActive);
+    });
+
+    socket.on("updateUpcomingTeams", (data) => {
+      setUpcomingTeams(data.teams);
+    });
+
+    socket.on("timerUpdate", (data) => {
+      setTimeLeft(data.timeLeft);
+      setTimerActive(data.timerActive);
     });
 
     socket.on("placeBid", (data) => {
@@ -84,6 +113,11 @@ function App() {
 
     return () => {
       socket.off("startAuction");
+      socket.off("timerPaused");
+      socket.off("timerEnded");
+      socket.off("previousTeamInfoNull");
+      socket.off("updateUpcomingTeams");
+      socket.off("timerUpdate");
       socket.off("placeBid");
     };
   }, []);
@@ -177,7 +211,7 @@ function App() {
       league: league,
       squads: squads,
       salaryCapacity: squadSalaryCap,
-      leagueId: league?.id,
+      minutesPerItem: minutesPerItem,
     }); // Notify others to start the auction
     setIsWaiting(false);
     setShowTournamentBracket(true);
@@ -185,6 +219,11 @@ function App() {
 
   // Handle the end of the timer
   const handleTimerEnd = () => {
+    socket.emit("timerEnded", {
+      timerActive: false,
+      changeTeamFlag: true,
+      timerEnded: true,
+    });
     setTimerActive(false); // Set the timer to inactive when the timer ends
     setShowNextTeamButton(true); // Show the Next Team button when the timer ends
     setChangeTeamFlag(false); // Set change team flag to true to display the next team
@@ -193,6 +232,10 @@ function App() {
 
   // Handle the pause of the timer
   const handleTimerPause = (isPaused: boolean) => {
+    socket.emit("timerPaused", {
+      timerActive: !isPaused,
+      changeTeamFlag: false,
+    });
     setTimerActive(!isPaused); // Set the timer to active when the timer is paused
     setShowNextTeamButton(false); // Hide the Next Team button when the timer is paused
     setChangeTeamFlag(false); // Reset change team flag when the timer is paused
@@ -241,11 +284,17 @@ function App() {
   };
 
   const handlePlay = () => {
+    socket.emit("previousTeamInfoNull", {
+      previousTeamInfo: null,
+      timerActive: true,
+    });
     setPreviousTeamInfo(null);
+    setTimerActive(true);
   };
 
   // Update the list of upcoming teams
   const updateUpcomingTeams = (teams: Team[]) => {
+    socket.emit("updateUpcomingTeams", { teams: teams }); // Notify others about the upcoming teams
     setUpcomingTeams(teams); // Update the list of upcoming teams
   };
 
@@ -381,6 +430,7 @@ function App() {
                     resetFlag={changeTeamFlag}
                     showNextTeamButton={showNextTeamButton}
                     onPlay={handlePlay}
+                    isCommissioner={isCommissioner}
                   />
                   {showNextTeamButton &&
                     !timerActive &&
@@ -417,6 +467,15 @@ function App() {
                 <div>
                   {/* Squad member view */}
                   <div>
+                    <Timer
+                      minutesPerItem={minutesPerItem}
+                      onTimerEnd={handleTimerEnd}
+                      onTimerPause={handleTimerPause}
+                      resetFlag={changeTeamFlag}
+                      showNextTeamButton={showNextTeamButton}
+                      onPlay={handlePlay}
+                      isCommissioner={!isCommissioner}
+                    />
                     {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
                     <AuctionTeam
                       teams={allTeams}

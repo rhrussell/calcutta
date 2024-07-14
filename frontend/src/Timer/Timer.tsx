@@ -1,5 +1,8 @@
 // Importing necessary parts from React
 import React, { useState, useEffect, useRef } from "react";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3001");
 
 // Defining the types for the properties that the Timer component will receive
 // The TimerProps interface specifies the properties that the Timer component expects when it is used
@@ -10,6 +13,7 @@ interface TimerProps {
   resetFlag: boolean; // Flag to reset the timer
   showNextTeamButton: boolean; // Flag to indicate if the Next Team button is shown
   onPlay: () => void;
+  isCommissioner: boolean;
 }
 
 // The main Timer component
@@ -25,6 +29,7 @@ const Timer: React.FC<TimerProps> = ({
   resetFlag,
   showNextTeamButton,
   onPlay,
+  isCommissioner,
 }) => {
   // State to keep track of the remaining time (in seconds)
   const [timeLeft, setTimeLeft] = useState<number>(minutesPerItem * 60);
@@ -70,6 +75,7 @@ const Timer: React.FC<TimerProps> = ({
   // Function to handle pausing the timer
   const handlePause = () => {
     setIsActive(false);
+    socket.emit("timerPaused", { timerActive: false, changeTeamFlag: false });
   };
 
   // Function to handle playing the timer
@@ -77,6 +83,7 @@ const Timer: React.FC<TimerProps> = ({
     setIsActive(true);
     setPreviousTeamInfo(null);
     onPlay();
+    socket.emit("timerUpdate", { timerActive: true });
   };
 
   // Function to format the time as minutes and seconds
@@ -91,12 +98,19 @@ const Timer: React.FC<TimerProps> = ({
     <div>
       <h2>Timer</h2>
       <h3>{formatTime(timeLeft)}</h3>
-      {!showNextTeamButton && // If the Next Team button is not shown
-        (isActive ? (
-          <button onClick={handlePause}>Pause</button> // Button to pause the timer
-        ) : (
-          <button onClick={handlePlay}>Play</button> // Button to play the timer
-        ))}
+      {!showNextTeamButton &&
+        isCommissioner && ( // If the Next Team button is not shown
+          // (isActive ? (
+          //   <button onClick={handlePause}>Pause</button> // Button to pause the timer
+          // ) : (
+          //   <button onClick={handlePlay}>Play</button> // Button to play the timer
+          // ))}
+          <>
+            <button onClick={isActive ? handlePause : handlePlay}>
+              {isActive ? "Pause" : "Play"}
+            </button>
+          </>
+        )}
     </div>
   );
 };

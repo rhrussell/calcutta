@@ -70,6 +70,8 @@ function App() {
     // WebSocket event handlers
     socket.on("startAuction", (data) => {
       console.log("Auction started:", data);
+      setLeague(data.league);
+      setSquads(data.squads);
       setIsWaiting(false);
       setShowTournamentBracket(true);
     });
@@ -150,6 +152,7 @@ function App() {
     console.log("Password: ", password);
     //setShowJoinLeagueForm(false);
     handleSuccessfulJoin(leagueName, password);
+    setSquads(squads);
   };
 
   const handleSuccessfulJoin = async (leagueName: string, password: string) => {
@@ -158,17 +161,14 @@ function App() {
       console.log("Squad Name: ", response.squadName);
       const testLeague = await getLeagueByName(leagueName);
       const testSquads = testLeague.squads;
-
-      for (const squad of testSquads) {
-        console.log(squad.name);
-        if (squad.name === response.squadName) {
-          console.log("It works");
-          setYourSquad(squad);
-          setIsWaiting(true);
-          setIsCommissioner(false); // Users joining the league are not commissioners
-          setShowJoinLeagueForm(false);
-        }
-      }
+      setSquads(testSquads);
+      const yourSquad = testSquads.find(
+        (squad) => squad.name === response.squadName,
+      );
+      setYourSquad(yourSquad || null); // Set the user's squad if found
+      setIsWaiting(true);
+      setIsCommissioner(false); // Users joining the league are not commissioners
+      setShowJoinLeagueForm(false);
     } catch (error) {
       console.error("Failed to join the league:", error);
       alert("Failed to join the league");
@@ -176,7 +176,11 @@ function App() {
   };
 
   const handleContinueClick = () => {
-    socket.emit("startAuction", { leagueId: league?.id }); // Notify others to start the auction
+    socket.emit("startAuction", {
+      league: league,
+      squads: squads,
+      leagueId: league?.id,
+    }); // Notify others to start the auction
     setIsWaiting(false);
     setShowTournamentBracket(true);
   };

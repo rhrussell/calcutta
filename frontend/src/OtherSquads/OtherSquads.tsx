@@ -62,10 +62,12 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
 
   // useEffect hook to remove your squad from the list when the component loads
   useEffect(() => {
+    console.log("Squads received:", squads);
+    console.log("Your Squad:", yourSquad);
     if (yourSquad) {
       removeYourSquad(yourSquad);
     }
-  }, []);
+  }, [squads, yourSquad]);
 
   return (
     <div>

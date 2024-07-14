@@ -1,3 +1,4 @@
+// import express, { Request, Response, NextFunction } from 'express';
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -6,19 +7,13 @@ import leagueRoutes from "./routes/leagueRoutes";
 import { Server } from "socket.io";
 import http from "http";
 
-dotenv.config({ path: __dirname + "/.env" });
-
-// console.log('Database User:', process.env.DB_USER);
-// console.log('Database Host:', process.env.DB_HOST);
-// console.log('Database Name:', process.env.DB_NAME);
-// console.log('Database Password:', process.env.DB_PASSWORD);
-// console.log('Database Port:', process.env.DB_PORT);
+dotenv.config({ path: __dirname + "/../.env" }); // Adjust path if needed
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: "http://localhost:3000", // Adjust if your frontend runs on a different port
     methods: ["GET", "POST"],
   },
 });
@@ -31,11 +26,22 @@ app.use("/api/leagues", leagueRoutes);
 // WebSocket setup
 io.on("connection", (socket) => {
   console.log("A user connected");
+
+  socket.on("startAuction", (data) => {
+    console.log("Auction started:", data);
+    socket.broadcast.emit("startAuction", data);
+  });
+
+  socket.on("placeBid", (data) => {
+    console.log("Bid placed:", data);
+    socket.broadcast.emit("placeBid", data);
+  });
+
+  // Add other WebSocket event handlers as needed
+
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
-
-  // Add your socket event listeners here
 });
 
 // Server setup

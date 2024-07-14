@@ -13,6 +13,24 @@ export const createLeague = async (
   return { ...league, id: response.data.id, squads: response.data.squads }; // Ensure the ID is included in the returned league object
 };
 
+export const getLeagueByName = async (leagueName: string): Promise<League> => {
+  const response = await axios.get(`${API_URL}/name/${leagueName}`);
+  return response.data;
+};
+
+export const joinLeague = async (leagueName: string, password: string) => {
+  try {
+    const response = await axios.post(`${API_URL}/join`, {
+      leagueName,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error joining the league:", error);
+    throw error;
+  }
+};
+
 export const finalizeResults = async (
   leagueId: number,
   squads: Squad[],

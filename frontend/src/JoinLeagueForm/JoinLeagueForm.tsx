@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
+import { joinLeague } from "../api/leagueApi"; // Import the joinLeague API call
 
 interface JoinLeagueFormProps {
   onSubmit: (leagueName: string, password: string) => void;
@@ -8,12 +9,11 @@ interface JoinLeagueFormProps {
 const JoinLeagueForm: React.FC<JoinLeagueFormProps> = ({ onSubmit }) => {
   const [leagueName, setLeagueName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [submitted, setSubmitted] = useState<boolean>(false);
+  // const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSubmit(leagueName, password);
-    setSubmitted(true);
   };
 
   return (
@@ -50,13 +50,13 @@ const JoinLeagueForm: React.FC<JoinLeagueFormProps> = ({ onSubmit }) => {
           </Button>
         </Box>
       </form>
-      {submitted && (
+      {/* {submitted && (
         <Box mt={2}>
           <Typography variant="h6" color="textSecondary">
             Coming Soon!
           </Typography>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
 import LeagueForm from "./LeagueForm/LeagueForm";
@@ -14,7 +14,15 @@ import AuctionResults from "./AuctionResults/AuctionResults";
 import { allTeams } from "./allTeams";
 import { Team, Squad, League } from "./types";
 import { Button } from "@mui/material";
-import { createLeague, finalizeResults } from "./api/leagueApi";
+import {
+  createLeague,
+  getLeagueByName,
+  joinLeague,
+  finalizeResults,
+} from "./api/leagueApi";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3001"); // Adjust URL if needed
 
 function App() {
   // Manage whether the home page is shown
@@ -42,6 +50,8 @@ function App() {
   const [auctionComplete, setAuctionComplete] = useState<boolean>(false);
   // Manage whether the auction results are shown
   const [showAuctionResults, setShowAuctionResults] = useState<boolean>(false);
+  const [isCommissioner, setIsCommissioner] = useState<boolean>(false);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
   // Manage the number of minutes per item in the auction
   const [minutesPerItem, setMinutesPerItem] = useState<number>(0);
   // Manage the squad salary cap
@@ -49,15 +59,35 @@ function App() {
   const [league, setLeague] = useState<League>();
   // Manage the list of squads
   const [squads, setSquads] = useState<Squad[]>([]);
+  const [yourSquad, setYourSquad] = useState<Squad | null>(null);
   // Manage the team that was sold
   const [soldTeam, setSoldTeam] = useState<Team | null>(null);
   // Manage the list of upcoming teams
   const [upcomingTeams, setUpcomingTeams] = useState<Team[]>([]);
   const [previousTeamInfo, setPreviousTeamInfo] = useState<string | null>(null);
 
+  useEffect(() => {
+    // WebSocket event handlers
+    socket.on("startAuction", (data) => {
+      console.log("Auction started:", data);
+      // Handle auction start logic here
+    });
+
+    socket.on("placeBid", (data) => {
+      console.log("Bid placed:", data);
+      // Handle bid logic here
+    });
+
+    return () => {
+      socket.off("startAuction");
+      socket.off("placeBid");
+    };
+  }, []);
+
   const handleCreateLeagueClick = () => {
     setShowLeagueForm(true);
     setShowHomePage(false);
+    setIsCommissioner(true);
   };
 
   const handleJoinLeagueClick = () => {
@@ -108,13 +138,44 @@ function App() {
       alert("An error occurred while creating the league");
     }
     setShowSquadsForm(false);
-    setShowTournamentBracket(true);
+    setIsWaiting(true);
+    // setShowTournamentBracket(true);
   };
 
   const handleJoinLeagueFormSubmit = (leagueName: string, password: string) => {
     console.log("League Name: ", leagueName);
     console.log("Password: ", password);
     //setShowJoinLeagueForm(false);
+    handleSuccessfulJoin(leagueName, password);
+  };
+
+  const handleSuccessfulJoin = async (leagueName: string, password: string) => {
+    try {
+      const response = await joinLeague(leagueName, password);
+      console.log("Squad Name: ", response.squadName);
+      const testLeague = await getLeagueByName(leagueName);
+      const testSquads = testLeague.squads;
+
+      for (const squad of testSquads) {
+        console.log(squad.name);
+        if (squad.name === response.squadName) {
+          console.log("It works");
+          setYourSquad(squad);
+          setIsWaiting(true);
+          setIsCommissioner(false); // Users joining the league are not commissioners
+          setShowJoinLeagueForm(false);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to join the league:", error);
+      alert("Failed to join the league");
+    }
+  };
+
+  const handleContinueClick = () => {
+    setIsWaiting(false);
+    setShowTournamentBracket(true);
+    socket.emit("startAuction", { leagueId: league?.id }); // Notify others to start the auction
   };
 
   // Handle the end of the timer
@@ -170,6 +231,7 @@ function App() {
     if (soldTeam !== null && soldTeam.price !== 0) {
       console.log("Team Sold");
       setSoldTeam(soldTeam); // Set the sold team
+      socket.emit("placeBid", { team: soldTeam }); // Notify others about the sold team
     }
   };
 
@@ -253,11 +315,31 @@ function App() {
           </div>
         )}
 
+        {isWaiting && (
+          <div>
+            <h1>
+              {isCommissioner
+                ? "Waiting for users to join the league..."
+                : "Waiting for the commissioner to start the league..."}
+            </h1>
+            {isCommissioner && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleContinueClick}
+              >
+                Continue
+              </Button>
+            )}
+          </div>
+        )}
+
         {!showHomePage &&
           !showLeagueForm &&
           !showSquadsForm &&
           !showJoinLeagueForm &&
-          !showAuctionResults && (
+          !showAuctionResults &&
+          !isWaiting && (
             <Button
               variant="contained"
               color="primary"
@@ -269,7 +351,7 @@ function App() {
             </Button>
           )}
 
-        {showTournamentBracket && (
+        {!isWaiting && showTournamentBracket && (
           <div>
             <TournamentBracket />
           </div>
@@ -281,91 +363,76 @@ function App() {
           !showLeagueForm &&
           !showSquadsForm &&
           !showJoinLeagueForm &&
-          !showAuctionResults && (
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                {!auctionComplete && (
-                  <>
-                    <div className="timer-container">
-                      <Timer
-                        minutesPerItem={minutesPerItem}
-                        onTimerEnd={handleTimerEnd}
-                        onTimerPause={handleTimerPause}
-                        resetFlag={changeTeamFlag}
-                        showNextTeamButton={showNextTeamButton}
-                        onPlay={handlePlay}
-                      />
-                    </div>
-                    {showNextTeamButton &&
-                      !timerActive &&
-                      allTeams.length > 0 && (
-                        <button onClick={handleNextTeamClick}>Next Team</button>
-                      )}
-                    <div>
-                      {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
-                      <AuctionTeam
-                        teams={allTeams}
-                        changeTeamFlag={changeTeamFlag}
-                        squadSalaryCap={squadSalaryCap}
-                        timerActive={timerActive}
-                        onTeamSold={handleTeamSold}
-                        onNextTeam={handleNextTeam}
-                        timerEnded={timerEnded}
-                        updateUpcomingTeams={updateUpcomingTeams}
-                        onAuctionComplete={handleAuctionComplete}
-                      />
-                    </div>
-                    <div></div>
-                  </>
-                )}
-              </div>
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                {!auctionComplete && squads.length > 0 && (
-                  <YourSquad squad={squads[0]} />
-                )}
-                {!auctionComplete && orderOfAuction && (
-                  <OrderOfAuction upcomingTeams={upcomingTeams} />
-                )}
-                {!auctionComplete && squads.length > 1 && (
-                  <OtherSquads squads={squads} yourSquad={squads[0]} />
-                )}
-                {!auctionComplete && squads.length === 1 && (
+          !showAuctionResults &&
+          !isWaiting && (
+            <>
+              {isCommissioner ? (
+                <div>
+                  {/* Commissioner view */}
+                  <Timer
+                    minutesPerItem={minutesPerItem}
+                    onTimerEnd={handleTimerEnd}
+                    onTimerPause={handleTimerPause}
+                    resetFlag={changeTeamFlag}
+                    showNextTeamButton={showNextTeamButton}
+                    onPlay={handlePlay}
+                  />
+                  {showNextTeamButton &&
+                    !timerActive &&
+                    allTeams.length > 0 && (
+                      <button onClick={handleNextTeamClick}>Next Team</button>
+                    )}
                   <div>
-                    <h2>No Other Squads</h2>
+                    {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
+                    <AuctionTeam
+                      teams={allTeams}
+                      changeTeamFlag={changeTeamFlag}
+                      squadSalaryCap={squadSalaryCap}
+                      timerActive={timerActive}
+                      onTeamSold={handleTeamSold}
+                      onNextTeam={handleNextTeam}
+                      timerEnded={timerEnded}
+                      updateUpcomingTeams={updateUpcomingTeams}
+                      onAuctionComplete={handleAuctionComplete}
+                    />
                   </div>
-                )}
-              </div>
-              {auctionComplete && !showAuctionResults && (
-                <button
-                  onClick={() => {
-                    handleFinalizeResults();
-                    setShowAuctionResults(true);
-                    setShowTournamentBracket(false);
-                  }}
-                >
-                  Finalize Results
-                </button>
+                  {auctionComplete && !showAuctionResults && (
+                    <button
+                      onClick={() => {
+                        handleFinalizeResults();
+                        setShowAuctionResults(true);
+                        setShowTournamentBracket(false);
+                      }}
+                    >
+                      Finalize Results
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  {/* Squad member view */}
+                  <div>
+                    {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
+                    <AuctionTeam
+                      teams={allTeams}
+                      changeTeamFlag={changeTeamFlag}
+                      squadSalaryCap={squadSalaryCap}
+                      timerActive={timerActive}
+                      onTeamSold={handleTeamSold}
+                      onNextTeam={handleNextTeam}
+                      timerEnded={timerEnded}
+                      updateUpcomingTeams={updateUpcomingTeams}
+                      onAuctionComplete={handleAuctionComplete}
+                    />
+                  </div>
+                  <YourSquad squad={yourSquad} />
+                  <OtherSquads squads={squads} yourSquad={yourSquad} />
+                  <OrderOfAuction upcomingTeams={upcomingTeams} />
+                </div>
               )}
-              <br></br>
-            </div>
+            </>
           )}
+
         {showAuctionResults && <AuctionResults squads={squads} />}
       </div>
     </NumberOfPlayersProvider>

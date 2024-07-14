@@ -48,9 +48,9 @@ export const createLeague = async (req: Request, res: Response) => {
     const updatedSquads = [];
     for (const squad of squads) {
       const squadResult = await pool.query(
-        `INSERT INTO squads (leagueId, name, salaryCapacity, password) 
+        `INSERT INTO squads (leagueName, name, salaryCapacity, password) 
          VALUES ($1, $2, $3, $4) RETURNING id`,
-        [leagueId, squad.name, league.salaryCapacity, squad.password],
+        [league.name, squad.name, league.salaryCapacity, squad.password],
       );
 
       const squadId = squadResult.rows[0].id;
@@ -116,9 +116,12 @@ export const getLeagueById = async (req: Request, res: Response) => {
       "SELECT * FROM leagues WHERE id = $1",
       [id],
     );
+
+    const leagueName = leagueResult.rows[0].name;
+
     const squadsResult = await pool.query(
-      "SELECT * FROM squads WHERE leagueId = $1",
-      [id],
+      "SELECT * FROM squads WHERE leagueName = $1",
+      [leagueName],
     );
 
     if (leagueResult.rows.length === 0) {
@@ -160,6 +163,94 @@ export const getLeagueById = async (req: Request, res: Response) => {
   }
 };
 
+export const getLeagueByName = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.params;
+    const leagueResult = await pool.query(
+      "SELECT * FROM leagues WHERE name = $1",
+      [name],
+    );
+
+    if (leagueResult.rows.length === 0) {
+      return res.status(404).json({ message: "League not found" });
+    }
+
+    const squadsResult = await pool.query(
+      "SELECT * FROM squads WHERE leagueName = $1",
+      [name],
+    );
+
+    const league = leagueResult.rows[0];
+    const squads = squadsResult.rows;
+
+    // Fetch players for each squad
+    for (const squad of squads) {
+      const playersResult = await pool.query(
+        "SELECT p.name FROM players p JOIN squad_players sp ON p.id = sp.playerId WHERE sp.squadId = $1",
+        [squad.id],
+      );
+      squad.players = playersResult.rows.map((row: PlayerRow) => row.name);
+
+      // Fetch teams for each squad
+      const teamsResult = await pool.query(
+        "SELECT t.seed, t.name, t.record, t.region, t.opponent, t.price FROM teams t JOIN squad_teams st ON t.id = st.teamId WHERE st.squadId = $1",
+        [squad.id],
+      );
+      squad.teams = teamsResult.rows.map((row: TeamRow) => ({
+        seed: row.seed,
+        name: row.name,
+        record: row.record,
+        region: row.region,
+        opponent: row.opponent,
+        price: row.price,
+      }));
+    }
+
+    league.squads = squads;
+
+    res.status(200).json({ league, squads });
+  } catch (error) {
+    console.error("Error fetching league:", error);
+    res.status(500).json({ message: "Failed to get league" });
+  }
+};
+
+export const joinLeague = async (req: Request, res: Response) => {
+  try {
+    const { leagueName, password } = req.body;
+
+    // Check if the league exists
+    const leagueResult = await pool.query(
+      "SELECT * FROM leagues WHERE name = $1",
+      [leagueName],
+    );
+
+    if (leagueResult.rows.length === 0) {
+      return res.status(404).json({ message: "League not found" });
+    }
+
+    // Find the squad with the correct password
+    const squadResult = await pool.query(
+      "SELECT * FROM squads WHERE leagueName = $1 AND password = $2",
+      [leagueName, password],
+    );
+
+    if (squadResult.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Squad not found or incorrect password" });
+    }
+
+    const squad = squadResult.rows[0];
+    const squadName = squad.name;
+
+    res.status(200).json({ squadName });
+  } catch (error) {
+    console.error("Error joining league:", error);
+    res.status(500).json({ message: "Failed to join league" });
+  }
+};
+
 // Finalize auction results
 export const finalizeResults = async (req: Request, res: Response) => {
   try {
@@ -171,6 +262,8 @@ export const finalizeResults = async (req: Request, res: Response) => {
       "SELECT * FROM leagues WHERE id = $1",
       [leagueId],
     );
+
+    const leagueName = leagueResult.rows[0].name;
 
     if (leagueResult.rows.length === 0) {
       return res.status(404).json({ message: "League not found" });
@@ -250,8 +343,8 @@ export const finalizeResults = async (req: Request, res: Response) => {
     }
 
     const squadsResult = await pool.query(
-      "SELECT * FROM squads WHERE leagueId = $1",
-      [leagueId],
+      "SELECT * FROM squads WHERE leagueName = $1",
+      [leagueName],
     );
 
     const updatedSquads = squadsResult.rows;

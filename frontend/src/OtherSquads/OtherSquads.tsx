@@ -6,7 +6,7 @@ import { Squad, Team } from "../types";
 // Defining the types for the properties that the OtherSquads component will receive
 interface OtherSquadsProps {
   squads: Squad[]; // Array of all squads
-  yourSquad: Squad; // Your own squad
+  yourSquad: Squad | null; // Your own squad
 }
 
 // The main OtherSquads component
@@ -54,7 +54,9 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
 
   // useEffect hook to remove your squad from the list when the component loads
   useEffect(() => {
-    removeYourSquad(yourSquad);
+    if (yourSquad) {
+      removeYourSquad(yourSquad);
+    }
   }, []);
 
   return (

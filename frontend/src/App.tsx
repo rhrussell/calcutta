@@ -140,6 +140,7 @@ function App() {
       alert("An error occurred while creating the league");
     }
     setShowSquadsForm(false);
+    console.log("Squads Length: ", squads.length);
     setIsWaiting(true);
     // setShowTournamentBracket(true);
   };
@@ -175,9 +176,9 @@ function App() {
   };
 
   const handleContinueClick = () => {
-    // setIsWaiting(false);
-    // setShowTournamentBracket(true);
     socket.emit("startAuction", { leagueId: league?.id }); // Notify others to start the auction
+    setIsWaiting(false);
+    setShowTournamentBracket(true);
   };
 
   // Handle the end of the timer
@@ -321,8 +322,8 @@ function App() {
           <div>
             <h1>
               {isCommissioner
-                ? "Waiting for users to join the league..."
-                : "Waiting for the commissioner to start the league..."}
+                ? "Waiting For Users To Join The League..."
+                : "Waiting For The Commissioner To Start The League..."}
             </h1>
             {isCommissioner && (
               <Button

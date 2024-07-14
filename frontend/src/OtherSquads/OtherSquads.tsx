@@ -6,7 +6,7 @@ import { Squad, Team } from "../types";
 // Defining the types for the properties that the OtherSquads component will receive
 interface OtherSquadsProps {
   squads: Squad[]; // Array of all squads
-  yourSquad: Squad | null; // Your own squad
+  yourSquad: Squad; // Your own squad
 }
 
 // The main OtherSquads component
@@ -32,7 +32,11 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
   // This function is called when the user clicks the previous squad button
   const handlePreviousSquad = () => {
     setCurrentSquadIndex((prevIndex) =>
-      prevIndex === 0 ? updatedSquads.length - 1 : prevIndex - 1,
+      updatedSquads.length > 1
+        ? prevIndex === 0
+          ? updatedSquads.length - 1
+          : prevIndex - 1
+        : prevIndex,
     );
   };
 
@@ -42,7 +46,11 @@ const OtherSquads: React.FC<OtherSquadsProps> = ({ squads, yourSquad }) => {
   // This function is called when the user clicks the next squad button
   const handleNextSquad = () => {
     setCurrentSquadIndex((prevIndex) =>
-      prevIndex === updatedSquads.length - 1 ? 0 : prevIndex + 1,
+      updatedSquads.length > 1
+        ? prevIndex === updatedSquads.length - 1
+          ? 0
+          : prevIndex + 1
+        : prevIndex,
     );
   };
 

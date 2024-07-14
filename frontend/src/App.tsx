@@ -70,7 +70,8 @@ function App() {
     // WebSocket event handlers
     socket.on("startAuction", (data) => {
       console.log("Auction started:", data);
-      // Handle auction start logic here
+      setIsWaiting(false);
+      setShowTournamentBracket(true);
     });
 
     socket.on("placeBid", (data) => {
@@ -119,6 +120,7 @@ function App() {
           squads,
         };
         setSquads(squads);
+        setYourSquad(squads[0]);
         setLeague(updatedLeague);
 
         const createdLeague = await createLeague(updatedLeague, squads); // Pass league and squads separately
@@ -173,8 +175,8 @@ function App() {
   };
 
   const handleContinueClick = () => {
-    setIsWaiting(false);
-    setShowTournamentBracket(true);
+    // setIsWaiting(false);
+    // setShowTournamentBracket(true);
     socket.emit("startAuction", { leagueId: league?.id }); // Notify others to start the auction
   };
 
@@ -425,8 +427,14 @@ function App() {
                       onAuctionComplete={handleAuctionComplete}
                     />
                   </div>
-                  <YourSquad squad={yourSquad} />
-                  <OtherSquads squads={squads} yourSquad={yourSquad} />
+                  {yourSquad && (
+                    <>
+                      <YourSquad squad={yourSquad} />
+                      {squads.length > 1 && (
+                        <OtherSquads squads={squads} yourSquad={yourSquad} />
+                      )}
+                    </>
+                  )}
                   <OrderOfAuction upcomingTeams={upcomingTeams} />
                 </div>
               )}

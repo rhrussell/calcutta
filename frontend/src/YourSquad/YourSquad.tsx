@@ -5,7 +5,7 @@ import { Squad } from "../types";
 
 // Defining the types for the properties that the YourSquad component will receive
 interface YourSquadProps {
-  squad: Squad | null; // The squad object that contains information about the squad
+  squad: Squad; // The squad object that contains information about the squad
 }
 
 // The main YourSquad component
@@ -13,14 +13,14 @@ const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
   return (
     <div>
       {/* Display the name of the squad */}
-      <h2>Your Squad: {squad?.name}</h2>
+      <h2>Your Squad: {squad.name}</h2>
       {/* Display the remaining salary cap for the squad */}
-      <div>Remaining Salary Cap: ${squad?.salaryCap}</div>
+      <div>Remaining Salary Cap: ${squad.salaryCap}</div>
       {/* Header for the list of players */}
       <h3>Players</h3>
       {/* List of player names in the squad */}
       <ul>
-        {squad?.players.map((playerName, index) => (
+        {squad.players.map((playerName, index) => (
           // Display each player's name in a list item
           <li key={index}>{playerName}</li>
         ))}
@@ -29,7 +29,7 @@ const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
       <h3>Teams</h3>
       {/* List of teams in the squad */}
       <ul>
-        {squad?.teams.map((team, index) => (
+        {squad.teams.map((team, index) => (
           // Display each team's details in a list item
           <li key={index}>
             {`${team.seed} ${team.name} ${team.record} ${team.region} vs ${team.opponent} - $${team.price}`}

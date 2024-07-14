@@ -72,6 +72,7 @@ function App() {
       console.log("Auction started:", data);
       setLeague(data.league);
       setSquads(data.squads);
+      setSquadSalaryCap(data.salaryCapacity || 0);
       setIsWaiting(false);
       setShowTournamentBracket(true);
     });
@@ -142,15 +143,12 @@ function App() {
       alert("An error occurred while creating the league");
     }
     setShowSquadsForm(false);
-    console.log("Squads Length: ", squads.length);
     setIsWaiting(true);
-    // setShowTournamentBracket(true);
   };
 
   const handleJoinLeagueFormSubmit = (leagueName: string, password: string) => {
     console.log("League Name: ", leagueName);
     console.log("Password: ", password);
-    //setShowJoinLeagueForm(false);
     handleSuccessfulJoin(leagueName, password);
     setSquads(squads);
   };
@@ -158,7 +156,6 @@ function App() {
   const handleSuccessfulJoin = async (leagueName: string, password: string) => {
     try {
       const response = await joinLeague(leagueName, password);
-      console.log("Squad Name: ", response.squadName);
       const testLeague = await getLeagueByName(leagueName);
       const testSquads = testLeague.squads;
       setSquads(testSquads);
@@ -179,6 +176,7 @@ function App() {
     socket.emit("startAuction", {
       league: league,
       squads: squads,
+      salaryCapacity: squadSalaryCap,
       leagueId: league?.id,
     }); // Notify others to start the auction
     setIsWaiting(false);
@@ -434,7 +432,7 @@ function App() {
                   </div>
                   {yourSquad && (
                     <>
-                      <YourSquad squad={yourSquad} />
+                      <YourSquad squad={yourSquad} salaryCap={squadSalaryCap} />
                       {squads.length > 1 && (
                         <OtherSquads squads={squads} yourSquad={yourSquad} />
                       )}

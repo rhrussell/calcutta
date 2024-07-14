@@ -2,20 +2,22 @@
 import React from "react";
 // Importing types from another file
 import { Squad } from "../types";
+import { SaveAltOutlined } from "@mui/icons-material";
 
 // Defining the types for the properties that the YourSquad component will receive
 interface YourSquadProps {
   squad: Squad; // The squad object that contains information about the squad
+  salaryCap: number; // The salary cap for the squad
 }
 
 // The main YourSquad component
-const YourSquad: React.FC<YourSquadProps> = ({ squad }) => {
+const YourSquad: React.FC<YourSquadProps> = ({ squad, salaryCap }) => {
   return (
     <div>
       {/* Display the name of the squad */}
       <h2>Your Squad: {squad.name}</h2>
       {/* Display the remaining salary cap for the squad */}
-      <div>Remaining Salary Cap: ${squad.salaryCap}</div>
+      <div>Remaining Salary Cap: ${salaryCap}</div>
       {/* Header for the list of players */}
       <h3>Players</h3>
       {/* List of player names in the squad */}

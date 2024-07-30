@@ -21,7 +21,8 @@ import {
   finalizeResults,
 } from "./api/leagueApi";
 import io from "socket.io-client";
-import { Route } from "@mui/icons-material";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home/Home";
 
 const socket = io("http://localhost:3001"); // Adjust URL if needed
 
@@ -328,189 +329,213 @@ function App() {
     }
   };
 
+  // return (
+  //   <NumberOfPlayersProvider>
+  //     <div className="App">
+  //       {showHomePage && (
+  //         <div>
+  //           <h1>Welcome to Calcutta Leagues!</h1>
+  //           <div>
+  //             <Button
+  //               variant="contained"
+  //               color="primary"
+  //               onClick={handleCreateLeagueClick}
+  //             >
+  //               Create League
+  //             </Button>
+  //             <Button
+  //               variant="contained"
+  //               color="primary"
+  //               onClick={handleJoinLeagueClick}
+  //             >
+  //               Join League
+  //             </Button>
+  //           </div>
+  //         </div>
+  //       )}
+
+  //       {showLeagueForm && !showAuctionResults && (
+  //         <div>
+  //           <h1>Add League</h1>
+  //           <LeagueForm onSubmit={handleLeagueFormSubmit} />
+  //         </div>
+  //       )}
+
+  //       {showSquadsForm && !showAuctionResults && (
+  //         <div>
+  //           <SquadsForm
+  //             onSubmit={handleSquadsFormSubmit}
+  //             salaryCap={squadSalaryCap}
+  //           />
+  //         </div>
+  //       )}
+
+  //       {showJoinLeagueForm && !showAuctionResults && (
+  //         <div>
+  //           <JoinLeagueForm onSubmit={handleJoinLeagueFormSubmit} />
+  //         </div>
+  //       )}
+
+  //       {isWaiting && (
+  //         <div>
+  //           <h1>
+  //             {isCommissioner
+  //               ? "Waiting For Users To Join The League..."
+  //               : "Waiting For The Commissioner To Start The League..."}
+  //           </h1>
+  //           {isCommissioner && (
+  //             <Button
+  //               variant="contained"
+  //               color="primary"
+  //               onClick={handleContinueClick}
+  //             >
+  //               Continue
+  //             </Button>
+  //           )}
+  //         </div>
+  //       )}
+
+  //       {!showHomePage &&
+  //         !showLeagueForm &&
+  //         !showSquadsForm &&
+  //         !showJoinLeagueForm &&
+  //         !showAuctionResults &&
+  //         !isWaiting && (
+  //           <Button
+  //             variant="contained"
+  //             color="primary"
+  //             onClick={() => {
+  //               setShowTournamentBracket(!showTournamentBracket);
+  //             }}
+  //           >
+  //             {showTournamentBracket ? "Hide Bracket" : "Display Bracket"}
+  //           </Button>
+  //         )}
+
+  //       {!isWaiting && showTournamentBracket && (
+  //         <div>
+  //           <TournamentBracket />
+  //         </div>
+  //       )}
+
+  //       <br></br>
+
+  //       {!showHomePage &&
+  //         !showLeagueForm &&
+  //         !showSquadsForm &&
+  //         !showJoinLeagueForm &&
+  //         !showAuctionResults &&
+  //         !isWaiting && (
+  //           <>
+  //             {isCommissioner ? (
+  //               <div>
+  //                 {/* Commissioner view */}
+  //                 <Timer
+  //                   minutesPerItem={minutesPerItem}
+  //                   onTimerEnd={handleTimerEnd}
+  //                   onTimerPause={handleTimerPause}
+  //                   resetFlag={changeTeamFlag}
+  //                   showNextTeamButton={showNextTeamButton}
+  //                   onPlay={handlePlay}
+  //                   isCommissioner={isCommissioner}
+  //                 />
+  //                 {showNextTeamButton &&
+  //                   !timerActive &&
+  //                   allTeams.length > 0 && (
+  //                     <button onClick={handleNextTeamClick}>Next Team</button>
+  //                   )}
+  //                 <div>
+  //                   {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
+  //                   <AuctionTeam
+  //                     teams={allTeams}
+  //                     changeTeamFlag={changeTeamFlag}
+  //                     squadSalaryCap={squadSalaryCap}
+  //                     timerActive={timerActive}
+  //                     onTeamSold={handleTeamSold}
+  //                     onNextTeam={handleNextTeam}
+  //                     timerEnded={timerEnded}
+  //                     updateUpcomingTeams={updateUpcomingTeams}
+  //                     onAuctionComplete={handleAuctionComplete}
+  //                   />
+  //                 </div>
+  //                 {auctionComplete && !showAuctionResults && (
+  //                   <button
+  //                     onClick={() => {
+  //                       handleFinalizeResults();
+  //                       setShowAuctionResults(true);
+  //                       setShowTournamentBracket(false);
+  //                     }}
+  //                   >
+  //                     Finalize Results
+  //                   </button>
+  //                 )}
+  //               </div>
+  //             ) : (
+  //               <div>
+  //                 {/* Squad member view */}
+  //                 <div>
+  //                   <Timer
+  //                     minutesPerItem={minutesPerItem}
+  //                     onTimerEnd={handleTimerEnd}
+  //                     onTimerPause={handleTimerPause}
+  //                     resetFlag={changeTeamFlag}
+  //                     showNextTeamButton={showNextTeamButton}
+  //                     onPlay={handlePlay}
+  //                     isCommissioner={!isCommissioner}
+  //                   />
+  //                   {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
+  //                   <AuctionTeam
+  //                     teams={allTeams}
+  //                     changeTeamFlag={changeTeamFlag}
+  //                     squadSalaryCap={squadSalaryCap}
+  //                     timerActive={timerActive}
+  //                     onTeamSold={handleTeamSold}
+  //                     onNextTeam={handleNextTeam}
+  //                     timerEnded={timerEnded}
+  //                     updateUpcomingTeams={updateUpcomingTeams}
+  //                     onAuctionComplete={handleAuctionComplete}
+  //                   />
+  //                 </div>
+  //                 {yourSquad && (
+  //                   <>
+  //                     <YourSquad squad={yourSquad} salaryCap={squadSalaryCap} />
+  //                     {squads.length > 1 && (
+  //                       <OtherSquads squads={squads} yourSquad={yourSquad} />
+  //                     )}
+  //                   </>
+  //                 )}
+  //                 <OrderOfAuction upcomingTeams={upcomingTeams} />
+  //               </div>
+  //             )}
+  //           </>
+  //         )}
+
+  //       {showAuctionResults && <AuctionResults squads={squads} />}
+  //     </div>
+  //   </NumberOfPlayersProvider>
+  // );
+
   return (
     <NumberOfPlayersProvider>
-      <div className="App">
-        {showHomePage && (
-          <div>
-            <h1>Welcome to Calcutta Leagues!</h1>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCreateLeagueClick}
-              >
-                Create League
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleJoinLeagueClick}
-              >
-                Join League
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {showLeagueForm && !showAuctionResults && (
-          <div>
-            <h1>Add League</h1>
-            <LeagueForm onSubmit={handleLeagueFormSubmit} />
-          </div>
-        )}
-
-        {showSquadsForm && !showAuctionResults && (
-          <div>
-            <SquadsForm
-              onSubmit={handleSquadsFormSubmit}
-              salaryCap={squadSalaryCap}
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/createleague"
+              element={<LeagueForm onSubmit={() => {}} />}
             />
-          </div>
-        )}
-
-        {showJoinLeagueForm && !showAuctionResults && (
-          <div>
-            <JoinLeagueForm onSubmit={handleJoinLeagueFormSubmit} />
-          </div>
-        )}
-
-        {isWaiting && (
-          <div>
-            <h1>
-              {isCommissioner
-                ? "Waiting For Users To Join The League..."
-                : "Waiting For The Commissioner To Start The League..."}
-            </h1>
-            {isCommissioner && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleContinueClick}
-              >
-                Continue
-              </Button>
-            )}
-          </div>
-        )}
-
-        {!showHomePage &&
-          !showLeagueForm &&
-          !showSquadsForm &&
-          !showJoinLeagueForm &&
-          !showAuctionResults &&
-          !isWaiting && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setShowTournamentBracket(!showTournamentBracket);
-              }}
-            >
-              {showTournamentBracket ? "Hide Bracket" : "Display Bracket"}
-            </Button>
-          )}
-
-        {!isWaiting && showTournamentBracket && (
-          <div>
-            <TournamentBracket />
-          </div>
-        )}
-
-        <br></br>
-
-        {!showHomePage &&
-          !showLeagueForm &&
-          !showSquadsForm &&
-          !showJoinLeagueForm &&
-          !showAuctionResults &&
-          !isWaiting && (
-            <>
-              {isCommissioner ? (
-                <div>
-                  {/* Commissioner view */}
-                  <Timer
-                    minutesPerItem={minutesPerItem}
-                    onTimerEnd={handleTimerEnd}
-                    onTimerPause={handleTimerPause}
-                    resetFlag={changeTeamFlag}
-                    showNextTeamButton={showNextTeamButton}
-                    onPlay={handlePlay}
-                    isCommissioner={isCommissioner}
-                  />
-                  {showNextTeamButton &&
-                    !timerActive &&
-                    allTeams.length > 0 && (
-                      <button onClick={handleNextTeamClick}>Next Team</button>
-                    )}
-                  <div>
-                    {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
-                    <AuctionTeam
-                      teams={allTeams}
-                      changeTeamFlag={changeTeamFlag}
-                      squadSalaryCap={squadSalaryCap}
-                      timerActive={timerActive}
-                      onTeamSold={handleTeamSold}
-                      onNextTeam={handleNextTeam}
-                      timerEnded={timerEnded}
-                      updateUpcomingTeams={updateUpcomingTeams}
-                      onAuctionComplete={handleAuctionComplete}
-                    />
-                  </div>
-                  {auctionComplete && !showAuctionResults && (
-                    <button
-                      onClick={() => {
-                        handleFinalizeResults();
-                        setShowAuctionResults(true);
-                        setShowTournamentBracket(false);
-                      }}
-                    >
-                      Finalize Results
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  {/* Squad member view */}
-                  <div>
-                    <Timer
-                      minutesPerItem={minutesPerItem}
-                      onTimerEnd={handleTimerEnd}
-                      onTimerPause={handleTimerPause}
-                      resetFlag={changeTeamFlag}
-                      showNextTeamButton={showNextTeamButton}
-                      onPlay={handlePlay}
-                      isCommissioner={!isCommissioner}
-                    />
-                    {previousTeamInfo !== null && <p>{previousTeamInfo}</p>}
-                    <AuctionTeam
-                      teams={allTeams}
-                      changeTeamFlag={changeTeamFlag}
-                      squadSalaryCap={squadSalaryCap}
-                      timerActive={timerActive}
-                      onTeamSold={handleTeamSold}
-                      onNextTeam={handleNextTeam}
-                      timerEnded={timerEnded}
-                      updateUpcomingTeams={updateUpcomingTeams}
-                      onAuctionComplete={handleAuctionComplete}
-                    />
-                  </div>
-                  {yourSquad && (
-                    <>
-                      <YourSquad squad={yourSquad} salaryCap={squadSalaryCap} />
-                      {squads.length > 1 && (
-                        <OtherSquads squads={squads} yourSquad={yourSquad} />
-                      )}
-                    </>
-                  )}
-                  <OrderOfAuction upcomingTeams={upcomingTeams} />
-                </div>
-              )}
-            </>
-          )}
-
-        {showAuctionResults && <AuctionResults squads={squads} />}
-      </div>
+            <Route
+              path="/squadsform"
+              element={<SquadsForm onSubmit={() => {}} />}
+            />
+            <Route
+              path="/joinleague"
+              element={<JoinLeagueForm onSubmit={() => {}} />}
+            />
+          </Routes>
+        </div>
+      </Router>
     </NumberOfPlayersProvider>
   );
 }

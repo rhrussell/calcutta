@@ -4,9 +4,9 @@
 // The useNumberOfPlayers hook is used to set the number of players globally.
 // Material-UI components like TextField, Button, and Checkbox are used to create the form.
 import React, { useState, FormEvent } from "react";
-import { useNumberOfPlayers } from "../NumberOfPlayersContext";
+import { useNumberOfPlayers } from "../../NumberOfPlayersContext";
 import { TextField, Button, Checkbox, FormControlLabel } from "@mui/material";
-import { League } from "../types";
+import { League } from "../../types";
 
 // This defines the structure of the form data that we will collect from the user.
 interface FormData {

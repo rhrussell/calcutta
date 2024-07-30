@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { NumberOfPlayersProvider } from "./NumberOfPlayersContext";
-import LeagueForm from "./LeagueForm/LeagueForm";
-import SquadsForm from "./SquadsForm/SquadsForm";
-import JoinLeagueForm from "./JoinLeagueForm/JoinLeagueForm";
+import LeagueForm from "./pages/LeagueForm/LeagueForm";
+import SquadsForm from "./pages/SquadsForm/SquadsForm";
+import JoinLeagueForm from "./pages/JoinLeagueForm/JoinLeagueForm";
 import TournamentBracket from "./TournamentBracket/TournamentBracket";
 import Timer from "./Timer/Timer";
 import AuctionTeam from "./AuctionTeam/AuctionTeam";
@@ -21,10 +21,16 @@ import {
   finalizeResults,
 } from "./api/leagueApi";
 import io from "socket.io-client";
+import { Route } from "@mui/icons-material";
 
 const socket = io("http://localhost:3001"); // Adjust URL if needed
 
 function App() {
+  // <BrowserRouter>
+  //   <Routes>
+  //     <Route path="/" element={<App />} />
+  //   </Routes>
+  // </BrowserRouter>
   // Manage whether the home page is shown
   const [showHomePage, setShowHomePage] = useState<boolean>(true);
   // Manage whether the league form is shown

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
-import { joinLeague } from "../api/leagueApi"; // Import the joinLeague API call
+import { joinLeague } from "../../api/leagueApi"; // Import the joinLeague API call
 
 interface JoinLeagueFormProps {
   onSubmit: (leagueName: string, password: string) => void;

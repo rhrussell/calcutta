@@ -7,8 +7,8 @@
 // The SquadsForm component is used to create and randomize squads for an auction-based game.
 
 import React, { useState } from "react"; // Importing React and useState hook.
-import { useNumberOfPlayers } from "../NumberOfPlayersContext"; // Importing a custom hook to get the number of players context.
-import { Squad } from "../types"; // Importing the Squad type to ensure consistent squad object structure.
+import { useNumberOfPlayers } from "../../NumberOfPlayersContext"; // Importing a custom hook to get the number of players context.
+import { Squad } from "../../types"; // Importing the Squad type to ensure consistent squad object structure.
 import {
   TextField,
   Button,

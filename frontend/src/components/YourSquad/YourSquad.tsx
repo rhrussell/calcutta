@@ -1,7 +1,7 @@
 // Importing necessary parts from React
 import React from "react";
 // Importing types from another file
-import { Squad } from "../types";
+import { Squad } from "../../types";
 import { SaveAltOutlined } from "@mui/icons-material";
 
 // Defining the types for the properties that the YourSquad component will receive

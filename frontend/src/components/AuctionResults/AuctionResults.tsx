@@ -1,7 +1,7 @@
 // Importing necessary parts from React
 import React from "react";
 // Importing the Squad and Team types from another file
-import { Squad, Team } from "../types";
+import { Squad, Team } from "../../types";
 // Importing the CSS file for this component
 import "./AuctionResults.css";
 

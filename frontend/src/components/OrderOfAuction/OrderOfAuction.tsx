@@ -1,7 +1,7 @@
 // Importing necessary parts from React
 import React from "react";
 // Importing the Team type from another file
-import { Team } from "../types";
+import { Team } from "../../types";
 
 // Defining the types for the properties that the OrderOfAuction component will receive
 interface OrderOfAuctionProps {

@@ -1,7 +1,7 @@
 // Importing necessary parts from React
 import React, { useEffect, useState } from "react";
 // Importing types from another file
-import { Squad, Team } from "../types";
+import { Squad, Team } from "../../types";
 
 // Defining the types for the properties that the OtherSquads component will receive
 interface OtherSquadsProps {

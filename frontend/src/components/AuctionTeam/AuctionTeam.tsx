@@ -1,7 +1,7 @@
 // Importing necessary parts from React and other components
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import BidPanel from "../BidPanel/BidPanel";
-import { Team } from "../types";
+import { Team } from "../../types";
 import "./AuctionTeam.css";
 
 // Defining the types for the properties that the AuctionTeam component will receive
